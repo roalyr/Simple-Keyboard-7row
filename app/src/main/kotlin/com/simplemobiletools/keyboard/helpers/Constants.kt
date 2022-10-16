@@ -4,6 +4,10 @@ const val SHIFT_OFF = 0
 const val SHIFT_ON_ONE_CHAR = 1
 const val SHIFT_ON_PERMANENT = 2
 
+const val CONTROL_OFF = 0
+const val CONTROL_ON_ONE_CHAR = 1
+const val CONTROL_ON_PERMANENT = 2
+
 // limit the count of alternative characters that show up at long pressing a key
 const val MAX_KEYS_PER_MINI_ROW = 9
 

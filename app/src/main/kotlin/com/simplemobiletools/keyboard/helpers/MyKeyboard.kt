@@ -36,6 +36,9 @@ class MyKeyboard {
     /** Is the keyboard in the shifted state  */
     var mShiftState = SHIFT_OFF
 
+    /** If the ctrl key pressed  */
+    var mControlState = CONTROL_OFF
+
     /** Total height of the keyboard, including the padding and keys  */
     var mHeight = 0
 
@@ -66,6 +69,7 @@ class MyKeyboard {
         const val KEYCODE_DELETE = -5
         const val KEYCODE_SPACE = 32
         const val KEYCODE_EMOJI = -6
+        const val KEYCODE_CONTROL = -7
 
         fun getDimensionOrFraction(a: TypedArray, index: Int, base: Int, defValue: Int): Int {
             val value = a.peekValue(index) ?: return defValue
@@ -310,6 +314,15 @@ class MyKeyboard {
         return false
     }
 
+    fun setControl(controlState: Int): Boolean {
+        if (this.mControlState != controlState) {
+            this.mControlState = controlState
+            return true
+        }
+
+        return false
+    }
+
     private fun createRowFromXml(res: Resources, parser: XmlResourceParser?): Row {
         return Row(res, this, parser)
     }
@@ -387,9 +400,9 @@ class MyKeyboard {
 
     private fun getKeyboardHeightMultiplier(multiplierType: Int): Float {
         return when(multiplierType) {
-            KEYBOARD_HEIGHT_MULTIPLIER_SMALL -> 1.0F
-            KEYBOARD_HEIGHT_MULTIPLIER_MEDIUM -> 1.2F
-            KEYBOARD_HEIGHT_MULTIPLIER_LARGE -> 1.4F
+            KEYBOARD_HEIGHT_MULTIPLIER_SMALL -> 0.7F
+            KEYBOARD_HEIGHT_MULTIPLIER_MEDIUM -> 1.0F
+            KEYBOARD_HEIGHT_MULTIPLIER_LARGE -> 1.2F
             else -> 1.0F
         }
     }

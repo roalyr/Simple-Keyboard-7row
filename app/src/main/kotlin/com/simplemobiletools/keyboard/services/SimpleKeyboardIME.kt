@@ -23,6 +23,7 @@ import kotlinx.android.synthetic.main.keyboard_view_keyboard.view.*
 // based on https://www.androidauthority.com/lets-build-custom-keyboard-android-832362/
 class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionListener {
     private var SHIFT_PERM_TOGGLE_SPEED = 500   // how quickly do we have to doubletap shift to enable permanent caps lock
+    private var CONTROL_PERM_TOGGLE_SPEED = 500   // how quickly do we have to doubletap ctrl to enable permanent ctrl
     private val KEYBOARD_LETTERS = 0
     private val KEYBOARD_SYMBOLS = 1
     private val KEYBOARD_SYMBOLS_SHIFT = 2
@@ -30,6 +31,7 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
     private var keyboard: MyKeyboard? = null
     private var keyboardView: MyKeyboardView? = null
     private var lastShiftPressTS = 0L
+    private var lastControlPressTS = 0L
     private var keyboardMode = KEYBOARD_LETTERS
     private var inputTypeClass = InputType.TYPE_CLASS_TEXT
     private var enterKeyType = IME_ACTION_NONE
@@ -76,6 +78,7 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
         keyboardView?.setKeyboard(keyboard!!)
         keyboardView?.setEditorInfo(attribute)
         updateShiftKeyState()
+        updateControlKeyState()
     }
 
     private fun updateShiftKeyState() {
@@ -90,6 +93,16 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
         }
     }
 
+    private fun updateControlKeyState() {
+        if (keyboardMode == KEYBOARD_LETTERS) {
+            val editorInfo = currentInputEditorInfo
+            if (editorInfo != null && editorInfo.inputType != InputType.TYPE_NULL && keyboard?.mControlState != CONTROL_ON_PERMANENT) {
+                keyboard?.setControl(CONTROL_ON_ONE_CHAR)
+                keyboardView?.invalidateAllKeys()
+            }
+        }
+    }
+
     override fun onKey(code: Int) {
         val inputConnection = currentInputConnection
         if (keyboard == null || inputConnection == null) {
@@ -98,6 +111,10 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
 
         if (code != MyKeyboard.KEYCODE_SHIFT) {
             lastShiftPressTS = 0
+        }
+
+        if (code != MyKeyboard.KEYCODE_CONTROL) {
+            lastControlPressTS = 0
         }
 
         when (code) {
@@ -135,6 +152,32 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
                     }
                     keyboard = MyKeyboard(this, keyboardXml, enterKeyType)
                     keyboardView!!.setKeyboard(keyboard!!)
+                }
+                keyboardView!!.invalidateAllKeys()
+            }
+            MyKeyboard.KEYCODE_CONTROL -> {
+                if (keyboardMode == KEYBOARD_LETTERS) {
+                    when {
+                        keyboard!!.mControlState == CONTROL_ON_PERMANENT -> {
+                            keyboard!!.mControlState = CONTROL_OFF
+                            inputConnection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_CTRL_LEFT))
+                        }
+                        System.currentTimeMillis() - lastControlPressTS < CONTROL_PERM_TOGGLE_SPEED -> {
+                            keyboard!!.mControlState = CONTROL_ON_PERMANENT
+                            inputConnection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_CTRL_LEFT))
+                        }
+                        keyboard!!.mControlState == CONTROL_ON_ONE_CHAR -> {
+                            keyboard!!.mControlState = CONTROL_OFF
+                            inputConnection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_CTRL_LEFT))
+                        }
+                        keyboard!!.mControlState == CONTROL_OFF -> {
+                            keyboard!!.mControlState = CONTROL_ON_ONE_CHAR
+                            inputConnection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_CTRL_LEFT))
+                        }
+                    }
+
+                    lastControlPressTS = System.currentTimeMillis()
+                    //keyboard = MyKeyboard(this, keyboardXml, enterKeyType)
                 }
                 keyboardView!!.invalidateAllKeys()
             }
@@ -183,11 +226,20 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
                     keyboard!!.mShiftState = SHIFT_OFF
                     keyboardView!!.invalidateAllKeys()
                 }
+
+                if (keyboard!!.mControlState == CONTROL_ON_ONE_CHAR && keyboardMode == KEYBOARD_LETTERS) {
+                    keyboard!!.mControlState = CONTROL_OFF
+                    keyboardView!!.invalidateAllKeys()
+                }
             }
         }
 
         if (code != MyKeyboard.KEYCODE_SHIFT) {
             updateShiftKeyState()
+        }
+
+        if (code != MyKeyboard.KEYCODE_CONTROL) {
+            updateControlKeyState()
         }
     }
 
@@ -201,6 +253,10 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
                 if (currentInputConnection.getCursorCapsMode(editorInfo.inputType) != 0) {
                     keyboard?.setShifted(SHIFT_ON_ONE_CHAR)
                 }
+            }
+
+            if (editorInfo != null && editorInfo.inputType != InputType.TYPE_NULL && keyboard?.mShiftState != CONTROL_ON_PERMANENT) {
+                keyboard?.setControl(CONTROL_ON_ONE_CHAR)
             }
 
             keyboardView!!.setKeyboard(keyboard!!)

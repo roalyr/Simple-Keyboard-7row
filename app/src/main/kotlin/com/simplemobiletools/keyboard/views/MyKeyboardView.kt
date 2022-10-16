@@ -44,6 +44,7 @@ import com.simplemobiletools.keyboard.helpers.MyKeyboard.Companion.KEYCODE_EMOJI
 import com.simplemobiletools.keyboard.helpers.MyKeyboard.Companion.KEYCODE_ENTER
 import com.simplemobiletools.keyboard.helpers.MyKeyboard.Companion.KEYCODE_MODE_CHANGE
 import com.simplemobiletools.keyboard.helpers.MyKeyboard.Companion.KEYCODE_SHIFT
+import com.simplemobiletools.keyboard.helpers.MyKeyboard.Companion.KEYCODE_CONTROL
 import com.simplemobiletools.keyboard.helpers.MyKeyboard.Companion.KEYCODE_SPACE
 import com.simplemobiletools.keyboard.interfaces.RefreshClipsListener
 import com.simplemobiletools.keyboard.models.Clip
@@ -623,6 +624,15 @@ class MyKeyboardView @JvmOverloads constructor(context: Context, attrs: Attribut
                     key.icon = resources.getDrawable(drawableId)
                 }
 
+                if (code == KEYCODE_CONTROL) {
+                    val drawableId = when (mKeyboard!!.mControlState) {
+                        CONTROL_OFF -> R.drawable.ic_caps_outline_vector
+                        CONTROL_ON_ONE_CHAR -> R.drawable.ic_caps_vector
+                        else -> R.drawable.ic_caps_underlined_vector
+                    }
+                    key.icon = resources.getDrawable(drawableId)
+                }
+
                 if (code == KEYCODE_ENTER) {
                     key.icon!!.applyColorFilter(mPrimaryColor.getContrastColor())
                 } else if (code == KEYCODE_DELETE || code == KEYCODE_SHIFT || code == KEYCODE_EMOJI) {
@@ -761,7 +771,7 @@ class MyKeyboardView @JvmOverloads constructor(context: Context, attrs: Attribut
                 val newKey = keys[mCurrentKeyIndex]
 
                 val code = newKey.code
-                if (code == KEYCODE_SHIFT || code == KEYCODE_MODE_CHANGE || code == KEYCODE_DELETE || code == KEYCODE_ENTER || code == KEYCODE_SPACE) {
+                if (code == KEYCODE_SHIFT || code == KEYCODE_CONTROL || code == KEYCODE_MODE_CHANGE || code == KEYCODE_DELETE || code == KEYCODE_ENTER || code == KEYCODE_SPACE) {
                     newKey.pressed = true
                 }
 
@@ -882,6 +892,7 @@ class MyKeyboardView @JvmOverloads constructor(context: Context, attrs: Attribut
                 KEYCODE_ENTER -> context.getString(R.string.keycode_enter)
                 KEYCODE_MODE_CHANGE -> context.getString(R.string.keycode_mode_change)
                 KEYCODE_SHIFT -> context.getString(R.string.keycode_shift)
+                KEYCODE_CONTROL -> context.getString(R.string.keycode_control)
                 else -> code.toChar().toString()
             }
             event.text.add(text)
