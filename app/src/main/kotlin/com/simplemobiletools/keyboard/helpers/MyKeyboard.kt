@@ -211,7 +211,11 @@ class MyKeyboard {
             label = a.getText(R.styleable.MyKeyboard_Key_keyLabel) ?: ""
             topSmallNumber = a.getString(R.styleable.MyKeyboard_Key_topSmallNumber) ?: ""
 
-            if (label.isNotEmpty() && code != KEYCODE_MODE_CHANGE && code != KEYCODE_SHIFT) {
+            if (label.isNotEmpty() &&
+                code != KEYCODE_MODE_CHANGE &&
+                code != KEYCODE_SHIFT &&
+                code != KEYCODE_CONTROL) {
+
                 code = label[0].code
             }
             a.recycle()

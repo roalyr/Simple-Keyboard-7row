@@ -78,7 +78,7 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
         keyboardView?.setKeyboard(keyboard!!)
         keyboardView?.setEditorInfo(attribute)
         updateShiftKeyState()
-        updateControlKeyState()
+        //updateControlKeyState()
     }
 
     private fun updateShiftKeyState() {
@@ -93,15 +93,15 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
         }
     }
 
-    private fun updateControlKeyState() {
-        if (keyboardMode == KEYBOARD_LETTERS) {
-            val editorInfo = currentInputEditorInfo
-            if (editorInfo != null && editorInfo.inputType != InputType.TYPE_NULL && keyboard?.mControlState != CONTROL_ON_PERMANENT) {
-                keyboard?.setControl(CONTROL_ON_ONE_CHAR)
-                keyboardView?.invalidateAllKeys()
-            }
-        }
-    }
+    //private fun updateControlKeyState() {
+        //if (keyboardMode == KEYBOARD_LETTERS) {
+            //val editorInfo = currentInputEditorInfo
+            //if (editorInfo != null && editorInfo.inputType != InputType.TYPE_NULL && keyboard?.mControlState != CONTROL_ON_PERMANENT) {
+                //keyboard?.setControl(CONTROL_ON_ONE_CHAR)
+                //keyboardView?.invalidateAllKeys()
+            //}
+        //}
+    //}
 
     override fun onKey(code: Int) {
         val inputConnection = currentInputConnection
@@ -157,27 +157,21 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
             }
             MyKeyboard.KEYCODE_CONTROL -> {
                 if (keyboardMode == KEYBOARD_LETTERS) {
+
+                    // Set key state and process input further below, when next character is provided.
                     when {
                         keyboard!!.mControlState == CONTROL_ON_PERMANENT -> {
-                            keyboard!!.mControlState = CONTROL_OFF
-                            inputConnection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_CTRL_LEFT))
-                        }
+                            keyboard!!.mControlState = CONTROL_OFF }
                         System.currentTimeMillis() - lastControlPressTS < CONTROL_PERM_TOGGLE_SPEED -> {
-                            keyboard!!.mControlState = CONTROL_ON_PERMANENT
-                            inputConnection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_CTRL_LEFT))
-                        }
+                            keyboard!!.mControlState = CONTROL_ON_PERMANENT }
                         keyboard!!.mControlState == CONTROL_ON_ONE_CHAR -> {
-                            keyboard!!.mControlState = CONTROL_OFF
-                            inputConnection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_CTRL_LEFT))
-                        }
+                            keyboard!!.mControlState = CONTROL_OFF }
                         keyboard!!.mControlState == CONTROL_OFF -> {
                             keyboard!!.mControlState = CONTROL_ON_ONE_CHAR
-                            inputConnection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_CTRL_LEFT))
                         }
                     }
 
                     lastControlPressTS = System.currentTimeMillis()
-                    //keyboard = MyKeyboard(this, keyboardXml, enterKeyType)
                 }
                 keyboardView!!.invalidateAllKeys()
             }
@@ -206,6 +200,50 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
             }
             else -> {
                 var codeChar = code.toChar()
+
+                // Process ctrl key combination here.
+                if (code != 0 && keyboard!!.mControlState > CONTROL_OFF) {
+                    var now = System.currentTimeMillis()
+
+                    // Need to get the keycode integer from the key pressed.
+                    var keyeventcode:Int = when(codeChar) {
+                        'a' -> KeyEvent.KEYCODE_A
+                        'b' -> KeyEvent.KEYCODE_B
+                        'c' -> KeyEvent.KEYCODE_C
+                        'd' -> KeyEvent.KEYCODE_D
+                        'e' -> KeyEvent.KEYCODE_E
+                        'f' -> KeyEvent.KEYCODE_F
+                        'g' -> KeyEvent.KEYCODE_G
+                        'h' -> KeyEvent.KEYCODE_H
+                        'i' -> KeyEvent.KEYCODE_I
+                        'j' -> KeyEvent.KEYCODE_J
+                        'k' -> KeyEvent.KEYCODE_K
+                        'l' -> KeyEvent.KEYCODE_L
+                        'm' -> KeyEvent.KEYCODE_M
+                        'n' -> KeyEvent.KEYCODE_N
+                        'o' -> KeyEvent.KEYCODE_O
+                        'p' -> KeyEvent.KEYCODE_P
+                        'q' -> KeyEvent.KEYCODE_Q
+                        'r' -> KeyEvent.KEYCODE_R
+                        's' -> KeyEvent.KEYCODE_S
+                        't' -> KeyEvent.KEYCODE_T
+                        'u' -> KeyEvent.KEYCODE_U
+                        'v' -> KeyEvent.KEYCODE_V
+                        'w' -> KeyEvent.KEYCODE_W
+                        'x' -> KeyEvent.KEYCODE_X
+                        'y' -> KeyEvent.KEYCODE_Y
+                        'z' -> KeyEvent.KEYCODE_Z
+                        else -> 0
+                    }
+                    inputConnection.sendKeyEvent(KeyEvent(now, now, KeyEvent.ACTION_DOWN, keyeventcode, 0, KeyEvent.META_CTRL_MASK))
+                    inputConnection.sendKeyEvent(KeyEvent(now, now, KeyEvent.ACTION_UP, keyeventcode, 0, KeyEvent.META_CTRL_MASK))
+                    if (keyboard!!.mControlState == CONTROL_ON_ONE_CHAR) {
+                        keyboard!!.mControlState = CONTROL_OFF
+                        keyboardView!!.invalidateAllKeys()
+                    }
+                    return
+                }
+
                 if (Character.isLetter(codeChar) && keyboard!!.mShiftState > SHIFT_OFF) {
                     codeChar = Character.toUpperCase(codeChar)
                 }
@@ -226,11 +264,6 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
                     keyboard!!.mShiftState = SHIFT_OFF
                     keyboardView!!.invalidateAllKeys()
                 }
-
-                if (keyboard!!.mControlState == CONTROL_ON_ONE_CHAR && keyboardMode == KEYBOARD_LETTERS) {
-                    keyboard!!.mControlState = CONTROL_OFF
-                    keyboardView!!.invalidateAllKeys()
-                }
             }
         }
 
@@ -238,9 +271,9 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
             updateShiftKeyState()
         }
 
-        if (code != MyKeyboard.KEYCODE_CONTROL) {
-            updateControlKeyState()
-        }
+        //if (code != MyKeyboard.KEYCODE_CONTROL) {
+            //updateControlKeyState()
+        //}
     }
 
     override fun onActionUp() {

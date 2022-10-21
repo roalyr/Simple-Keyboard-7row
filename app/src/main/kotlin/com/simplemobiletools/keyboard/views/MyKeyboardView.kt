@@ -565,7 +565,7 @@ class MyKeyboardView @JvmOverloads constructor(context: Context, attrs: Attribut
                 } else {
                     resources.getDrawable(R.drawable.keyboard_space_background, context.theme)
                 }
-            } else if (code == KEYCODE_ENTER) {
+            } else if (code == KEYCODE_ENTER ) {
                 keyBackground = resources.getDrawable(R.drawable.keyboard_enter_background, context.theme)
             }
 
@@ -625,12 +625,11 @@ class MyKeyboardView @JvmOverloads constructor(context: Context, attrs: Attribut
                 }
 
                 if (code == KEYCODE_CONTROL) {
-                    val drawableId = when (mKeyboard!!.mControlState) {
-                        CONTROL_OFF -> R.drawable.ic_caps_outline_vector
-                        CONTROL_ON_ONE_CHAR -> R.drawable.ic_caps_vector
-                        else -> R.drawable.ic_caps_underlined_vector
+                    when (mKeyboard!!.mControlState) {
+                        CONTROL_OFF -> key.label = "ctrl"
+                        CONTROL_ON_ONE_CHAR -> key.label = "Ctrl"
+                        else ->  key.label = "CTRL"
                     }
-                    key.icon = resources.getDrawable(drawableId)
                 }
 
                 if (code == KEYCODE_ENTER) {

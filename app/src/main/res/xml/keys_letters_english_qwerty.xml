@@ -141,8 +141,8 @@
     </Row>
     <Row>
         <Key
+            app:keyLabel="ctrl"
             app:code="-7"
-            app:keyIcon="@drawable/ic_caps_outline_vector"
             app:keyEdgeFlags="left"
             app:keyWidth="15%p" />
         <Key
