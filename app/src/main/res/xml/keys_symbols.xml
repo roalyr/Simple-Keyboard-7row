@@ -55,6 +55,7 @@
     <Row>
         <Key
             app:code="-2"
+            app:specKey="true"
             app:keyEdgeFlags="left"
             app:keyLabel="abc"
             app:keyWidth="15%p" />
@@ -70,6 +71,31 @@
             app:keyWidth="10%p" />
         <Key
             app:code="-4"
+            app:specKey="true"
+            app:keyEdgeFlags="right"
+            app:keyIcon="@drawable/ic_enter_vector"
+            app:keyWidth="15%p" />
+    </Row>
+    <Row>
+        <Key
+            app:code="-2"
+            app:specKey="true"
+            app:keyEdgeFlags="left"
+            app:keyLabel="abc"
+            app:keyWidth="15%p" />
+        <Key
+            app:keyLabel=","
+            app:keyWidth="10%p" />
+        <Key
+            app:code="32"
+            app:isRepeatable="true"
+            app:keyWidth="48%p" />
+        <Key
+            app:keyLabel="."
+            app:keyWidth="10%p" />
+        <Key
+            app:code="-4"
+            app:specKey="true"
             app:keyEdgeFlags="right"
             app:keyIcon="@drawable/ic_enter_vector"
             app:keyWidth="15%p" />

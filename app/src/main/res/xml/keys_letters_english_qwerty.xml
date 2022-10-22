@@ -87,6 +87,7 @@
         <Key
             app:code="-1"
             app:keyEdgeFlags="left"
+            app:specKey="true"
             app:keyIcon="@drawable/ic_caps_outline_vector"
             app:keyWidth="15%p" />
         <Key
@@ -109,6 +110,7 @@
             app:code="-5"
             app:isRepeatable="true"
             app:keyEdgeFlags="right"
+            app:specKey="true"
             app:keyIcon="@drawable/ic_clear_vector"
             app:keyWidth="15%p" />
     </Row>
@@ -116,6 +118,7 @@
         <Key
             app:code="-2"
             app:keyEdgeFlags="left"
+            app:specKey="true"
             app:keyLabel="123"
             app:keyWidth="15%p" />
         <Key
@@ -124,24 +127,23 @@
         <Key
             app:code="-6"
             app:keyEdgeFlags="left"
+            app:specKey="true"
             app:keyIcon="@drawable/ic_emoji_emotions_outline_vector"
             app:keyWidth="8%p" />
         <Key
             app:code="32"
             app:isRepeatable="true"
+            app:keyRowEdgeFlags="bottom"
             app:keyWidth="40%p" />
         <Key
             app:keyLabel="."
             app:keyWidth="10%p" />
-        <Key
-            app:code="-4"
-            app:keyEdgeFlags="right"
-            app:keyIcon="@drawable/ic_enter_vector"
-            app:keyWidth="15%p" />
+
     </Row>
     <Row>
         <Key
             app:keyLabel="ctrl"
+            app:specKey="true"
             app:code="-7"
             app:keyEdgeFlags="left"
             app:keyWidth="15%p" />
@@ -149,21 +151,24 @@
             app:keyLabel=","
             app:keyWidth="10%p" />
         <Key
-            app:code="-6"
+            app:code="-2"
             app:keyEdgeFlags="left"
-            app:keyIcon="@drawable/ic_emoji_emotions_outline_vector"
+            app:specKey="true"
+            app:keyIcon="@drawable/ic_settings_cog_vector"
             app:keyWidth="8%p" />
         <Key
             app:code="32"
             app:isRepeatable="true"
+            app:keyRowEdgeFlags="top"
             app:keyWidth="40%p" />
         <Key
             app:keyLabel="."
             app:keyWidth="10%p" />
         <Key
+            app:keyLabel="Ent"
             app:code="-4"
+            app:specKey="true"
             app:keyEdgeFlags="right"
-            app:keyIcon="@drawable/ic_enter_vector"
             app:keyWidth="15%p" />
     </Row>
 </Keyboard>

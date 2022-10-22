@@ -27,8 +27,17 @@
             <!-- Key is anchored to the right of the keyboard. -->
             <flag name="right" value="2" />
         </attr>
+        <!-- Key edge flags. -->
+        <attr name="keyRowEdgeFlags">
+            <!-- Key is anchored to the top of the row. -->
+            <flag name="top" value="1" />
+            <!-- Key is anchored to the bottom of the row. -->
+            <flag name="bottom" value="2" />
+        </attr>
         <!-- Whether long-pressing on this key will make it repeat. -->
         <attr name="isRepeatable" format="boolean" />
+        <!-- Whether the key should be drawn in different color. -->
+        <attr name="specKey" format="boolean" />
         <!-- The label to display on the key. -->
         <attr name="keyLabel" format="string" />
         <!-- The icon to display on the key instead of the label. -->

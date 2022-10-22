@@ -39,6 +39,7 @@ import com.simplemobiletools.keyboard.adapters.ClipsKeyboardAdapter
 import com.simplemobiletools.keyboard.adapters.EmojisAdapter
 import com.simplemobiletools.keyboard.extensions.*
 import com.simplemobiletools.keyboard.helpers.*
+import com.simplemobiletools.keyboard.helpers.MyKeyboard.Companion.EDGE_TOP
 import com.simplemobiletools.keyboard.helpers.MyKeyboard.Companion.KEYCODE_DELETE
 import com.simplemobiletools.keyboard.helpers.MyKeyboard.Companion.KEYCODE_EMOJI
 import com.simplemobiletools.keyboard.helpers.MyKeyboard.Companion.KEYCODE_ENTER
@@ -558,15 +559,31 @@ class MyKeyboardView @JvmOverloads constructor(context: Context, attrs: Attribut
         for (i in 0 until keyCount) {
             val key = keys[i]
             val code = key.code
+            val speckey = key.speckey
+            val edgeflag = key.rowEdgeFlags
             var keyBackground = mKeyBackground
+
+
+
+
+            /////////////////////////////////////////////// SPEC KEY HANDLING ///////////////////////////////
+            if (speckey && keyBackground != null) {
+                keyBackground = resources.getDrawable(R.drawable.keyboard_speckey_background, context.theme)
+                keyBackground.applyColorFilter(mPrimaryColor)
+            }
+
+            if (!speckey && keyBackground != null) {
+                keyBackground = resources.getDrawable(R.drawable.keyboard_key_background, context.theme)
+                keyBackground.applyColorFilter(mBackgroundColor.lightenColor(2))
+            }
+
+            // If we are using compund spacebar (2 rows).
             if (code == KEYCODE_SPACE) {
-                keyBackground = if (context.config.isUsingSystemTheme) {
-                    resources.getDrawable(R.drawable.keyboard_space_background_material, context.theme)
+                keyBackground = if (edgeflag == EDGE_TOP) {
+                    resources.getDrawable(R.drawable.keyboard_space_background_down, context.theme)
                 } else {
-                    resources.getDrawable(R.drawable.keyboard_space_background, context.theme)
+                    resources.getDrawable(R.drawable.keyboard_space_background_up, context.theme)
                 }
-            } else if (code == KEYCODE_ENTER ) {
-                keyBackground = resources.getDrawable(R.drawable.keyboard_enter_background, context.theme)
             }
 
             // Switch the character to uppercase if shift is pressed
@@ -582,13 +599,14 @@ class MyKeyboardView @JvmOverloads constructor(context: Context, attrs: Attribut
                 else -> intArrayOf()
             }
 
-            if (key.focused || code == KEYCODE_ENTER) {
-                keyBackground.applyColorFilter(mPrimaryColor)
-            }
 
             canvas.translate(key.x.toFloat(), key.y.toFloat())
             keyBackground.draw(canvas)
+
+
+            // For keys with text labels.
             if (label?.isNotEmpty() == true) {
+
                 // For characters, use large font. For labels like "Done", use small font.
                 if (label.length > 1) {
                     paint.textSize = mLabelTextSize.toFloat()
@@ -598,23 +616,30 @@ class MyKeyboardView @JvmOverloads constructor(context: Context, attrs: Attribut
                     paint.typeface = Typeface.DEFAULT
                 }
 
+                // Paint key? Or key background?
                 paint.color = if (key.focused) {
                     mPrimaryColor.getContrastColor()
                 } else {
                     mTextColor
                 }
 
+                // Draw main label.
                 canvas.drawText(
                     label, (key.width / 2).toFloat(), key.height / 2 + (paint.textSize - paint.descent()) / 2, paint
                 )
 
+                // Draw top small number?
                 if (key.topSmallNumber.isNotEmpty()) {
                     canvas.drawText(key.topSmallNumber, key.width - mTopSmallNumberMarginWidth, mTopSmallNumberMarginHeight, smallLetterPaint)
                 }
 
                 // Turn off drop shadow
                 paint.setShadowLayer(0f, 0f, 0f, 0)
+
+            // Only for keys with icons.
             } else if (key.icon != null && mKeyboard != null) {
+
+                // Shift key icon switching.
                 if (code == KEYCODE_SHIFT) {
                     val drawableId = when (mKeyboard!!.mShiftState) {
                         SHIFT_OFF -> R.drawable.ic_caps_outline_vector
@@ -624,20 +649,15 @@ class MyKeyboardView @JvmOverloads constructor(context: Context, attrs: Attribut
                     key.icon = resources.getDrawable(drawableId)
                 }
 
-                if (code == KEYCODE_CONTROL) {
-                    when (mKeyboard!!.mControlState) {
-                        CONTROL_OFF -> key.label = "ctrl"
-                        CONTROL_ON_ONE_CHAR -> key.label = "Ctrl"
-                        else ->  key.label = "CTRL"
-                    }
-                }
-
+/**
+                // This is to make text and icon visible on background
                 if (code == KEYCODE_ENTER) {
                     key.icon!!.applyColorFilter(mPrimaryColor.getContrastColor())
                 } else if (code == KEYCODE_DELETE || code == KEYCODE_SHIFT || code == KEYCODE_EMOJI) {
                     key.icon!!.applyColorFilter(mTextColor)
                 }
-
+*/
+                // Icon placement?
                 val drawableX = (key.width - key.icon!!.intrinsicWidth) / 2
                 val drawableY = (key.height - key.icon!!.intrinsicHeight) / 2
                 canvas.translate(drawableX.toFloat(), drawableY.toFloat())
@@ -770,9 +790,12 @@ class MyKeyboardView @JvmOverloads constructor(context: Context, attrs: Attribut
                 val newKey = keys[mCurrentKeyIndex]
 
                 val code = newKey.code
-                if (code == KEYCODE_SHIFT || code == KEYCODE_CONTROL || code == KEYCODE_MODE_CHANGE || code == KEYCODE_DELETE || code == KEYCODE_ENTER || code == KEYCODE_SPACE) {
-                    newKey.pressed = true
-                }
+
+
+                // What does this do?
+                //if (code == KEYCODE_SHIFT || code == KEYCODE_CONTROL || code == KEYCODE_MODE_CHANGE || code == KEYCODE_DELETE || code == KEYCODE_ENTER || code == KEYCODE_SPACE) {
+                  //  newKey.pressed = true
+               // }
 
                 invalidateKey(mCurrentKeyIndex)
                 sendAccessibilityEventForUnicodeCharacter(AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED, code)
@@ -874,7 +897,9 @@ class MyKeyboardView @JvmOverloads constructor(context: Context, attrs: Attribut
 
         previewPopup.dismiss()
 
-        if (key.label.isNotEmpty() && key.code != KEYCODE_MODE_CHANGE && key.code != KEYCODE_SHIFT) {
+
+        // Add  && !key.speckey to exclude them from popups.
+        if (key.label.isNotEmpty()) {
             previewPopup.width = popupWidth
             previewPopup.height = popupHeight
             previewPopup.showAtLocation(mPopupParent, Gravity.NO_GRAVITY, mPopupPreviewX, mPopupPreviewY)

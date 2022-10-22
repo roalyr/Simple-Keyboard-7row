@@ -63,6 +63,9 @@ class MyKeyboard {
         private const val TAG_KEY = "Key"
         private const val EDGE_LEFT = 0x01
         private const val EDGE_RIGHT = 0x02
+        const val EDGE_TOP = 1
+        const val EDGE_BOTTOM = 2
+
         const val KEYCODE_SHIFT = -1
         const val KEYCODE_MODE_CHANGE = -2
         const val KEYCODE_ENTER = -4
@@ -136,6 +139,9 @@ class MyKeyboard {
         /** Label to display  */
         var label: CharSequence = ""
 
+        /** Whether key should be displayed with different color  */
+        var speckey = false
+
         /** First row of letters can also be used for inserting numbers by long pressing them, show those numbers  */
         var topSmallNumber: String = ""
 
@@ -172,6 +178,8 @@ class MyKeyboard {
          */
         private var edgeFlags = 0
 
+        var rowEdgeFlags = 0
+
         /** The keyboard that this key belongs to  */
         private val keyboard = parent.parent
 
@@ -202,20 +210,23 @@ class MyKeyboard {
             code = a.getInt(R.styleable.MyKeyboard_Key_code, 0)
 
             popupCharacters = a.getText(R.styleable.MyKeyboard_Key_popupCharacters)
+
             popupResId = a.getResourceId(R.styleable.MyKeyboard_Key_popupKeyboard, 0)
+
             repeatable = a.getBoolean(R.styleable.MyKeyboard_Key_isRepeatable, false)
+            speckey = a.getBoolean(R.styleable.MyKeyboard_Key_specKey, false)
+
             edgeFlags = a.getInt(R.styleable.MyKeyboard_Key_keyEdgeFlags, 0)
+            rowEdgeFlags = a.getInt(R.styleable.MyKeyboard_Key_keyRowEdgeFlags, 0)
+
             icon = a.getDrawable(R.styleable.MyKeyboard_Key_keyIcon)
             icon?.setBounds(0, 0, icon!!.intrinsicWidth, icon!!.intrinsicHeight)
 
             label = a.getText(R.styleable.MyKeyboard_Key_keyLabel) ?: ""
             topSmallNumber = a.getString(R.styleable.MyKeyboard_Key_topSmallNumber) ?: ""
 
-            if (label.isNotEmpty() &&
-                code != KEYCODE_MODE_CHANGE &&
-                code != KEYCODE_SHIFT &&
-                code != KEYCODE_CONTROL) {
-
+            // Exclude speckey labels from being printed.
+            if (label.isNotEmpty() && !speckey) {
                 code = label[0].code
             }
             a.recycle()
@@ -360,6 +371,9 @@ class MyKeyboard {
                             inKey = true
                             key = createKeyFromXml(res, currentRow!!, x, y, parser)
                             mKeys!!.add(key)
+
+                            // Disable Enter key icon swap.
+                            /**
                             if (key.code == KEYCODE_ENTER) {
                                 val enterResourceId = when (mEnterKeyType) {
                                     EditorInfo.IME_ACTION_SEARCH -> R.drawable.ic_search_vector
@@ -369,6 +383,8 @@ class MyKeyboard {
                                 }
                                 key.icon = context.resources.getDrawable(enterResourceId, context.theme)
                             }
+                            */
+
                             currentRow.mKeys.add(key)
                         }
                         TAG_KEYBOARD -> {
