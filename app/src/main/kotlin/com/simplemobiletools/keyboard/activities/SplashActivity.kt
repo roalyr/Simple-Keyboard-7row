@@ -1,6 +1,7 @@
 package com.simplemobiletools.keyboard.activities
 
 import android.content.Intent
+import androidx.core.content.ContextCompat.startActivity
 import com.simplemobiletools.commons.activities.BaseSplashActivity
 
 class SplashActivity : BaseSplashActivity() {
