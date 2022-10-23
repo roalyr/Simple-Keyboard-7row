@@ -52,7 +52,7 @@
                 android:paddingTop="@dimen/small_margin"
                 android:paddingEnd="@dimen/activity_margin"
                 android:paddingBottom="@dimen/small_margin"
-                android:textSize="@dimen/label_text_size"
+                android:textSize="@dimen/spec_label_text_size"
                 tools:text="Clipboard content" />
 
         </RelativeLayout>

@@ -143,7 +143,7 @@ class MyKeyboard {
         var speckey = false
 
         /** First row of letters can also be used for inserting numbers by long pressing them, show those numbers  */
-        var topSmallNumber: String = ""
+        var keyLabelSmall: String = ""
 
         /** Icon to display instead of a label. Icon takes precedence over a label  */
         var icon: Drawable? = null
@@ -223,7 +223,7 @@ class MyKeyboard {
             icon?.setBounds(0, 0, icon!!.intrinsicWidth, icon!!.intrinsicHeight)
 
             label = a.getText(R.styleable.MyKeyboard_Key_keyLabel) ?: ""
-            topSmallNumber = a.getString(R.styleable.MyKeyboard_Key_topSmallNumber) ?: ""
+            keyLabelSmall = a.getString(R.styleable.MyKeyboard_Key_keyLabelSmall) ?: ""
 
             // Exclude speckey labels from being printed.
             if (label.isNotEmpty() && !speckey) {
@@ -420,9 +420,9 @@ class MyKeyboard {
 
     private fun getKeyboardHeightMultiplier(multiplierType: Int): Float {
         return when(multiplierType) {
-            KEYBOARD_HEIGHT_MULTIPLIER_SMALL -> 0.7F
-            KEYBOARD_HEIGHT_MULTIPLIER_MEDIUM -> 1.0F
-            KEYBOARD_HEIGHT_MULTIPLIER_LARGE -> 1.2F
+            KEYBOARD_HEIGHT_MULTIPLIER_SMALL -> 0.5F
+            KEYBOARD_HEIGHT_MULTIPLIER_MEDIUM -> 0.7F
+            KEYBOARD_HEIGHT_MULTIPLIER_LARGE -> 1.0F
             else -> 1.0F
         }
     }

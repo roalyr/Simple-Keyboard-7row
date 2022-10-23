@@ -6,52 +6,52 @@
             app:keyLabel="ঔ"
             app:popupCharacters="ৌ১1"
             app:popupKeyboard="@xml/keyboard_popup_template"
-            app:topSmallNumber="১" />
+            app:keyLabelSmall="১" />
         <Key
             app:keyLabel="ঐ"
             app:popupCharacters="ৈ২2"
             app:popupKeyboard="@xml/keyboard_popup_template"
-            app:topSmallNumber="২" />
+            app:keyLabelSmall="২" />
         <Key
             app:keyLabel="আ"
             app:popupCharacters="া৩3"
             app:popupKeyboard="@xml/keyboard_popup_template"
-            app:topSmallNumber="৩" />
+            app:keyLabelSmall="৩" />
         <Key
             app:keyLabel="ঈ"
             app:popupCharacters="ী৪4"
             app:popupKeyboard="@xml/keyboard_popup_template"
-            app:topSmallNumber="৪" />
+            app:keyLabelSmall="৪" />
         <Key
             app:keyLabel="ঊ"
             app:popupCharacters="ূ৫5"
             app:popupKeyboard="@xml/keyboard_popup_template"
-            app:topSmallNumber="৫" />
+            app:keyLabelSmall="৫" />
         <Key
             app:keyLabel="ব"
             app:popupCharacters="৬ভ6"
             app:popupKeyboard="@xml/keyboard_popup_template"
-            app:topSmallNumber="৬" />
+            app:keyLabelSmall="৬" />
         <Key
             app:keyLabel="হ"
             app:popupCharacters="৭7"
             app:popupKeyboard="@xml/keyboard_popup_template"
-            app:topSmallNumber="৭" />
+            app:keyLabelSmall="৭" />
         <Key
             app:keyLabel="গ"
             app:popupCharacters="৮ঘ8"
             app:popupKeyboard="@xml/keyboard_popup_template"
-            app:topSmallNumber="৮" />
+            app:keyLabelSmall="৮" />
         <Key
             app:keyLabel="দ"
             app:popupCharacters="৯ধ9"
             app:popupKeyboard="@xml/keyboard_popup_template"
-            app:topSmallNumber="৯" />
+            app:keyLabelSmall="৯" />
         <Key
             app:keyLabel="জ"
             app:popupCharacters="০ঝজ্ঞ0"
             app:popupKeyboard="@xml/keyboard_popup_template"
-            app:topSmallNumber="০" />
+            app:keyLabelSmall="০" />
         <Key
             app:keyEdgeFlags="right"
             app:keyLabel="ড"

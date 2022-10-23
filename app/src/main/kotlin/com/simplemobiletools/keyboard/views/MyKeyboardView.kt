@@ -148,9 +148,9 @@ class MyKeyboardView @JvmOverloads constructor(context: Context, attrs: Attribut
     private var mIsLongPressingSpace = false
     private var mLastSpaceMoveX = 0
     private var mPopupMaxMoveDistance = 0f
-    private var mTopSmallNumberSize = 0f
-    private var mTopSmallNumberMarginWidth = 0f
-    private var mTopSmallNumberMarginHeight = 0f
+    private var mkeyLabelSmallSize = 0f
+    private var mkeyLabelSmallMarginWidth = 0f
+    private var mkeyLabelSmallMarginHeight = 0f
     private val mSpaceMoveThreshold: Int
     private var ignoreTouches = false
 
@@ -194,30 +194,31 @@ class MyKeyboardView @JvmOverloads constructor(context: Context, attrs: Attribut
         private const val DEBOUNCE_TIME = 70
         private const val REPEAT_INTERVAL = 50 // ~20 keys per second
         private const val REPEAT_START_DELAY = 400
-        private val LONGPRESS_TIMEOUT = ViewConfiguration.getLongPressTimeout()
+        private val LONGPRESS_TIMEOUT = 250
     }
 
     init {
-        val attributes = context.obtainStyledAttributes(attrs, R.styleable.MyKeyboardView, 0, defStyleRes)
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
+        val attributes = context.obtainStyledAttributes(attrs, R.styleable.MyKeyboardView, 0, defStyleRes)
         val keyTextSize = 0
         val indexCnt = attributes.indexCount
-
         try {
             for (i in 0 until indexCnt) {
                 val attr = attributes.getIndex(i)
                 when (attr) {
-                    R.styleable.MyKeyboardView_keyTextSize -> mKeyTextSize = attributes.getDimensionPixelSize(attr, 18)
+                    R.styleable.MyKeyboardView_keyTextSize -> mKeyTextSize = attributes.getDimensionPixelSize(attr, 16)
                 }
             }
         } finally {
             attributes.recycle()
         }
 
+
         mPopupLayout = R.layout.keyboard_popup_keyboard
         mKeyBackground = resources.getDrawable(R.drawable.keyboard_key_selector, context.theme)
         mVerticalCorrection = resources.getDimension(R.dimen.vertical_correction).toInt()
-        mLabelTextSize = resources.getDimension(R.dimen.label_text_size).toInt()
+
         mPreviewHeight = resources.getDimension(R.dimen.key_height).toInt()
         mSpaceMoveThreshold = resources.getDimension(R.dimen.medium_margin).toInt()
         mTextColor = context.getProperTextColor()
@@ -237,15 +238,22 @@ class MyKeyboardView @JvmOverloads constructor(context: Context, attrs: Attribut
         mPopupParent = this
         mPaint = Paint()
         mPaint.isAntiAlias = true
+        // Switch to hardcoded size value?
+
         mPaint.textSize = keyTextSize.toFloat()
+        //mPaint.textSize = resources.getDimension(R.dimen.key_label_text_size)
+
         mPaint.textAlign = Align.CENTER
         mPaint.alpha = 255
         mMiniKeyboardCache = HashMap()
         mAccessibilityManager = (context.getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager)
         mPopupMaxMoveDistance = resources.getDimension(R.dimen.popup_max_move_distance)
-        mTopSmallNumberSize = resources.getDimension(R.dimen.small_text_size)
-        mTopSmallNumberMarginWidth = resources.getDimension(R.dimen.top_small_number_margin_width)
-        mTopSmallNumberMarginHeight = resources.getDimension(R.dimen.top_small_number_margin_height)
+
+        mLabelTextSize = resources.getDimension(R.dimen.spec_label_text_size).toInt()
+
+        mkeyLabelSmallSize = resources.getDimension(R.dimen.top_small_label_size)
+        mkeyLabelSmallMarginWidth = resources.getDimension(R.dimen.top_small_label_margin_width)
+        mkeyLabelSmallMarginHeight = resources.getDimension(R.dimen.top_small_label_margin_height)
     }
 
     @SuppressLint("HandlerLeak")
@@ -552,7 +560,7 @@ class MyKeyboardView @JvmOverloads constructor(context: Context, attrs: Attribut
         val smallLetterPaint = Paint().apply {
             set(paint)
             color = paint.color.adjustAlpha(0.8f)
-            textSize = mTopSmallNumberSize
+            textSize = mkeyLabelSmallSize
             typeface = Typeface.DEFAULT
         }
 
@@ -590,10 +598,11 @@ class MyKeyboardView @JvmOverloads constructor(context: Context, attrs: Attribut
                 } else {
                     resources.getDrawable(R.drawable.keyboard_space_background_up, context.theme)
                 }
+                keyBackground.applyColorFilter(mKeyColor)
             }
 
             // Switch the character to uppercase if shift is pressed
-            val label = adjustCase(key.label)?.toString()
+            var label = adjustCase(key.label)?.toString()
             val bounds = keyBackground!!.bounds
             if (key.width != bounds.right || key.height != bounds.bottom) {
                 keyBackground.setBounds(0, 0, key.width, key.height)
@@ -612,6 +621,16 @@ class MyKeyboardView @JvmOverloads constructor(context: Context, attrs: Attribut
 
             // For keys with text labels.
             if (label?.isNotEmpty() == true) {
+
+                // Control key lable switching.
+                if (code == KEYCODE_CONTROL) {
+                    val textlabel = when (mKeyboard!!.mControlState) {
+                        CONTROL_OFF -> "Ctrl"
+                        CONTROL_ON_ONE_CHAR -> "CTRL"
+                        else -> "CTRL"
+                    }
+                    label = textlabel
+                }
 
                 // For characters, use large font. For labels like "Done", use small font.
                 if (label.length > 1) {
@@ -634,9 +653,9 @@ class MyKeyboardView @JvmOverloads constructor(context: Context, attrs: Attribut
                     label, (key.width / 2).toFloat(), key.height / 2 + (paint.textSize - paint.descent()) / 2, paint
                 )
 
-                // Draw top small number?
-                if (key.topSmallNumber.isNotEmpty()) {
-                    canvas.drawText(key.topSmallNumber, key.width - mTopSmallNumberMarginWidth, mTopSmallNumberMarginHeight, smallLetterPaint)
+                // Draw top small label?
+                if (key.keyLabelSmall.isNotEmpty()) {
+                    canvas.drawText(key.keyLabelSmall, key.width - mkeyLabelSmallMarginWidth, mkeyLabelSmallMarginHeight, smallLetterPaint)
                 }
 
                 // Turn off drop shadow

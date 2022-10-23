@@ -37,6 +37,7 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
     private var enterKeyType = IME_ACTION_NONE
     private var switchToLetters = false
 
+
     override fun onInitializeInterface() {
         super.onInitializeInterface()
         keyboard = MyKeyboard(this, getKeyboardLayoutXML(), enterKeyType)
@@ -77,10 +78,13 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
         keyboard = MyKeyboard(this, keyboardXml, enterKeyType)
         keyboardView?.setKeyboard(keyboard!!)
         keyboardView?.setEditorInfo(attribute)
-        updateShiftKeyState()
-        //updateControlKeyState()
+
+        // Disable auto capitalization.
+        //updateShiftKeyState()
+
     }
 
+    // Prevents those keys from losing their state on cursor move?
     private fun updateShiftKeyState() {
         if (keyboardMode == KEYBOARD_LETTERS) {
             val editorInfo = currentInputEditorInfo
@@ -93,15 +97,6 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
         }
     }
 
-    //private fun updateControlKeyState() {
-        //if (keyboardMode == KEYBOARD_LETTERS) {
-            //val editorInfo = currentInputEditorInfo
-            //if (editorInfo != null && editorInfo.inputType != InputType.TYPE_NULL && keyboard?.mControlState != CONTROL_ON_PERMANENT) {
-                //keyboard?.setControl(CONTROL_ON_ONE_CHAR)
-                //keyboardView?.invalidateAllKeys()
-            //}
-        //}
-    //}
 
     override fun onKey(code: Int) {
         val inputConnection = currentInputConnection
@@ -123,6 +118,10 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
                     keyboard!!.mShiftState = SHIFT_OFF
                 }
 
+                if (keyboard!!.mControlState == CONTROL_ON_ONE_CHAR) {
+                    keyboard!!.mControlState = CONTROL_OFF
+                }
+
                 val selectedText = inputConnection.getSelectedText(0)
                 if (TextUtils.isEmpty(selectedText)) {
                     inputConnection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL))
@@ -133,6 +132,12 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
                 keyboardView!!.invalidateAllKeys()
             }
             MyKeyboard.KEYCODE_SHIFT -> {
+                // Disable ctrl key if shift is pressed.
+                if (keyboard!!.mControlState == CONTROL_ON_ONE_CHAR && keyboardMode == KEYBOARD_LETTERS) {
+                    keyboard!!.mControlState = CONTROL_OFF
+                    keyboardView!!.invalidateAllKeys()
+                }
+
                 if (keyboardMode == KEYBOARD_LETTERS) {
                     when {
                         keyboard!!.mShiftState == SHIFT_ON_PERMANENT -> keyboard!!.mShiftState = SHIFT_OFF
@@ -156,23 +161,17 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
                 keyboardView!!.invalidateAllKeys()
             }
             MyKeyboard.KEYCODE_CONTROL -> {
-                if (keyboardMode == KEYBOARD_LETTERS) {
-
-                    // Set key state and process input further below, when next character is provided.
-                    when {
-                        keyboard!!.mControlState == CONTROL_ON_PERMANENT -> {
-                            keyboard!!.mControlState = CONTROL_OFF }
-                        System.currentTimeMillis() - lastControlPressTS < CONTROL_PERM_TOGGLE_SPEED -> {
-                            keyboard!!.mControlState = CONTROL_ON_PERMANENT }
-                        keyboard!!.mControlState == CONTROL_ON_ONE_CHAR -> {
-                            keyboard!!.mControlState = CONTROL_OFF }
-                        keyboard!!.mControlState == CONTROL_OFF -> {
-                            keyboard!!.mControlState = CONTROL_ON_ONE_CHAR
-                        }
-                    }
-
-                    lastControlPressTS = System.currentTimeMillis()
+                // Set key state and process input further below, when next character is provided.
+                when {
+                    // Need to figure out why CTRL key is reset after cut / paste.
+                    //keyboard!!.mControlState == CONTROL_ON_PERMANENT -> { keyboard!!.mControlState = CONTROL_OFF }
+                    //System.currentTimeMillis() - lastControlPressTS < CONTROL_PERM_TOGGLE_SPEED -> { keyboard!!.mControlState = CONTROL_ON_PERMANENT }
+                    keyboard!!.mControlState == CONTROL_ON_ONE_CHAR ->  keyboard!!.mControlState = CONTROL_OFF
+                    keyboard!!.mControlState == CONTROL_OFF ->  keyboard!!.mControlState = CONTROL_ON_ONE_CHAR
                 }
+
+                lastControlPressTS = System.currentTimeMillis()
+
                 keyboardView!!.invalidateAllKeys()
             }
             MyKeyboard.KEYCODE_ENTER -> {
@@ -202,11 +201,10 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
                 var codeChar = code.toChar()
 
                 // Process ctrl key combination here.
-                if (code != 0 && keyboard!!.mControlState > CONTROL_OFF) {
-                    var now = System.currentTimeMillis()
+                if (keyboard!!.mControlState > CONTROL_OFF) {
 
                     // Need to get the keycode integer from the key pressed.
-                    var keyeventcode:Int = when(codeChar) {
+                    val keyeventcode:Int = when(codeChar) {
                         'a' -> KeyEvent.KEYCODE_A
                         'b' -> KeyEvent.KEYCODE_B
                         'c' -> KeyEvent.KEYCODE_C
@@ -235,15 +233,17 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
                         'z' -> KeyEvent.KEYCODE_Z
                         else -> 0
                     }
-                    inputConnection.sendKeyEvent(KeyEvent(now, now, KeyEvent.ACTION_DOWN, keyeventcode, 0, KeyEvent.META_CTRL_MASK))
-                    inputConnection.sendKeyEvent(KeyEvent(now, now, KeyEvent.ACTION_UP, keyeventcode, 0, KeyEvent.META_CTRL_MASK))
+                    inputConnection.sendKeyEvent(KeyEvent(0, 0, KeyEvent.ACTION_DOWN, keyeventcode, 0, KeyEvent.META_CTRL_MASK))
+                    inputConnection.sendKeyEvent(KeyEvent(0, 0, KeyEvent.ACTION_UP, keyeventcode, 0, KeyEvent.META_CTRL_MASK))
                     if (keyboard!!.mControlState == CONTROL_ON_ONE_CHAR) {
                         keyboard!!.mControlState = CONTROL_OFF
-                        keyboardView!!.invalidateAllKeys()
                     }
+                    inputConnection.clearMetaKeyStates(KeyEvent.META_CTRL_MASK)
+                    keyboardView!!.invalidateAllKeys()
                     return
                 }
 
+                // Shifting
                 if (Character.isLetter(codeChar) && keyboard!!.mShiftState > SHIFT_OFF) {
                     codeChar = Character.toUpperCase(codeChar)
                 }
@@ -264,16 +264,12 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
                     keyboard!!.mShiftState = SHIFT_OFF
                     keyboardView!!.invalidateAllKeys()
                 }
+                if (keyboard!!.mControlState == CONTROL_ON_ONE_CHAR && keyboardMode == KEYBOARD_LETTERS) {
+                    keyboard!!.mControlState = CONTROL_OFF
+                    keyboardView!!.invalidateAllKeys()
+                }
             }
         }
-
-        if (code != MyKeyboard.KEYCODE_SHIFT) {
-            updateShiftKeyState()
-        }
-
-        //if (code != MyKeyboard.KEYCODE_CONTROL) {
-            //updateControlKeyState()
-        //}
     }
 
     override fun onActionUp() {
@@ -282,14 +278,11 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
             keyboard = MyKeyboard(this, getKeyboardLayoutXML(), enterKeyType)
 
             val editorInfo = currentInputEditorInfo
+
             if (editorInfo != null && editorInfo.inputType != InputType.TYPE_NULL && keyboard?.mShiftState != SHIFT_ON_PERMANENT) {
                 if (currentInputConnection.getCursorCapsMode(editorInfo.inputType) != 0) {
                     keyboard?.setShifted(SHIFT_ON_ONE_CHAR)
                 }
-            }
-
-            if (editorInfo != null && editorInfo.inputType != InputType.TYPE_NULL && keyboard?.mShiftState != CONTROL_ON_PERMANENT) {
-                keyboard?.setControl(CONTROL_ON_ONE_CHAR)
             }
 
             keyboardView!!.setKeyboard(keyboard!!)

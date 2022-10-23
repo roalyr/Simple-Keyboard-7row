@@ -7,61 +7,61 @@
             app:keyWidth="9.05%p"
             app:popupCharacters="1"
             app:popupKeyboard="@xml/keyboard_popup_template"
-            app:topSmallNumber="1" />
+            app:keyLabelSmall="1" />
         <Key
             app:keyLabel="ц"
             app:keyWidth="9.05%p"
             app:popupCharacters="2"
             app:popupKeyboard="@xml/keyboard_popup_template"
-            app:topSmallNumber="2" />
+            app:keyLabelSmall="2" />
         <Key
             app:keyLabel="у"
             app:keyWidth="9.05%p"
             app:popupCharacters="3"
             app:popupKeyboard="@xml/keyboard_popup_template"
-            app:topSmallNumber="3" />
+            app:keyLabelSmall="3" />
         <Key
             app:keyLabel="к"
             app:keyWidth="9.05%p"
             app:popupCharacters="4"
             app:popupKeyboard="@xml/keyboard_popup_template"
-            app:topSmallNumber="4" />
+            app:keyLabelSmall="4" />
         <Key
             app:keyLabel="е"
             app:keyWidth="9.05%p"
             app:popupCharacters="5"
             app:popupKeyboard="@xml/keyboard_popup_template"
-            app:topSmallNumber="5" />
+            app:keyLabelSmall="5" />
         <Key
             app:keyLabel="н"
             app:keyWidth="9.05%p"
             app:popupCharacters="6"
             app:popupKeyboard="@xml/keyboard_popup_template"
-            app:topSmallNumber="6" />
+            app:keyLabelSmall="6" />
         <Key
             app:keyLabel="г"
             app:keyWidth="9.05%p"
             app:popupCharacters="7"
             app:popupKeyboard="@xml/keyboard_popup_template"
-            app:topSmallNumber="7" />
+            app:keyLabelSmall="7" />
         <Key
             app:keyLabel="ш"
             app:keyWidth="9.05%p"
             app:popupCharacters="8"
             app:popupKeyboard="@xml/keyboard_popup_template"
-            app:topSmallNumber="8" />
+            app:keyLabelSmall="8" />
         <Key
             app:keyLabel="щ"
             app:keyWidth="9.05%p"
             app:popupCharacters="9"
             app:popupKeyboard="@xml/keyboard_popup_template"
-            app:topSmallNumber="9" />
+            app:keyLabelSmall="9" />
         <Key
             app:keyLabel="з"
             app:keyWidth="9.05%p"
             app:popupCharacters="0"
             app:popupKeyboard="@xml/keyboard_popup_template"
-            app:topSmallNumber="0" />
+            app:keyLabelSmall="0" />
         <Key
             app:keyEdgeFlags="right"
             app:keyLabel="х"
