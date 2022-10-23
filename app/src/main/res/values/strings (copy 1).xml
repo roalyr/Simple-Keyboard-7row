@@ -297,7 +297,12 @@
     <string name="accent_color_white">Accent color of white theme</string>
     <string name="accent_color_black_and_white">Accent color of Black &amp; White theme</string>
     <string name="foreground_color">Foreground color</string>
+
+    <!-- used key_color instead
     <string name="app_icon_color">App icon color</string>
+    -->
+
+    <string name="key_color" translatable="false">Key color</string>
     <string name="bottom_navigation_bar_color">Bottom navigation bar color</string>
     <string name="restore_defaults">Restore defaults</string>
     <string name="use_default">Use default</string>

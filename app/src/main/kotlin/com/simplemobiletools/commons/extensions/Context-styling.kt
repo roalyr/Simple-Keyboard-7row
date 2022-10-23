@@ -26,6 +26,14 @@ fun Context.getProperBackgroundColor() = if (baseConfig.isUsingSystemTheme) {
     baseConfig.backgroundColor
 }
 
+fun Context.getProperKeyColor() = if (baseConfig.isUsingSystemTheme) {
+    //resources.getColor(R.color.you_key_color, theme)
+    baseConfig.keyColor
+} else {
+    baseConfig.keyColor
+}
+
+
 fun Context.getProperPrimaryColor() = when {
     baseConfig.isUsingSystemTheme -> resources.getColor(R.color.you_primary_color, theme)
     isWhiteTheme() || isBlackAndWhiteTheme() -> baseConfig.accentColor
@@ -128,10 +136,10 @@ fun Context.getSharedThemeSync(cursorLoader: CursorLoader): SharedTheme? {
                 val backgroundColor = cursor.getIntValue(MyContentProvider.COL_BACKGROUND_COLOR)
                 val primaryColor = cursor.getIntValue(MyContentProvider.COL_PRIMARY_COLOR)
                 val accentColor = cursor.getIntValue(MyContentProvider.COL_ACCENT_COLOR)
-                val appIconColor = cursor.getIntValue(MyContentProvider.COL_APP_ICON_COLOR)
+                val keyColor = cursor.getIntValue(MyContentProvider.COL_APP_ICON_COLOR)
                 val navigationBarColor = cursor.getIntValueOrNull(MyContentProvider.COL_NAVIGATION_BAR_COLOR) ?: INVALID_NAVIGATION_BAR_COLOR
                 val lastUpdatedTS = cursor.getIntValue(MyContentProvider.COL_LAST_UPDATED_TS)
-                return SharedTheme(textColor, backgroundColor, primaryColor, appIconColor, navigationBarColor, lastUpdatedTS, accentColor)
+                return SharedTheme(textColor, backgroundColor, primaryColor, keyColor, navigationBarColor, lastUpdatedTS, accentColor)
             } catch (e: Exception) {
             }
         }
@@ -139,23 +147,23 @@ fun Context.getSharedThemeSync(cursorLoader: CursorLoader): SharedTheme? {
     return null
 }
 
-fun Context.checkAppIconColor() {
+fun Context.checkkeyColor() {
     val appId = baseConfig.appId
-    if (appId.isNotEmpty() && baseConfig.lastIconColor != baseConfig.appIconColor) {
-        getAppIconColors().forEachIndexed { index, color ->
-            toggleAppIconColor(appId, index, color, false)
+    if (appId.isNotEmpty() && baseConfig.lastIconColor != baseConfig.keyColor) {
+        getkeyColors().forEachIndexed { index, color ->
+            togglekeyColor(appId, index, color, false)
         }
 
-        getAppIconColors().forEachIndexed { index, color ->
-            if (baseConfig.appIconColor == color) {
-                toggleAppIconColor(appId, index, color, true)
+        getkeyColors().forEachIndexed { index, color ->
+            if (baseConfig.keyColor == color) {
+                togglekeyColor(appId, index, color, true)
             }
         }
     }
 }
 
-fun Context.toggleAppIconColor(appId: String, colorIndex: Int, color: Int, enable: Boolean) {
-    val className = "${appId.removeSuffix(".debug")}.activities.SplashActivity${appIconColorStrings[colorIndex]}"
+fun Context.togglekeyColor(appId: String, colorIndex: Int, color: Int, enable: Boolean) {
+    val className = "${appId.removeSuffix(".debug")}.activities.SplashActivity${keyColorStrings[colorIndex]}"
     val state = if (enable) PackageManager.COMPONENT_ENABLED_STATE_ENABLED else PackageManager.COMPONENT_ENABLED_STATE_DISABLED
     try {
         packageManager.setComponentEnabledSetting(ComponentName(appId, className), state, PackageManager.DONT_KILL_APP)
@@ -166,7 +174,7 @@ fun Context.toggleAppIconColor(appId: String, colorIndex: Int, color: Int, enabl
     }
 }
 
-fun Context.getAppIconColors() = resources.getIntArray(R.array.md_app_icon_colors).toCollection(ArrayList())
+fun Context.getkeyColors() = resources.getIntArray(R.array.md_app_icon_colors).toCollection(ArrayList())
 
 @SuppressLint("NewApi")
 fun Context.getBottomNavigationBackgroundColor(): Int {

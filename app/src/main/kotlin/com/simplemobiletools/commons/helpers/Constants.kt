@@ -338,7 +338,7 @@ enum class NavigationIcon {
     None
 }
 
-val appIconColorStrings = arrayListOf(
+val keyColorStrings = arrayListOf(
     ".Red",
     ".Pink",
     ".Purple",

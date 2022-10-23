@@ -104,11 +104,11 @@ open class BaseConfig(val context: Context) {
         get() = prefs.getInt(LAST_HANDLED_SHORTCUT_COLOR, 1)
         set(lastHandledShortcutColor) = prefs.edit().putInt(LAST_HANDLED_SHORTCUT_COLOR, lastHandledShortcutColor).apply()
 
-    var appIconColor: Int
+    var keyColor: Int
         get() = prefs.getInt(APP_ICON_COLOR, context.resources.getColor(R.color.color_primary))
-        set(appIconColor) {
-            isUsingModifiedAppIcon = appIconColor != context.resources.getColor(R.color.color_primary)
-            prefs.edit().putInt(APP_ICON_COLOR, appIconColor).apply()
+        set(keyColor) {
+            isUsingModifiedAppIcon = keyColor != context.resources.getColor(R.color.color_primary)
+            prefs.edit().putInt(APP_ICON_COLOR, keyColor).apply()
         }
 
     var lastIconColor: Int
@@ -131,9 +131,9 @@ open class BaseConfig(val context: Context) {
         get() = prefs.getInt(CUSTOM_ACCENT_COLOR, accentColor)
         set(customAccentColor) = prefs.edit().putInt(CUSTOM_ACCENT_COLOR, customAccentColor).apply()
 
-    var customAppIconColor: Int
-        get() = prefs.getInt(CUSTOM_APP_ICON_COLOR, appIconColor)
-        set(customAppIconColor) = prefs.edit().putInt(CUSTOM_APP_ICON_COLOR, customAppIconColor).apply()
+    var customKeyColor: Int
+        get() = prefs.getInt(CUSTOM_APP_ICON_COLOR, keyColor)
+        set(customKeyColor) = prefs.edit().putInt(CUSTOM_APP_ICON_COLOR, customKeyColor).apply()
 
     var customNavigationBarColor: Int
         get() = prefs.getInt(CUSTOM_NAVIGATION_BAR_COLOR, INVALID_NAVIGATION_BAR_COLOR)

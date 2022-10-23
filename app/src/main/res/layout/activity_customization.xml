@@ -178,7 +178,7 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/customization_app_icon_color_holder"
+                android:id="@+id/customization_key_color_holder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/customization_accent_color_holder"
@@ -187,16 +187,16 @@
                 android:padding="@dimen/activity_margin">
 
                 <com.simplemobiletools.commons.views.MyTextView
-                    android:id="@+id/customization_app_icon_color_label"
+                    android:id="@+id/customization_key_color_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:paddingLeft="@dimen/medium_margin"
                     android:paddingRight="@dimen/medium_margin"
-                    android:text="@string/app_icon_color" />
+                    android:text="@string/key_color" />
 
                 <ImageView
-                    android:id="@+id/customization_app_icon_color"
+                    android:id="@+id/customization_key_color"
                     android:layout_width="@dimen/color_sample_size"
                     android:layout_height="@dimen/color_sample_size"
                     android:layout_alignParentEnd="true"
@@ -209,7 +209,7 @@
                 android:id="@+id/customization_navigation_bar_color_holder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/customization_app_icon_color_holder"
+                android:layout_below="@+id/customization_key_color_holder"
                 android:layout_marginTop="@dimen/medium_margin"
                 android:background="?attr/selectableItemBackground"
                 android:padding="@dimen/activity_margin">

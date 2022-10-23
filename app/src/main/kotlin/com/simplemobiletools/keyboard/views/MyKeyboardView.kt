@@ -103,6 +103,7 @@ class MyKeyboardView @JvmOverloads constructor(context: Context, attrs: Attribut
     private var mTextColor = 0
     private var mBackgroundColor = 0
     private var mPrimaryColor = 0
+    private var mKeyColor = 0
 
     private var mPreviewText: TextView? = null
     private val mPreviewPopup: PopupWindow
@@ -222,6 +223,7 @@ class MyKeyboardView @JvmOverloads constructor(context: Context, attrs: Attribut
         mTextColor = context.getProperTextColor()
         mBackgroundColor = context.getProperBackgroundColor()
         mPrimaryColor = context.getProperPrimaryColor()
+        mKeyColor = context.getProperKeyColor()
 
         mPreviewPopup = PopupWindow(context)
         mPreviewText = inflater.inflate(resources.getLayout(R.layout.keyboard_key_preview), null) as TextView
@@ -274,6 +276,8 @@ class MyKeyboardView @JvmOverloads constructor(context: Context, attrs: Attribut
             mTextColor = context.getProperTextColor()
             mBackgroundColor = context.getProperBackgroundColor()
             mPrimaryColor = context.getProperPrimaryColor()
+            mKeyColor = context.getProperKeyColor()
+
             val strokeColor = context.getStrokeColor()
 
             val toolbarColor = if (context.config.isUsingSystemTheme) {
@@ -566,15 +570,17 @@ class MyKeyboardView @JvmOverloads constructor(context: Context, attrs: Attribut
 
 
 
-            /////////////////////////////////////////////// SPEC KEY HANDLING ///////////////////////////////
+            /////////////////////////////////////////////// KEY HANDLING ///////////////////////////////
+            // Special keys.
             if (speckey && keyBackground != null) {
                 keyBackground = resources.getDrawable(R.drawable.keyboard_speckey_background, context.theme)
                 keyBackground.applyColorFilter(mPrimaryColor)
             }
 
+            // Ordinary keys
             if (!speckey && keyBackground != null) {
                 keyBackground = resources.getDrawable(R.drawable.keyboard_key_background, context.theme)
-                keyBackground.applyColorFilter(mBackgroundColor.lightenColor(2))
+                keyBackground.applyColorFilter(mKeyColor)
             }
 
             // If we are using compund spacebar (2 rows).

@@ -197,12 +197,12 @@ abstract class BaseSimpleActivity : AppCompatActivity() {
     fun updateRecentsAppIcon() {
         if (baseConfig.isUsingModifiedAppIcon) {
             val appIconIDs = getAppIconIDs()
-            val currentAppIconColorIndex = getCurrentAppIconColorIndex()
-            if (appIconIDs.size - 1 < currentAppIconColorIndex) {
+            val currentkeyColorIndex = getCurrentkeyColorIndex()
+            if (appIconIDs.size - 1 < currentkeyColorIndex) {
                 return
             }
 
-            val recentsIcon = BitmapFactory.decodeResource(resources, appIconIDs[currentAppIconColorIndex])
+            val recentsIcon = BitmapFactory.decodeResource(resources, appIconIDs[currentkeyColorIndex])
             val title = getAppLauncherName()
             val color = baseConfig.primaryColor
 
@@ -274,10 +274,10 @@ abstract class BaseSimpleActivity : AppCompatActivity() {
         }
     }
 
-    private fun getCurrentAppIconColorIndex(): Int {
-        val appIconColor = baseConfig.appIconColor
-        getAppIconColors().forEachIndexed { index, color ->
-            if (color == appIconColor) {
+    private fun getCurrentkeyColorIndex(): Int {
+        val keyColor = baseConfig.keyColor
+        getkeyColors().forEachIndexed { index, color ->
+            if (color == keyColor) {
                 return index
             }
         }
@@ -490,6 +490,7 @@ abstract class BaseSimpleActivity : AppCompatActivity() {
     }
 
     fun startCustomizationActivity() {
+        /** This is a custom fork of an app anyways.
         if (!packageName.contains("slootelibomelpmis".reversed(), true)) {
             if (baseConfig.appRunCount > 100) {
                 val label = "You are using a fake version of the app. For your own safety download the original one from www.simplemobiletools.com. Thanks"
@@ -499,6 +500,7 @@ abstract class BaseSimpleActivity : AppCompatActivity() {
                 return
             }
         }
+        */
 
         Intent(applicationContext, CustomizationActivity::class.java).apply {
             putExtra(APP_ICON_IDS, getAppIconIDs())

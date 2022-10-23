@@ -51,13 +51,13 @@ fun Activity.appLaunched(appId: String) {
     baseConfig.appId = appId
     if (baseConfig.appRunCount == 0) {
         baseConfig.wasOrangeIconChecked = true
-        checkAppIconColor()
+        checkkeyColor()
     } else if (!baseConfig.wasOrangeIconChecked) {
         baseConfig.wasOrangeIconChecked = true
         val primaryColor = resources.getColor(R.color.color_primary)
-        if (baseConfig.appIconColor != primaryColor) {
-            getAppIconColors().forEachIndexed { index, color ->
-                toggleAppIconColor(appId, index, color, false)
+        if (baseConfig.keyColor != primaryColor) {
+            getkeyColors().forEachIndexed { index, color ->
+                togglekeyColor(appId, index, color, false)
             }
 
             val defaultClassName = "${baseConfig.appId.removeSuffix(".debug")}.activities.SplashActivity"
@@ -74,7 +74,7 @@ fun Activity.appLaunched(appId: String) {
                 PackageManager.DONT_KILL_APP
             )
 
-            baseConfig.appIconColor = primaryColor
+            baseConfig.keyColor = primaryColor
             baseConfig.lastIconColor = primaryColor
         }
     }

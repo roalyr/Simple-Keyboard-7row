@@ -48,9 +48,9 @@ abstract class BaseSplashActivity : AppCompatActivity() {
                         accentColor = it.accentColor
                     }
 
-                    if (baseConfig.appIconColor != it.appIconColor) {
-                        baseConfig.appIconColor = it.appIconColor
-                        checkAppIconColor()
+                    if (baseConfig.keyColor != it.keyColor) {
+                        baseConfig.keyColor = it.keyColor
+                        checkkeyColor()
                     }
                 }
                 initActivity()

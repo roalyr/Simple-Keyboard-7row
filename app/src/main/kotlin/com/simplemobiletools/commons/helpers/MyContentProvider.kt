@@ -25,7 +25,7 @@ class MyContentProvider {
             put(COL_BACKGROUND_COLOR, sharedTheme.backgroundColor)
             put(COL_PRIMARY_COLOR, sharedTheme.primaryColor)
             put(COL_ACCENT_COLOR, sharedTheme.accentColor)
-            put(COL_APP_ICON_COLOR, sharedTheme.appIconColor)
+            put(COL_APP_ICON_COLOR, sharedTheme.keyColor)
             put(COL_NAVIGATION_BAR_COLOR, sharedTheme.navigationBarColor)
             put(COL_LAST_UPDATED_TS, System.currentTimeMillis() / 1000)
         }

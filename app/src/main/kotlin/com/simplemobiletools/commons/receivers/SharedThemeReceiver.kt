@@ -4,14 +4,14 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import com.simplemobiletools.commons.extensions.baseConfig
-import com.simplemobiletools.commons.extensions.checkAppIconColor
+import com.simplemobiletools.commons.extensions.checkkeyColor
 import com.simplemobiletools.commons.extensions.getSharedTheme
 import com.simplemobiletools.commons.helpers.MyContentProvider
 
 class SharedThemeReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         context.baseConfig.apply {
-            val oldColor = appIconColor
+            val oldColor = keyColor
             if (intent.action == MyContentProvider.SHARED_THEME_ACTIVATED) {
                 if (!wasSharedThemeForced) {
                     wasSharedThemeForced = true
@@ -24,9 +24,9 @@ class SharedThemeReceiver : BroadcastReceiver() {
                             backgroundColor = it.backgroundColor
                             primaryColor = it.primaryColor
                             accentColor = it.accentColor
-                            appIconColor = it.appIconColor
+                            keyColor = it.keyColor
                             navigationBarColor = it.navigationBarColor
-                            checkAppIconColorChanged(oldColor, appIconColor, context)
+                            checkkeyColorChanged(oldColor, keyColor, context)
                         }
                     }
                 }
@@ -38,9 +38,9 @@ class SharedThemeReceiver : BroadcastReceiver() {
                             backgroundColor = it.backgroundColor
                             primaryColor = it.primaryColor
                             accentColor = it.accentColor
-                            appIconColor = it.appIconColor
+                            keyColor = it.keyColor
                             navigationBarColor = it.navigationBarColor
-                            checkAppIconColorChanged(oldColor, appIconColor, context)
+                            checkkeyColorChanged(oldColor, keyColor, context)
                         }
                     }
                 }
@@ -48,9 +48,9 @@ class SharedThemeReceiver : BroadcastReceiver() {
         }
     }
 
-    private fun checkAppIconColorChanged(oldColor: Int, newColor: Int, context: Context) {
+    private fun checkkeyColorChanged(oldColor: Int, newColor: Int, context: Context) {
         if (oldColor != newColor) {
-            context.checkAppIconColor()
+            context.checkkeyColor()
         }
     }
 }
