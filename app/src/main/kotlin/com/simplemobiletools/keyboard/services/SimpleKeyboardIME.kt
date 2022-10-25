@@ -25,8 +25,8 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
     private var SHIFT_PERM_TOGGLE_SPEED = 500   // how quickly do we have to doubletap shift to enable permanent caps lock
     private var CONTROL_PERM_TOGGLE_SPEED = 500   // how quickly do we have to doubletap ctrl to enable permanent ctrl
     private val KEYBOARD_LETTERS = 0
-    private val KEYBOARD_SYMBOLS = 1
-    private val KEYBOARD_SYMBOLS_SHIFT = 2
+    private val KEYBOARD_LETTERS_SECOND = 1
+    private val KEYBOARD_LETTERS_SECOND_SHIFT = 2
 
     private var keyboard: MyKeyboard? = null
     private var keyboardView: MyKeyboardView? = null
@@ -66,8 +66,9 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
 
         val keyboardXml = when (inputTypeClass) {
             TYPE_CLASS_NUMBER, TYPE_CLASS_DATETIME, TYPE_CLASS_PHONE -> {
-                keyboardMode = KEYBOARD_SYMBOLS
-                R.xml.keys_symbols
+                // Temporary solution.
+                keyboardMode = KEYBOARD_LETTERS_SECOND
+                R.xml.keys_letters_ukrainian
             }
             else -> {
                 keyboardMode = KEYBOARD_LETTERS
@@ -133,12 +134,12 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
             }
             MyKeyboard.KEYCODE_SHIFT -> {
                 // Disable ctrl key if shift is pressed.
-                if (keyboard!!.mControlState == CONTROL_ON_ONE_CHAR && keyboardMode == KEYBOARD_LETTERS) {
+                if (keyboard!!.mControlState == CONTROL_ON_ONE_CHAR) {
                     keyboard!!.mControlState = CONTROL_OFF
                     keyboardView!!.invalidateAllKeys()
                 }
 
-                if (keyboardMode == KEYBOARD_LETTERS) {
+                //if (keyboardMode == KEYBOARD_LETTERS) {
                     when {
                         keyboard!!.mShiftState == SHIFT_ON_PERMANENT -> keyboard!!.mShiftState = SHIFT_OFF
                         System.currentTimeMillis() - lastShiftPressTS < SHIFT_PERM_TOGGLE_SPEED -> keyboard!!.mShiftState = SHIFT_ON_PERMANENT
@@ -147,17 +148,19 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
                     }
 
                     lastShiftPressTS = System.currentTimeMillis()
-                } else {
-                    val keyboardXml = if (keyboardMode == KEYBOARD_SYMBOLS) {
-                        keyboardMode = KEYBOARD_SYMBOLS_SHIFT
+                //}
+                /** else {
+                    val keyboardXml = if (keyboardMode == KEYBOARD_LETTERS_SECOND) {
+                        keyboardMode = KEYBOARD_LETTERS_SECOND_SHIFT
                         R.xml.keys_symbols_shift
                     } else {
-                        keyboardMode = KEYBOARD_SYMBOLS
-                        R.xml.keys_symbols
+                        keyboardMode = KEYBOARD_LETTERS_SECOND
+                        R.xml.keys_letters_ukrainian
                     }
                     keyboard = MyKeyboard(this, keyboardXml, enterKeyType)
                     keyboardView!!.setKeyboard(keyboard!!)
                 }
+                */
                 keyboardView!!.invalidateAllKeys()
             }
             MyKeyboard.KEYCODE_CONTROL -> {
@@ -174,6 +177,36 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
 
                 keyboardView!!.invalidateAllKeys()
             }
+            MyKeyboard.KEYCODE_TAB -> {
+                inputConnection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_TAB))
+                inputConnection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_TAB))
+            }
+            MyKeyboard.KEYCODE_UNDO -> {
+                inputConnection.sendKeyEvent(KeyEvent(0, 0, KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_Z, 0, KeyEvent.META_CTRL_MASK))
+                inputConnection.sendKeyEvent(KeyEvent(0, 0, KeyEvent.ACTION_UP, KeyEvent.KEYCODE_Z, 0, KeyEvent.META_CTRL_MASK))
+                inputConnection.clearMetaKeyStates(KeyEvent.META_CTRL_MASK)
+            }
+            MyKeyboard.KEYCODE_REDO -> {
+                inputConnection.sendKeyEvent(KeyEvent(0, 0, KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_Y, 0, KeyEvent.META_CTRL_MASK))
+                inputConnection.sendKeyEvent(KeyEvent(0, 0, KeyEvent.ACTION_UP, KeyEvent.KEYCODE_Y, 0, KeyEvent.META_CTRL_MASK))
+                inputConnection.clearMetaKeyStates(KeyEvent.META_CTRL_MASK)
+            }
+            MyKeyboard.KEYCODE_UP -> {
+                inputConnection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_UP))
+                inputConnection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DPAD_UP))
+            }
+            MyKeyboard.KEYCODE_DOWN -> {
+                inputConnection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_DOWN))
+                inputConnection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DPAD_DOWN))
+            }
+            MyKeyboard.KEYCODE_LEFT -> {
+                inputConnection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_LEFT))
+                inputConnection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DPAD_LEFT))
+            }
+            MyKeyboard.KEYCODE_RIGHT -> {
+                inputConnection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_RIGHT))
+                inputConnection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DPAD_RIGHT))
+            }
             MyKeyboard.KEYCODE_ENTER -> {
                 val imeOptionsActionId = getImeOptionsActionId()
                 if (imeOptionsActionId != IME_ACTION_NONE) {
@@ -185,8 +218,8 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
             }
             MyKeyboard.KEYCODE_MODE_CHANGE -> {
                 val keyboardXml = if (keyboardMode == KEYBOARD_LETTERS) {
-                    keyboardMode = KEYBOARD_SYMBOLS
-                    R.xml.keys_symbols
+                    keyboardMode = KEYBOARD_LETTERS_SECOND
+                    R.xml.keys_letters_ukrainian
                 } else {
                     keyboardMode = KEYBOARD_LETTERS
                     getKeyboardLayoutXML()
@@ -251,6 +284,7 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
                 // If the keyboard is set to symbols and the user presses space, we usually should switch back to the letters keyboard.
                 // However, avoid doing that in cases when the EditText for example requires numbers as the input.
                 // We can detect that by the text not changing on pressing Space.
+                /**
                 if (keyboardMode != KEYBOARD_LETTERS && code == MyKeyboard.KEYCODE_SPACE) {
                     val originalText = inputConnection.getExtractedText(ExtractedTextRequest(), 0)?.text ?: return
                     inputConnection.commitText(codeChar.toString(), 1)
@@ -259,12 +293,14 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
                 } else {
                     inputConnection.commitText(codeChar.toString(), 1)
                 }
+                */
+                inputConnection.commitText(codeChar.toString(), 1)
 
-                if (keyboard!!.mShiftState == SHIFT_ON_ONE_CHAR && keyboardMode == KEYBOARD_LETTERS) {
+                if (keyboard!!.mShiftState == SHIFT_ON_ONE_CHAR) {
                     keyboard!!.mShiftState = SHIFT_OFF
                     keyboardView!!.invalidateAllKeys()
                 }
-                if (keyboard!!.mControlState == CONTROL_ON_ONE_CHAR && keyboardMode == KEYBOARD_LETTERS) {
+                if (keyboard!!.mControlState == CONTROL_ON_ONE_CHAR) {
                     keyboard!!.mControlState = CONTROL_OFF
                     keyboardView!!.invalidateAllKeys()
                 }
@@ -329,20 +365,21 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
         }
     }
 
+    // Temporary disable other layouts.
     private fun getKeyboardLayoutXML(): Int {
         return when (baseContext.config.keyboardLanguage) {
-            LANGUAGE_BENGALI -> R.xml.keys_letters_bengali
-            LANGUAGE_BULGARIAN -> R.xml.keys_letters_bulgarian
-            LANGUAGE_ENGLISH_DVORAK -> R.xml.keys_letters_english_dvorak
-            LANGUAGE_ENGLISH_QWERTZ -> R.xml.keys_letters_english_qwertz
-            LANGUAGE_FRENCH -> R.xml.keys_letters_french
-            LANGUAGE_GERMAN -> R.xml.keys_letters_german
-            LANGUAGE_LITHUANIAN -> R.xml.keys_letters_lithuanian
-            LANGUAGE_ROMANIAN -> R.xml.keys_letters_romanian
-            LANGUAGE_RUSSIAN -> R.xml.keys_letters_russian
-            LANGUAGE_SLOVENIAN -> R.xml.keys_letters_slovenian
-            LANGUAGE_SPANISH -> R.xml.keys_letters_spanish_qwerty
-            LANGUAGE_TURKISH_Q -> R.xml.keys_letters_turkish_q
+            //LANGUAGE_BENGALI -> R.xml.keys_letters_bengali
+            //LANGUAGE_BULGARIAN -> R.xml.keys_letters_bulgarian
+            //LANGUAGE_ENGLISH_DVORAK -> R.xml.keys_letters_english_dvorak
+            //LANGUAGE_ENGLISH_QWERTZ -> R.xml.keys_letters_english_qwertz
+            //LANGUAGE_FRENCH -> R.xml.keys_letters_french
+            //LANGUAGE_GERMAN -> R.xml.keys_letters_german
+            //LANGUAGE_LITHUANIAN -> R.xml.keys_letters_lithuanian
+            //LANGUAGE_ROMANIAN -> R.xml.keys_letters_romanian
+            //LANGUAGE_RUSSIAN -> R.xml.keys_letters_russian
+            //LANGUAGE_SLOVENIAN -> R.xml.keys_letters_slovenian
+            //LANGUAGE_SPANISH -> R.xml.keys_letters_spanish_qwerty
+            //LANGUAGE_TURKISH_Q -> R.xml.keys_letters_turkish_q
             else -> R.xml.keys_letters_english_qwerty
         }
     }

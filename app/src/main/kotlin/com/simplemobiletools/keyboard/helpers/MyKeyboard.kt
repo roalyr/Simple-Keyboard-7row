@@ -68,11 +68,19 @@ class MyKeyboard {
 
         const val KEYCODE_SHIFT = -1
         const val KEYCODE_MODE_CHANGE = -2
+        const val KEYCODE_TAB = -3
         const val KEYCODE_ENTER = -4
         const val KEYCODE_DELETE = -5
         const val KEYCODE_SPACE = 32
         const val KEYCODE_EMOJI = -6
         const val KEYCODE_CONTROL = -7
+        const val KEYCODE_UNDO = -8
+        const val KEYCODE_REDO = -9
+
+        const val KEYCODE_UP = -10
+        const val KEYCODE_DOWN = -11
+        const val KEYCODE_LEFT = -12
+        const val KEYCODE_RIGHT = -13
 
         fun getDimensionOrFraction(a: TypedArray, index: Int, base: Int, defValue: Int): Int {
             val value = a.peekValue(index) ?: return defValue

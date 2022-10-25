@@ -97,8 +97,8 @@ class MyKeyboardView @JvmOverloads constructor(context: Context, attrs: Attribut
     private var mKeyboard: MyKeyboard? = null
     private var mCurrentKeyIndex: Int = NOT_A_KEY
 
-    private var mLabelTextSize = 0
-    private var mKeyTextSize = 0
+    private var mSpecLabelTextSize = 0
+    private var mKeyLabelTextSize = 0
 
     private var mTextColor = 0
     private var mBackgroundColor = 0
@@ -200,6 +200,7 @@ class MyKeyboardView @JvmOverloads constructor(context: Context, attrs: Attribut
     init {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
+        /**
         val attributes = context.obtainStyledAttributes(attrs, R.styleable.MyKeyboardView, 0, defStyleRes)
         val keyTextSize = 0
         val indexCnt = attributes.indexCount
@@ -207,12 +208,13 @@ class MyKeyboardView @JvmOverloads constructor(context: Context, attrs: Attribut
             for (i in 0 until indexCnt) {
                 val attr = attributes.getIndex(i)
                 when (attr) {
-                    R.styleable.MyKeyboardView_keyTextSize -> mKeyTextSize = attributes.getDimensionPixelSize(attr, 16)
+                    R.styleable.MyKeyboardView_keyTextSize -> mKeyLabelTextSize = attributes.getDimensionPixelSize(attr, 16)
                 }
             }
         } finally {
             attributes.recycle()
         }
+        */
 
 
         mPopupLayout = R.layout.keyboard_popup_keyboard
@@ -240,8 +242,8 @@ class MyKeyboardView @JvmOverloads constructor(context: Context, attrs: Attribut
         mPaint.isAntiAlias = true
         // Switch to hardcoded size value?
 
-        mPaint.textSize = keyTextSize.toFloat()
-        //mPaint.textSize = resources.getDimension(R.dimen.key_label_text_size)
+        //mPaint.textSize = keyTextSize.toFloat()
+        mPaint.textSize = resources.getDimension(R.dimen.key_label_text_size)
 
         mPaint.textAlign = Align.CENTER
         mPaint.alpha = 255
@@ -249,7 +251,8 @@ class MyKeyboardView @JvmOverloads constructor(context: Context, attrs: Attribut
         mAccessibilityManager = (context.getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager)
         mPopupMaxMoveDistance = resources.getDimension(R.dimen.popup_max_move_distance)
 
-        mLabelTextSize = resources.getDimension(R.dimen.spec_label_text_size).toInt()
+        mSpecLabelTextSize = resources.getDimension(R.dimen.spec_label_text_size).toInt()
+        mKeyLabelTextSize = resources.getDimension(R.dimen.key_label_text_size).toInt()
 
         mkeyLabelSmallSize = resources.getDimension(R.dimen.top_small_label_size)
         mkeyLabelSmallMarginWidth = resources.getDimension(R.dimen.top_small_label_margin_width)
@@ -634,10 +637,10 @@ class MyKeyboardView @JvmOverloads constructor(context: Context, attrs: Attribut
 
                 // For characters, use large font. For labels like "Done", use small font.
                 if (label.length > 1) {
-                    paint.textSize = mLabelTextSize.toFloat()
+                    paint.textSize = mSpecLabelTextSize.toFloat()
                     paint.typeface = Typeface.DEFAULT_BOLD
                 } else {
-                    paint.textSize = mKeyTextSize.toFloat()
+                    paint.textSize = mKeyLabelTextSize.toFloat()
                     paint.typeface = Typeface.DEFAULT
                 }
 
@@ -856,7 +859,7 @@ class MyKeyboardView @JvmOverloads constructor(context: Context, attrs: Attribut
             mPreviewText!!.setCompoundDrawables(null, null, null, key.icon)
         } else {
             if (key.label.length > 1) {
-                mPreviewText!!.setTextSize(TypedValue.COMPLEX_UNIT_PX, mKeyTextSize.toFloat())
+                mPreviewText!!.setTextSize(TypedValue.COMPLEX_UNIT_PX, mKeyLabelTextSize.toFloat())
                 mPreviewText!!.typeface = Typeface.DEFAULT_BOLD
             } else {
                 mPreviewText!!.setTextSize(TypedValue.COMPLEX_UNIT_PX, mPreviewTextSizeLarge.toFloat())

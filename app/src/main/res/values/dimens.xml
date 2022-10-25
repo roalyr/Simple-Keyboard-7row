@@ -15,11 +15,11 @@
     <dimen name="emoji_text_size">28sp</dimen>
 
     <dimen name="spec_label_text_size">16sp</dimen>
-    <dimen name="key_label_text_size">14sp</dimen>
+    <dimen name="key_label_text_size">16sp</dimen>
 
-    <dimen name="top_small_label_size">11sp</dimen>
-    <dimen name="top_small_label_margin_width">8dp</dimen>
-    <dimen name="top_small_label_margin_height">14dp</dimen>
+    <dimen name="top_small_label_size">12sp</dimen>
+    <dimen name="top_small_label_margin_width">9dp</dimen>
+    <dimen name="top_small_label_margin_height">13dp</dimen>
 
     <dimen name="speckey_margin">2dp</dimen>
     <dimen name="speckey_round">2dp</dimen>
