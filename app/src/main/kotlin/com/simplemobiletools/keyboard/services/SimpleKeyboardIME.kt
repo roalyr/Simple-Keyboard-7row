@@ -208,6 +208,7 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
                 inputConnection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DPAD_RIGHT))
             }
             MyKeyboard.KEYCODE_ENTER -> {
+                /**
                 val imeOptionsActionId = getImeOptionsActionId()
                 if (imeOptionsActionId != IME_ACTION_NONE) {
                     inputConnection.performEditorAction(imeOptionsActionId)
@@ -215,6 +216,12 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
                     inputConnection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER))
                     inputConnection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_ENTER))
                 }
+                */
+
+                // Use shift+Enter instead.
+                inputConnection.sendKeyEvent(KeyEvent(0, 0, KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER, 0, KeyEvent.META_SHIFT_MASK))
+                inputConnection.sendKeyEvent(KeyEvent(0, 0, KeyEvent.ACTION_UP, KeyEvent.KEYCODE_ENTER, 0, KeyEvent.META_SHIFT_MASK))
+                inputConnection.clearMetaKeyStates(KeyEvent.META_SHIFT_MASK)
             }
             MyKeyboard.KEYCODE_MODE_CHANGE -> {
                 val keyboardXml = if (keyboardMode == KEYBOARD_LETTERS) {
