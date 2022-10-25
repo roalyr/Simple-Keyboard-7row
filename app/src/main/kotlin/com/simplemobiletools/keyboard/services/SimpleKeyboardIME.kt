@@ -68,7 +68,7 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
             TYPE_CLASS_NUMBER, TYPE_CLASS_DATETIME, TYPE_CLASS_PHONE -> {
                 // Temporary solution.
                 keyboardMode = KEYBOARD_LETTERS_SECOND
-                R.xml.keys_letters_ukrainian
+                getKeyboardLayoutXML()
             }
             else -> {
                 keyboardMode = KEYBOARD_LETTERS
@@ -219,9 +219,12 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
             MyKeyboard.KEYCODE_MODE_CHANGE -> {
                 val keyboardXml = if (keyboardMode == KEYBOARD_LETTERS) {
                     keyboardMode = KEYBOARD_LETTERS_SECOND
-                    R.xml.keys_letters_ukrainian
+                    baseContext.config.keyboardLanguage = LANGUAGE_UKRAINIAN
+                    getKeyboardLayoutXML()
+
                 } else {
                     keyboardMode = KEYBOARD_LETTERS
+                    baseContext.config.keyboardLanguage = LANGUAGE_ENGLISH_QWERTY
                     getKeyboardLayoutXML()
                 }
                 keyboard = MyKeyboard(this, keyboardXml, enterKeyType)
@@ -379,7 +382,7 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
             //LANGUAGE_RUSSIAN -> R.xml.keys_letters_russian
             //LANGUAGE_SLOVENIAN -> R.xml.keys_letters_slovenian
             //LANGUAGE_SPANISH -> R.xml.keys_letters_spanish_qwerty
-            //LANGUAGE_TURKISH_Q -> R.xml.keys_letters_turkish_q
+            LANGUAGE_UKRAINIAN -> R.xml.keys_letters_ukrainian
             else -> R.xml.keys_letters_english_qwerty
         }
     }

@@ -13,7 +13,7 @@ android {
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.simplemobiletools.keyboard"
+        applicationId "com.roalyr.simple_7row_keyboard"
         minSdk 23
         targetSdk 33
         versionCode 13

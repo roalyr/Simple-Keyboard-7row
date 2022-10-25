@@ -651,14 +651,22 @@ class MyKeyboardView @JvmOverloads constructor(context: Context, attrs: Attribut
                     mTextColor
                 }
 
-                // Draw main label.
-                canvas.drawText(
-                    label, (key.width / 2).toFloat(), key.height / 2 + (paint.textSize - paint.descent()) / 2, paint
-                )
+                // Draw main label. centered if no small label
+                if (key.keyLabelSmall.isEmpty()) {
+                 canvas.drawText(
+                        label, (key.width / 2).toFloat(), key.height / 2 + (paint.textSize - paint.descent()) / 2, paint
+                    )
+                } else {
+                    canvas.drawText(
+                        label, (key.width / 2).toFloat(), key.height / 2 + (paint.textSize - paint.descent()) , paint
+                    )
+                }
 
                 // Draw top small label?
                 if (key.keyLabelSmall.isNotEmpty()) {
-                    canvas.drawText(key.keyLabelSmall, key.width - mkeyLabelSmallMarginWidth, mkeyLabelSmallMarginHeight, smallLetterPaint)
+                    canvas.drawText(
+                        key.keyLabelSmall, key.width - mkeyLabelSmallMarginWidth, mkeyLabelSmallMarginHeight, smallLetterPaint
+                    )
                 }
 
                 // Turn off drop shadow
@@ -677,14 +685,14 @@ class MyKeyboardView @JvmOverloads constructor(context: Context, attrs: Attribut
                     key.icon = resources.getDrawable(drawableId)
                 }
 
-/**
+
                 // This is to make text and icon visible on background
                 if (code == KEYCODE_ENTER) {
                     key.icon!!.applyColorFilter(mPrimaryColor.getContrastColor())
                 } else if (code == KEYCODE_DELETE || code == KEYCODE_SHIFT || code == KEYCODE_EMOJI) {
                     key.icon!!.applyColorFilter(mTextColor)
                 }
-*/
+
                 // Icon placement?
                 val drawableX = (key.width - key.icon!!.intrinsicWidth) / 2
                 val drawableY = (key.height - key.icon!!.intrinsicHeight) / 2
@@ -696,11 +704,13 @@ class MyKeyboardView @JvmOverloads constructor(context: Context, attrs: Attribut
             canvas.translate(-key.x.toFloat(), -key.y.toFloat())
         }
 
+/**
         // Overlay a dark rectangle to dim the keyboard
         if (mMiniKeyboardOnScreen) {
             paint.color = Color.BLACK.adjustAlpha(0.3f)
             canvas.drawRect(0f, 0f, width.toFloat(), height.toFloat(), paint)
         }
+ */
 
         mCanvas!!.restore()
         mDrawPending = false

@@ -428,8 +428,8 @@ class MyKeyboard {
 
     private fun getKeyboardHeightMultiplier(multiplierType: Int): Float {
         return when(multiplierType) {
-            KEYBOARD_HEIGHT_MULTIPLIER_SMALL -> 0.5F
-            KEYBOARD_HEIGHT_MULTIPLIER_MEDIUM -> 0.7F
+            KEYBOARD_HEIGHT_MULTIPLIER_SMALL -> 0.7F
+            KEYBOARD_HEIGHT_MULTIPLIER_MEDIUM -> 0.85F
             KEYBOARD_HEIGHT_MULTIPLIER_LARGE -> 1.0F
             else -> 1.0F
         }
