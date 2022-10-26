@@ -33,14 +33,6 @@ private fun getDirectorySize(dir: File, countHiddenItems: Boolean): Long {
     return size
 }
 
-fun File.getFileCount(countHiddenItems: Boolean): Int {
-    return if (isDirectory) {
-        getDirectoryFileCount(this, countHiddenItems)
-    } else {
-        1
-    }
-}
-
 private fun getDirectoryFileCount(dir: File, countHiddenItems: Boolean): Int {
     var count = -1
     if (dir.exists()) {
@@ -81,20 +73,4 @@ fun File.getDirectChildrenCount(context: Context, countHiddenItems: Boolean): In
 }
 
 fun File.toFileDirItem(context: Context) = FileDirItem(absolutePath, name, context.getIsPathDirectory(absolutePath), 0, length(), lastModified())
-
-fun File.containsNoMedia(): Boolean {
-    return if (!isDirectory) {
-        false
-    } else {
-        File(this, NOMEDIA).exists()
-    }
-}
-
-fun File.getDigest(algorithm: String): String? {
-    return try {
-        inputStream().getDigest(algorithm)
-    } catch (e: Exception) {
-        null
-    }
-}
 

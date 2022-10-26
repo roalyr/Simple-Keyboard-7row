@@ -20,7 +20,7 @@ class ExportClipsDialog(
         }
 
         val view = activity.layoutInflater.inflate(R.layout.dialog_export_clips, null).apply {
-            export_clips_filename.setText("${activity.getString(R.string.app_launcher_name)}_${activity.getCurrentFormattedDateTime()}")
+            export_clips_filename.setText("${activity.getString(R.string.app_launcher_name)}_${getCurrentFormattedDateTime()}")
 
             if (hidePath) {
                 export_clips_path_label.beGone()

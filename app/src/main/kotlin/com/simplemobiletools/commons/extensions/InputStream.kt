@@ -1,6 +1,5 @@
 package com.simplemobiletools.commons.extensions
 
-import com.simplemobiletools.commons.helpers.MD5
 import java.io.InputStream
 import java.security.MessageDigest
 

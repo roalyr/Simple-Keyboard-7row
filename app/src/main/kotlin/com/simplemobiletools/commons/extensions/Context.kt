@@ -7,23 +7,15 @@ import android.app.NotificationManager
 import android.app.role.RoleManager
 import android.content.*
 import android.content.pm.PackageManager
-import android.content.pm.ShortcutManager
-import android.content.res.Configuration
 import android.database.Cursor
 import android.graphics.BitmapFactory
 import android.graphics.Point
 import android.media.MediaMetadataRetriever
-import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
-import android.os.Environment
 import android.os.Handler
 import android.os.Looper
-import android.provider.BaseColumns
 import android.provider.BlockedNumberContract.BlockedNumbers
-import android.provider.ContactsContract.CommonDataKinds.BaseTypes
-import android.provider.ContactsContract.CommonDataKinds.Phone
-import android.provider.DocumentsContract
 import android.provider.MediaStore.*
 import android.provider.OpenableColumns
 import android.provider.Settings
@@ -31,22 +23,14 @@ import android.telecom.TelecomManager
 import android.telephony.PhoneNumberUtils
 import android.view.View
 import android.view.WindowManager
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.biometric.BiometricManager
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import androidx.core.os.bundleOf
-import androidx.exifinterface.media.ExifInterface
 import androidx.loader.content.CursorLoader
 import com.github.ajalt.reprint.core.Reprint
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.simplemobiletools.keyboard.R
 import com.simplemobiletools.commons.helpers.*
-import com.simplemobiletools.commons.models.AlarmSound
 import com.simplemobiletools.commons.models.BlockedNumber
 import java.io.File
 import java.text.SimpleDateFormat
@@ -98,7 +82,7 @@ val Context.sdCardPath: String get() = baseConfig.sdCardPath
 val Context.internalStoragePath: String get() = baseConfig.internalStoragePath
 val Context.otgPath: String get() = baseConfig.OTGPath
 
-fun Context.isFingerPrintSensorAvailable() = isMarshmallowPlus() && Reprint.isHardwarePresent()
+fun isFingerPrintSensorAvailable() = isMarshmallowPlus() && Reprint.isHardwarePresent()
 
 fun Context.isBiometricIdAvailable(): Boolean = when (BiometricManager.from(this).canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_WEAK)) {
     BiometricManager.BIOMETRIC_SUCCESS, BiometricManager.BIOMETRIC_STATUS_UNKNOWN -> true
@@ -107,7 +91,7 @@ fun Context.isBiometricIdAvailable(): Boolean = when (BiometricManager.from(this
 
 fun Context.hasPermission(permId: Int) = ContextCompat.checkSelfPermission(this, getPermissionString(permId)) == PackageManager.PERMISSION_GRANTED
 
-fun Context.getPermissionString(id: Int) = when (id) {
+fun getPermissionString(id: Int) = when (id) {
     PERMISSION_READ_STORAGE -> Manifest.permission.READ_EXTERNAL_STORAGE
     PERMISSION_WRITE_STORAGE -> Manifest.permission.WRITE_EXTERNAL_STORAGE
     PERMISSION_CAMERA -> Manifest.permission.CAMERA
@@ -129,16 +113,6 @@ fun Context.getPermissionString(id: Int) = when (id) {
     PERMISSION_READ_MEDIA_VIDEO -> Manifest.permission.READ_MEDIA_VIDEO
     PERMISSION_READ_MEDIA_AUDIO -> Manifest.permission.READ_MEDIA_AUDIO
     else -> ""
-}
-
-fun Context.launchActivityIntent(intent: Intent) {
-    try {
-        startActivity(intent)
-    } catch (e: ActivityNotFoundException) {
-        toast(R.string.no_app_found)
-    } catch (e: Exception) {
-        showErrorToast(e)
-    }
 }
 
 fun Context.getFilePublicUri(file: File, applicationId: String): Uri {
@@ -244,23 +218,6 @@ fun Context.ensurePublicUri(path: String, applicationId: String): Uri? {
     }
 }
 
-fun Context.getFilenameFromContentUri(uri: Uri): String? {
-    val projection = arrayOf(
-        OpenableColumns.DISPLAY_NAME
-    )
-
-    try {
-        val cursor = contentResolver.query(uri, projection, null, null, null)
-        cursor?.use {
-            if (cursor.moveToFirst()) {
-                return cursor.getStringValue(OpenableColumns.DISPLAY_NAME)
-            }
-        }
-    } catch (e: Exception) {
-    }
-    return null
-}
-
 fun Context.getSizeFromContentUri(uri: Uri): Long {
     val projection = arrayOf(OpenableColumns.SIZE)
     try {
@@ -277,7 +234,7 @@ fun Context.getSizeFromContentUri(uri: Uri): Long {
 
 fun Context.getMyContentProviderCursorLoader() = CursorLoader(this, MyContentProvider.MY_CONTENT_URI, null, null, null, null)
 
-fun Context.getCurrentFormattedDateTime(): String {
+fun getCurrentFormattedDateTime(): String {
     val simpleDateFormat = SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.getDefault())
     return simpleDateFormat.format(Date(System.currentTimeMillis()))
 }
@@ -290,14 +247,6 @@ fun Context.updateSDCardPath() {
             baseConfig.sdTreeUri = ""
         }
     }
-}
-
-fun Context.getUriMimeType(path: String, newUri: Uri): String {
-    var mimeType = path.getMimeType()
-    if (mimeType.isEmpty()) {
-        mimeType = getMimeTypeFromUri(newUri)
-    }
-    return mimeType
 }
 
 fun Context.isThankYouInstalled() = isPackageInstalled("com.simplemobiletools.thankyou")
@@ -335,62 +284,11 @@ fun Context.isPackageInstalled(pkgName: String): Boolean {
     }
 }
 
-fun Context.getFormattedSeconds(seconds: Int, showBefore: Boolean = true) = when (seconds) {
-    -1 -> getString(R.string.no_reminder)
-    0 -> getString(R.string.at_start)
-    else -> {
-        when {
-            seconds < 0 && seconds > -60 * 60 * 24 -> {
-                val minutes = -seconds / 60
-                getString(R.string.during_day_at).format(minutes / 60, minutes % 60)
-            }
-            seconds % YEAR_SECONDS == 0 -> {
-                val base = if (showBefore) R.plurals.years_before else R.plurals.by_years
-                resources.getQuantityString(base, seconds / YEAR_SECONDS, seconds / YEAR_SECONDS)
-            }
-            seconds % MONTH_SECONDS == 0 -> {
-                val base = if (showBefore) R.plurals.months_before else R.plurals.by_months
-                resources.getQuantityString(base, seconds / MONTH_SECONDS, seconds / MONTH_SECONDS)
-            }
-            seconds % WEEK_SECONDS == 0 -> {
-                val base = if (showBefore) R.plurals.weeks_before else R.plurals.by_weeks
-                resources.getQuantityString(base, seconds / WEEK_SECONDS, seconds / WEEK_SECONDS)
-            }
-            seconds % DAY_SECONDS == 0 -> {
-                val base = if (showBefore) R.plurals.days_before else R.plurals.by_days
-                resources.getQuantityString(base, seconds / DAY_SECONDS, seconds / DAY_SECONDS)
-            }
-            seconds % HOUR_SECONDS == 0 -> {
-                val base = if (showBefore) R.plurals.hours_before else R.plurals.by_hours
-                resources.getQuantityString(base, seconds / HOUR_SECONDS, seconds / HOUR_SECONDS)
-            }
-            seconds % MINUTE_SECONDS == 0 -> {
-                val base = if (showBefore) R.plurals.minutes_before else R.plurals.by_minutes
-                resources.getQuantityString(base, seconds / MINUTE_SECONDS, seconds / MINUTE_SECONDS)
-            }
-            else -> {
-                val base = if (showBefore) R.plurals.seconds_before else R.plurals.by_seconds
-                resources.getQuantityString(base, seconds, seconds)
-            }
-        }
-    }
-}
-
 fun Context.getCanAppBeUpgraded() = proPackages.contains(baseConfig.appId.removeSuffix(".debug").removePrefix("com.simplemobiletools."))
 
 fun Context.getStoreUrl() = "https://play.google.com/store/apps/details?id=${packageName.removeSuffix(".debug")}"
 
 fun Context.getTimeFormat() = if (baseConfig.use24HourFormat) TIME_FORMAT_24 else TIME_FORMAT_12
-
-fun Context.getResolution(path: String): Point? {
-    return if (path.isImageFast() || path.isImageSlow()) {
-        getImageResolution(path)
-    } else if (path.isVideoFast() || path.isVideoSlow()) {
-        getVideoResolution(path)
-    } else {
-        null
-    }
-}
 
 fun Context.getImageResolution(path: String): Point? {
     val options = BitmapFactory.Options()
@@ -441,139 +339,6 @@ fun Context.getVideoResolution(path: String): Point? {
     return point
 }
 
-fun Context.getDuration(path: String): Int? {
-    val projection = arrayOf(
-        MediaColumns.DURATION
-    )
-
-    val uri = getFileUri(path)
-    val selection = if (path.startsWith("content://")) "${BaseColumns._ID} = ?" else "${MediaColumns.DATA} = ?"
-    val selectionArgs = if (path.startsWith("content://")) arrayOf(path.substringAfterLast("/")) else arrayOf(path)
-
-    try {
-        val cursor = contentResolver.query(uri, projection, selection, selectionArgs, null)
-        cursor?.use {
-            if (cursor.moveToFirst()) {
-                return Math.round(cursor.getIntValue(MediaColumns.DURATION) / 1000.toDouble()).toInt()
-            }
-        }
-    } catch (ignored: Exception) {
-    }
-
-    return try {
-        val retriever = MediaMetadataRetriever()
-        retriever.setDataSource(path)
-        Math.round(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)!!.toInt() / 1000f)
-    } catch (ignored: Exception) {
-        null
-    }
-}
-
-fun Context.getTitle(path: String): String? {
-    val projection = arrayOf(
-        MediaColumns.TITLE
-    )
-
-    val uri = getFileUri(path)
-    val selection = if (path.startsWith("content://")) "${BaseColumns._ID} = ?" else "${MediaColumns.DATA} = ?"
-    val selectionArgs = if (path.startsWith("content://")) arrayOf(path.substringAfterLast("/")) else arrayOf(path)
-
-    try {
-        val cursor = contentResolver.query(uri, projection, selection, selectionArgs, null)
-        cursor?.use {
-            if (cursor.moveToFirst()) {
-                return cursor.getStringValue(MediaColumns.TITLE)
-            }
-        }
-    } catch (ignored: Exception) {
-    }
-
-    return try {
-        val retriever = MediaMetadataRetriever()
-        retriever.setDataSource(path)
-        retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE)
-    } catch (ignored: Exception) {
-        null
-    }
-}
-
-fun Context.getArtist(path: String): String? {
-    val projection = arrayOf(
-        Audio.Media.ARTIST
-    )
-
-    val uri = getFileUri(path)
-    val selection = if (path.startsWith("content://")) "${BaseColumns._ID} = ?" else "${MediaColumns.DATA} = ?"
-    val selectionArgs = if (path.startsWith("content://")) arrayOf(path.substringAfterLast("/")) else arrayOf(path)
-
-    try {
-        val cursor = contentResolver.query(uri, projection, selection, selectionArgs, null)
-        cursor?.use {
-            if (cursor.moveToFirst()) {
-                return cursor.getStringValue(Audio.Media.ARTIST)
-            }
-        }
-    } catch (ignored: Exception) {
-    }
-
-    return try {
-        val retriever = MediaMetadataRetriever()
-        retriever.setDataSource(path)
-        retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST)
-    } catch (ignored: Exception) {
-        null
-    }
-}
-
-fun Context.getAlbum(path: String): String? {
-    val projection = arrayOf(
-        Audio.Media.ALBUM
-    )
-
-    val uri = getFileUri(path)
-    val selection = if (path.startsWith("content://")) "${BaseColumns._ID} = ?" else "${MediaColumns.DATA} = ?"
-    val selectionArgs = if (path.startsWith("content://")) arrayOf(path.substringAfterLast("/")) else arrayOf(path)
-
-    try {
-        val cursor = contentResolver.query(uri, projection, selection, selectionArgs, null)
-        cursor?.use {
-            if (cursor.moveToFirst()) {
-                return cursor.getStringValue(Audio.Media.ALBUM)
-            }
-        }
-    } catch (ignored: Exception) {
-    }
-
-    return try {
-        val retriever = MediaMetadataRetriever()
-        retriever.setDataSource(path)
-        retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM)
-    } catch (ignored: Exception) {
-        null
-    }
-}
-
-fun Context.getMediaStoreLastModified(path: String): Long {
-    val projection = arrayOf(
-        MediaColumns.DATE_MODIFIED
-    )
-
-    val uri = getFileUri(path)
-    val selection = "${BaseColumns._ID} = ?"
-    val selectionArgs = arrayOf(path.substringAfterLast("/"))
-
-    try {
-        val cursor = contentResolver.query(uri, projection, selection, selectionArgs, null)
-        cursor?.use {
-            if (cursor.moveToFirst()) {
-                return cursor.getLongValue(MediaColumns.DATE_MODIFIED) * 1000
-            }
-        }
-    } catch (ignored: Exception) {
-    }
-    return 0
-}
-
 fun Context.getStringsPackageName() = getString(R.string.package_name)
 
 fun Context.getTextSize() = when (baseConfig.fontSize) {
@@ -586,19 +351,6 @@ fun Context.getTextSize() = when (baseConfig.fontSize) {
 val Context.telecomManager: TelecomManager get() = getSystemService(Context.TELECOM_SERVICE) as TelecomManager
 val Context.windowManager: WindowManager get() = getSystemService(Context.WINDOW_SERVICE) as WindowManager
 val Context.notificationManager: NotificationManager get() = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-val Context.navigationBarOnSide: Boolean get() = usableScreenSize.x < realScreenSize.x && usableScreenSize.x > usableScreenSize.y
-val Context.navigationBarOnBottom: Boolean get() = usableScreenSize.y < realScreenSize.y
-
-val Context.newNavigationBarHeight: Int
-    get() {
-        var navigationBarHeight = 0
-        val resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android")
-        if (resourceId > 0) {
-            navigationBarHeight = resources.getDimensionPixelSize(resourceId)
-        }
-        return navigationBarHeight
-    }
 
 
 val Context.usableScreenSize: Point

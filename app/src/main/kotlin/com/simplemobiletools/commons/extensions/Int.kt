@@ -16,7 +16,7 @@ fun Int.getContrastColor(): Int {
     return if (y >= 149 && this != Color.BLACK) DARK_GREY else Color.WHITE
 }
 
-fun Int.toHex() = String.format("#%06X", 0xFFFFFF and this).toUpperCase()
+fun Int.toHex() = String.format("#%06X", 0xFFFFFF and this).uppercase(Locale.getDefault())
 
 fun Int.adjustAlpha(factor: Float): Int {
     val alpha = Math.round(Color.alpha(this) * factor)
@@ -24,23 +24,6 @@ fun Int.adjustAlpha(factor: Float): Int {
     val green = Color.green(this)
     val blue = Color.blue(this)
     return Color.argb(alpha, red, green, blue)
-}
-
-fun Int.getFormattedDuration(forceShowHours: Boolean = false): String {
-    val sb = StringBuilder(8)
-    val hours = this / 3600
-    val minutes = this % 3600 / 60
-    val seconds = this % 60
-
-    if (this >= 3600) {
-        sb.append(String.format(Locale.getDefault(), "%02d", hours)).append(":")
-    } else if (forceShowHours) {
-        sb.append("0:")
-    }
-
-    sb.append(String.format(Locale.getDefault(), "%02d", minutes))
-    sb.append(":").append(String.format(Locale.getDefault(), "%02d", seconds))
-    return sb.toString()
 }
 
 // TODO: how to do "bits & ~bit" in kotlin?
@@ -100,20 +83,6 @@ private fun hsv2hsl(hsv: FloatArray): FloatArray {
         newSat = 1f
 
     return floatArrayOf(hue, newSat, newHue / 2f)
-}
-
-fun Int.orientationFromDegrees() = when (this) {
-    270 -> ExifInterface.ORIENTATION_ROTATE_270
-    180 -> ExifInterface.ORIENTATION_ROTATE_180
-    90 -> ExifInterface.ORIENTATION_ROTATE_90
-    else -> ExifInterface.ORIENTATION_NORMAL
-}.toString()
-
-fun Int.degreesFromOrientation() = when (this) {
-    ExifInterface.ORIENTATION_ROTATE_270 -> 270
-    ExifInterface.ORIENTATION_ROTATE_180 -> 180
-    ExifInterface.ORIENTATION_ROTATE_90 -> 90
-    else -> 0
 }
 
 fun Int.ensureTwoDigits(): String {

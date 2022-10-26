@@ -2,28 +2,19 @@ package com.simplemobiletools.commons.extensions
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.TimePickerDialog
 import android.content.*
-import android.content.Intent.EXTRA_STREAM
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
-import android.media.RingtoneManager
 import android.net.Uri
-import android.os.Environment
 import android.os.Handler
 import android.os.Looper
-import android.os.TransactionTooLargeException
-import android.provider.ContactsContract
 import android.provider.DocumentsContract
 import android.provider.MediaStore
-import android.telecom.PhoneAccountHandle
-import android.telecom.TelecomManager
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -335,52 +326,6 @@ fun Activity.redirectToRateUs() {
     }
 }
 
-fun Activity.getFinalUriFromPath(path: String, applicationId: String): Uri? {
-    val uri = try {
-        ensurePublicUri(path, applicationId)
-    } catch (e: Exception) {
-        showErrorToast(e)
-        return null
-    }
-
-    if (uri == null) {
-        toast(R.string.unknown_error_occurred)
-        return null
-    }
-
-    return uri
-}
-
-fun BaseSimpleActivity.deleteFoldersBg(folders: List<FileDirItem>, deleteMediaOnly: Boolean = true, callback: ((wasSuccess: Boolean) -> Unit)? = null) {
-    var wasSuccess = false
-    var needPermissionForPath = ""
-    for (folder in folders) {
-        if (needsStupidWritePermissions(folder.path) && baseConfig.sdTreeUri.isEmpty()) {
-            needPermissionForPath = folder.path
-            break
-        }
-    }
-
-    handleSAFDialog(needPermissionForPath) {
-        if (!it) {
-            return@handleSAFDialog
-        }
-
-        folders.forEachIndexed { index, folder ->
-            deleteFolderBg(folder, deleteMediaOnly) {
-                if (it)
-                    wasSuccess = true
-
-                if (index == folders.size - 1) {
-                    runOnUiThread {
-                        callback?.invoke(wasSuccess)
-                    }
-                }
-            }
-        }
-    }
-}
-
 fun BaseSimpleActivity.deleteFolderBg(fileDirItem: FileDirItem, deleteMediaOnly: Boolean = true, callback: ((wasSuccess: Boolean) -> Unit)? = null) {
     val folder = File(fileDirItem.path)
     if (folder.exists()) {
@@ -403,41 +348,6 @@ fun BaseSimpleActivity.deleteFolderBg(fileDirItem: FileDirItem, deleteMediaOnly:
     }
     runOnUiThread {
         callback?.invoke(true)
-    }
-}
-
-fun BaseSimpleActivity.deleteFilesBg(files: List<FileDirItem>, allowDeleteFolder: Boolean = false, callback: ((wasSuccess: Boolean) -> Unit)? = null) {
-    if (files.isEmpty()) {
-        runOnUiThread {
-            callback?.invoke(true)
-        }
-        return
-    }
-
-    val firstFile = files.first()
-    handleSAFDialog(firstFile.path) {
-        if (!it) {
-            return@handleSAFDialog
-        }
-
-        checkManageMediaOrHandleSAFDialogSdk30(firstFile.path) {
-            if (!it) {
-                return@checkManageMediaOrHandleSAFDialogSdk30
-            }
-
-            val recycleBinPath = firstFile.isRecycleBinPath(this)
-            if (canManageMedia() && !recycleBinPath) {
-                val fileUris = getFileUrisFromFileDirItems(files)
-
-                deleteSDK30Uris(fileUris) { success ->
-                    runOnUiThread {
-                        callback?.invoke(success)
-                    }
-                }
-            } else {
-                deleteFilesCasual(files, allowDeleteFolder, callback)
-            }
-        }
     }
 }
 
@@ -847,7 +757,7 @@ private fun BaseSimpleActivity.renameCasually(
     }
 }
 
-fun Activity.createTempFile(file: File): File? {
+fun createTempFile(file: File): File? {
     return if (file.isDirectory) {
         createTempDir("temp", "${System.currentTimeMillis()}", file.parentFile)
     } else {

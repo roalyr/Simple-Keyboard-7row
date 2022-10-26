@@ -26,14 +26,6 @@ private fun getDirectorySize(dir: DocumentFile, countHiddenItems: Boolean): Long
     return size
 }
 
-fun DocumentFile.getFileCount(countHiddenItems: Boolean): Int {
-    return if (isDirectory) {
-        getDirectoryFileCount(this, countHiddenItems)
-    } else {
-        1
-    }
-}
-
 private fun getDirectoryFileCount(dir: DocumentFile, countHiddenItems: Boolean): Int {
     var count = 0
     if (dir.exists()) {

@@ -93,7 +93,8 @@ class FilepickerItemsAdapter(
             } else {
                 list_item_details.text = fileDirItem.size.formatSize()
                 val path = fileDirItem.path
-                val placeholder = fileDrawables.getOrElse(fileDirItem.name.substringAfterLast(".").toLowerCase(Locale.getDefault()), { fileDrawable })
+                val placeholder = fileDrawables.getOrElse(fileDirItem.name.substringAfterLast(".")
+                    .lowercase(Locale.getDefault()), { fileDrawable })
                 val options = RequestOptions()
                     .signature(fileDirItem.getKey())
                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE)

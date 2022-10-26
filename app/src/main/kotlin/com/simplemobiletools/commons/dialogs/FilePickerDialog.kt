@@ -18,6 +18,9 @@ import com.simplemobiletools.commons.models.FileDirItem
 import com.simplemobiletools.commons.views.Breadcrumbs
 import kotlinx.android.synthetic.main.dialog_filepicker.view.*
 import java.io.File
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 /**
  * The only filepicker constructor with a couple optional parameters
@@ -168,7 +171,7 @@ class FilePickerDialog(
             return
         }
 
-        val sortedItems = items.sortedWith(compareBy({ !it.isDirectory }, { it.name.toLowerCase() }))
+        val sortedItems = items.sortedWith(compareBy({ !it.isDirectory }, { it.name.lowercase(Locale.getDefault()) }))
         val adapter = FilepickerItemsAdapter(activity, sortedItems, mDialogView.filepicker_list) {
             if ((it as FileDirItem).isDirectory) {
                 activity.handleLockedFolderOpening(it.path) { success ->

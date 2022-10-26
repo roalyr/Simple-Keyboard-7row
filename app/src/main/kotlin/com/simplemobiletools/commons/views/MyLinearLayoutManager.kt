@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.simplemobiletools.commons.views
 
 import android.content.Context

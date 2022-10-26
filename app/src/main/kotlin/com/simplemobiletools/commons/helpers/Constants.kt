@@ -27,7 +27,6 @@ const val INVALID_NAVIGATION_BAR_COLOR = -1
 const val SAVE_DISCARD_PROMPT_INTERVAL = 1000L
 const val SD_OTG_PATTERN = "^/storage/[A-Za-z0-9]{4}-[A-Za-z0-9]{4}$"
 const val SD_OTG_SHORT = "^[A-Za-z0-9]{4}-[A-Za-z0-9]{4}$"
-const val MD5 = "MD5"
 val DARK_GREY = 0xFF333333.toInt()
 
 const val MEDIUM_ALPHA = 0.5f
@@ -49,7 +48,6 @@ const val YEAR_SECONDS = YEAR_MINUTES * 60
 // shared preferences
 const val PREFS_KEY = "Prefs"
 const val APP_RUN_COUNT = "app_run_count"
-const val LAST_VERSION = "last_version"
 const val SD_TREE_URI = "tree_uri_2"
 const val PRIMARY_ANDROID_DATA_TREE_URI = "primary_android_data_tree_uri_2"
 const val OTG_ANDROID_DATA_TREE_URI = "otg_android_data_tree__uri_2"
@@ -78,12 +76,6 @@ const val CUSTOM_APP_ICON_COLOR = "custom_app_icon_color"
 const val PASSWORD_PROTECTION = "password_protection"
 const val PASSWORD_HASH = "password_hash"
 const val PROTECTION_TYPE = "protection_type"
-const val APP_PASSWORD_PROTECTION = "app_password_protection"
-const val APP_PASSWORD_HASH = "app_password_hash"
-const val APP_PROTECTION_TYPE = "app_protection_type"
-const val DELETE_PASSWORD_PROTECTION = "delete_password_protection"
-const val DELETE_PASSWORD_HASH = "delete_password_hash"
-const val DELETE_PROTECTION_TYPE = "delete_protection_type"
 const val PROTECTED_FOLDER_HASH = "protected_folder_hash_"
 const val PROTECTED_FOLDER_TYPE = "protected_folder_type_"
 const val KEEP_LAST_MODIFIED = "keep_last_modified"
@@ -95,14 +87,10 @@ const val IS_USING_AUTO_THEME = "is_using_auto_theme"
 const val IS_USING_SYSTEM_THEME = "is_using_system_theme"
 const val SHOULD_USE_SHARED_THEME = "should_use_shared_theme"
 const val WAS_SHARED_THEME_FORCED = "was_shared_theme_forced"
-const val WAS_CUSTOM_THEME_SWITCH_DESCRIPTION_SHOWN = "was_custom_theme_switch_description_shown"
 const val LAST_CONFLICT_RESOLUTION = "last_conflict_resolution"
 const val LAST_CONFLICT_APPLY_TO_ALL = "last_conflict_apply_to_all"
 const val HAD_THANK_YOU_INSTALLED = "had_thank_you_installed"
 const val USE_24_HOUR_FORMAT = "use_24_hour_format"
-const val SUNDAY_FIRST = "sunday_first"
-const val YOUR_ALARM_SOUNDS = "your_alarm_sounds"
-const val SILENT = "silent"
 const val OTG_PARTITION = "otg_partition_2"
 const val IS_USING_MODIFIED_APP_ICON = "is_using_modified_app_icon"
 const val WAS_ORANGE_ICON_CHECKED = "was_orange_icon_checked"
@@ -112,14 +100,11 @@ const val WAS_BEFORE_RATE_SHOWN = "was_before_rate_shown"
 const val APP_SIDELOADING_STATUS = "app_sideloading_status"
 const val DATE_FORMAT = "date_format"
 const val WAS_APP_RATED = "was_app_rated"
-const val WAS_FOLDER_LOCKING_NOTICE_SHOWN = "was_folder_locking_notice_shown"
-const val LAST_RENAME_USED = "last_rename_used"
 const val LAST_RENAME_PATTERN_USED = "last_rename_pattern_used"
 const val LAST_EXPORTED_SETTINGS_FOLDER = "last_exported_settings_folder"
 const val LAST_BLOCKED_NUMBERS_EXPORT_PATH = "last_blocked_numbers_export_path"
 const val BLOCK_UNKNOWN_NUMBERS = "block_unknown_numbers"
 const val FONT_SIZE = "font_size"
-const val START_NAME_WITH_SURNAME = "start_name_with_surname"
 const val FAVORITES = "favorites"
 internal const val COLOR_PICKER_RECENT_COLORS = "color_picker_recent_colors"
 
@@ -166,8 +151,6 @@ const val SELECT_EXPORT_SETTINGS_FILE_INTENT = 1006
 const val REQUEST_CODE_SET_DEFAULT_DIALER = 1007
 const val CREATE_DOCUMENT_SDK_30 = 1008
 
-// sorting
-const val SORT_ORDER = "sort_order"
 const val SORT_BY_NAME = 1
 const val SORT_BY_DATE_MODIFIED = 2
 const val SORT_BY_SIZE = 4
@@ -180,9 +163,6 @@ const val PROTECTION_NONE = -1
 const val PROTECTION_PATTERN = 0
 const val PROTECTION_PIN = 1
 const val PROTECTION_FINGERPRINT = 2
-
-// renaming
-const val RENAME_SIMPLE = 0
 
 const val SHOW_ALL_TABS = -1
 
@@ -227,8 +207,6 @@ val photoExtensions: Array<String> get() = arrayOf(".jpg", ".png", ".jpeg", ".bm
 val videoExtensions: Array<String> get() = arrayOf(".mp4", ".mkv", ".webm", ".avi", ".3gp", ".mov", ".m4v", ".3gpp")
 val audioExtensions: Array<String> get() = arrayOf(".mp3", ".wav", ".wma", ".ogg", ".m4a", ".opus", ".flac", ".aac")
 val rawExtensions: Array<String> get() = arrayOf(".dng", ".orf", ".nef", ".arw", ".rw2", ".cr2", ".cr3")
-
-val extensionsSupportingEXIF: Array<String> get() = arrayOf(".jpg", ".jpeg", ".png", ".webp", ".dng")
 
 const val DATE_FORMAT_ONE = "dd.MM.yyyy"
 const val DATE_FORMAT_TWO = "dd/MM/yyyy"

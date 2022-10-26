@@ -101,14 +101,6 @@ fun String.isImageSlow() = isImageFast() || getMimeType().startsWith("image") ||
 fun String.isVideoSlow() = isVideoFast() || getMimeType().startsWith("video") || startsWith(MediaStore.Video.Media.EXTERNAL_CONTENT_URI.toString())
 fun String.isAudioSlow() = isAudioFast() || getMimeType().startsWith("audio") || startsWith(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI.toString())
 
-fun String.getGenericMimeType(): String {
-    if (!contains("/"))
-        return this
-
-    val type = substring(0, indexOf("/"))
-    return "$type/*"
-}
-
 fun String.getParentPath() = removeSuffix("/${getFilenameFromPath()}")
 
 fun String.getAvailableStorageB(): Long {
@@ -130,8 +122,6 @@ fun String.trimToComparableNumber(): String {
     val startIndex = Math.max(0, normalizedNumber.length - 9)
     return normalizedNumber.substring(startIndex)
 }
-
-fun String.normalizePhoneNumber() = PhoneNumberUtils.normalizeNumber(this)
 
 fun String.getMimeType(): String {
     val typesMap = HashMap<String, String>().apply {
@@ -736,5 +726,5 @@ fun String.getMimeType(): String {
         put("zip", "application/zip")
     }
 
-    return typesMap[getFilenameExtension().toLowerCase()] ?: ""
+    return typesMap[getFilenameExtension().lowercase(Locale.getDefault())] ?: ""
 }

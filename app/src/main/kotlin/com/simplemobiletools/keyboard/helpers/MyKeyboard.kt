@@ -275,7 +275,7 @@ class MyKeyboard {
         mDefaultHorizontalGap = 0
         mDefaultWidth = mDisplayWidth / 10
         mDefaultHeight = mDefaultWidth
-        mKeyboardHeightMultiplier = getKeyboardHeightMultiplier(context.config.keyboardHeightMultiplier);
+        mKeyboardHeightMultiplier = getKeyboardHeightMultiplier(context.config.keyboardHeightMultiplier)
         mKeys = ArrayList()
         mEnterKeyType = enterKeyType
         loadKeyboard(context, context.resources.getXml(xmlLayoutResId))
@@ -299,7 +299,7 @@ class MyKeyboard {
         row.defaultHeight = mDefaultHeight
         row.defaultWidth = keyWidth
         row.defaultHorizontalGap = mDefaultHorizontalGap
-        mKeyboardHeightMultiplier = getKeyboardHeightMultiplier(context.config.keyboardHeightMultiplier);
+        mKeyboardHeightMultiplier = getKeyboardHeightMultiplier(context.config.keyboardHeightMultiplier)
 
         characters.forEachIndexed { index, character ->
             val key = Key(row)

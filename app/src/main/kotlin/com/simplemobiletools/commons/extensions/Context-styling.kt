@@ -82,16 +82,6 @@ fun Context.isWhiteTheme() = baseConfig.textColor == DARK_GREY && baseConfig.pri
 
 fun Context.isUsingSystemDarkTheme() = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_YES != 0
 
-fun Context.getTimePickerDialogTheme() = when {
-    baseConfig.isUsingSystemTheme -> if (isUsingSystemDarkTheme()) {
-        R.style.MyTimePickerMaterialTheme_Dark
-    } else {
-        R.style.MyDateTimePickerMaterialTheme
-    }
-    baseConfig.backgroundColor.getContrastColor() == Color.WHITE -> R.style.MyDialogTheme_Dark
-    else -> R.style.MyDialogTheme
-}
-
 fun Context.getPopupMenuTheme(): Int {
     return if (isSPlus() && baseConfig.isUsingSystemTheme) {
         R.style.AppTheme_YouPopupMenuStyle
@@ -113,7 +103,7 @@ fun Context.getSharedTheme(callback: (sharedTheme: SharedTheme?) -> Unit) {
     }
 }
 
-fun Context.getSharedThemeSync(cursorLoader: CursorLoader): SharedTheme? {
+fun getSharedThemeSync(cursorLoader: CursorLoader): SharedTheme? {
     val cursor = cursorLoader.loadInBackground()
     cursor?.use {
         if (cursor.moveToFirst()) {

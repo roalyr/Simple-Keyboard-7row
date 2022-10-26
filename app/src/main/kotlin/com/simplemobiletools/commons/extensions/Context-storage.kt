@@ -17,7 +17,6 @@ import android.provider.DocumentsContract.Document
 import android.provider.MediaStore.*
 import android.text.TextUtils
 import androidx.annotation.RequiresApi
-import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
 import com.simplemobiletools.keyboard.R
@@ -46,7 +45,7 @@ fun Context.getSDCardPath(): String {
 
     val fullSDpattern = Pattern.compile(SD_OTG_PATTERN)
     var sdCardPath = directories.firstOrNull { fullSDpattern.matcher(it).matches() }
-        ?: directories.firstOrNull { !physicalPaths.contains(it.toLowerCase()) } ?: ""
+        ?: directories.firstOrNull { !physicalPaths.contains(it.lowercase(Locale.getDefault())) } ?: ""
 
     // on some devices no method retrieved any SD card path, so test if its not sdcard1 by any chance. It happened on an Android 5.1
     if (sdCardPath.trimEnd('/').isEmpty()) {
@@ -149,7 +148,7 @@ fun Context.humanizePath(path: String): String {
     }
 }
 
-fun Context.getInternalStoragePath() =
+fun getInternalStoragePath() =
     if (File("/storage/emulated/0").exists()) "/storage/emulated/0" else Environment.getExternalStorageDirectory().absolutePath.trimEnd('/')
 
 fun Context.isPathOnSD(path: String) = sdCardPath.isNotEmpty() && path.startsWith(sdCardPath)
@@ -334,14 +333,6 @@ fun Context.scanPathRecursively(path: String, callback: (() -> Unit)? = null) {
     scanPathsRecursively(arrayListOf(path), callback)
 }
 
-fun Context.scanFilesRecursively(files: List<File>, callback: (() -> Unit)? = null) {
-    val allPaths = ArrayList<String>()
-    for (file in files) {
-        allPaths.addAll(getPaths(file))
-    }
-    rescanPaths(allPaths, callback)
-}
-
 fun Context.scanPathsRecursively(paths: List<String>, callback: (() -> Unit)? = null) {
     val allPaths = ArrayList<String>()
     for (path in paths) {
@@ -387,7 +378,7 @@ fun getPaths(file: File): ArrayList<String> {
     return paths
 }
 
-fun Context.getFileUri(path: String) = when {
+fun getFileUri(path: String) = when {
     path.isImageSlow() -> Images.Media.EXTERNAL_CONTENT_URI
     path.isVideoSlow() -> Video.Media.EXTERNAL_CONTENT_URI
     path.isAudioSlow() -> Audio.Media.EXTERNAL_CONTENT_URI
@@ -749,17 +740,6 @@ fun Context.getAndroidSAFFileSize(path: String): Long {
     return getFileSize(treeUri, documentId)
 }
 
-fun Context.getAndroidSAFFileCount(path: String, countHidden: Boolean): Int {
-    val treeUri = getAndroidTreeUri(path).toUri()
-    if (treeUri == Uri.EMPTY) {
-        return 0
-    }
-
-    val documentId = createAndroidSAFDocumentId(path)
-    val rootDocId = getStorageRootIdForAndroidDir(path)
-    return getProperChildrenCount(rootDocId, treeUri, documentId, countHidden)
-}
-
 fun Context.getAndroidSAFDirectChildrenCount(path: String, countHidden: Boolean): Int {
     val treeUri = getAndroidTreeUri(path).toUri()
     if (treeUri == Uri.EMPTY) {
@@ -769,24 +749,6 @@ fun Context.getAndroidSAFDirectChildrenCount(path: String, countHidden: Boolean)
     val documentId = createAndroidSAFDocumentId(path)
     val rootDocId = getStorageRootIdForAndroidDir(path)
     return getDirectChildrenCount(rootDocId, treeUri, documentId, countHidden)
-}
-
-fun Context.getAndroidSAFLastModified(path: String): Long {
-    val treeUri = getAndroidTreeUri(path).toUri()
-    if (treeUri == Uri.EMPTY) {
-        return 0L
-    }
-
-    val documentId = createAndroidSAFDocumentId(path)
-    val projection = arrayOf(Document.COLUMN_LAST_MODIFIED)
-    val documentUri = DocumentsContract.buildDocumentUriUsingTree(treeUri, documentId)
-    return contentResolver.query(documentUri, projection, null, null, null)?.use { cursor ->
-        if (cursor.moveToFirst()) {
-            cursor.getLongValue(Document.COLUMN_LAST_MODIFIED)
-        } else {
-            0L
-        }
-    } ?: 0L
 }
 
 fun Context.deleteAndroidSAFDirectory(path: String, allowDeleteFolder: Boolean = false, callback: ((wasSuccess: Boolean) -> Unit)? = null) {
