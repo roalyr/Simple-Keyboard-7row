@@ -51,43 +51,4 @@ data class SimpleContact(
         }
     }
 
-    fun doesContainPhoneNumber(text: String): Boolean {
-        return if (text.isNotEmpty()) {
-            val normalizedText = text.normalizePhoneNumber()
-            if (normalizedText.isEmpty()) {
-                phoneNumbers.map { it.normalizedNumber }.any { phoneNumber ->
-                    phoneNumber.contains(text)
-                }
-            } else {
-                phoneNumbers.map { it.normalizedNumber }.any { phoneNumber ->
-                    PhoneNumberUtils.compare(phoneNumber.normalizePhoneNumber(), normalizedText) ||
-                        phoneNumber.contains(text) ||
-                        phoneNumber.normalizePhoneNumber().contains(normalizedText) ||
-                        phoneNumber.contains(normalizedText)
-                }
-            }
-        } else {
-            false
-        }
-    }
-
-    fun doesHavePhoneNumber(text: String): Boolean {
-        return if (text.isNotEmpty()) {
-            val normalizedText = text.normalizePhoneNumber()
-            if (normalizedText.isEmpty()) {
-                phoneNumbers.map { it.normalizedNumber }.any { phoneNumber ->
-                    phoneNumber == text
-                }
-            } else {
-                phoneNumbers.map { it.normalizedNumber }.any { phoneNumber ->
-                    PhoneNumberUtils.compare(phoneNumber.normalizePhoneNumber(), normalizedText) ||
-                        phoneNumber == text ||
-                        phoneNumber.normalizePhoneNumber() == normalizedText ||
-                        phoneNumber == normalizedText
-                }
-            }
-        } else {
-            false
-        }
-    }
 }

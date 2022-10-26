@@ -14,8 +14,3 @@ fun Resources.getColoredDrawableWithColor(drawableId: Int, color: Int, alpha: In
     return drawable
 }
 
-fun Resources.hasNavBar(): Boolean {
-    val id = getIdentifier("config_showNavigationBar", "bool", "android")
-    return id > 0 && getBoolean(id)
-}
-

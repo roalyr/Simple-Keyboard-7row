@@ -20,10 +20,6 @@ open class BaseConfig(val context: Context) {
         get() = prefs.getInt(APP_RUN_COUNT, 0)
         set(appRunCount) = prefs.edit().putInt(APP_RUN_COUNT, appRunCount).apply()
 
-    var lastVersion: Int
-        get() = prefs.getInt(LAST_VERSION, 0)
-        set(lastVersion) = prefs.edit().putInt(LAST_VERSION, lastVersion).apply()
-
     var primaryAndroidDataTreeUri: String
         get() = prefs.getString(PRIMARY_ANDROID_DATA_TREE_URI, "")!!
         set(uri) = prefs.edit().putString(PRIMARY_ANDROID_DATA_TREE_URI, uri).apply()
@@ -148,32 +144,6 @@ open class BaseConfig(val context: Context) {
         get() = prefs.getInt(PROTECTION_TYPE, PROTECTION_PATTERN)
         set(hiddenProtectionType) = prefs.edit().putInt(PROTECTION_TYPE, hiddenProtectionType).apply()
 
-    // whole app launch protection
-    var isAppPasswordProtectionOn: Boolean
-        get() = prefs.getBoolean(APP_PASSWORD_PROTECTION, false)
-        set(isAppPasswordProtectionOn) = prefs.edit().putBoolean(APP_PASSWORD_PROTECTION, isAppPasswordProtectionOn).apply()
-
-    var appPasswordHash: String
-        get() = prefs.getString(APP_PASSWORD_HASH, "")!!
-        set(appPasswordHash) = prefs.edit().putString(APP_PASSWORD_HASH, appPasswordHash).apply()
-
-    var appProtectionType: Int
-        get() = prefs.getInt(APP_PROTECTION_TYPE, PROTECTION_PATTERN)
-        set(appProtectionType) = prefs.edit().putInt(APP_PROTECTION_TYPE, appProtectionType).apply()
-
-    // file delete and move protection
-    var isDeletePasswordProtectionOn: Boolean
-        get() = prefs.getBoolean(DELETE_PASSWORD_PROTECTION, false)
-        set(isDeletePasswordProtectionOn) = prefs.edit().putBoolean(DELETE_PASSWORD_PROTECTION, isDeletePasswordProtectionOn).apply()
-
-    var deletePasswordHash: String
-        get() = prefs.getString(DELETE_PASSWORD_HASH, "")!!
-        set(deletePasswordHash) = prefs.edit().putString(DELETE_PASSWORD_HASH, deletePasswordHash).apply()
-
-    var deleteProtectionType: Int
-        get() = prefs.getInt(DELETE_PROTECTION_TYPE, PROTECTION_PATTERN)
-        set(deleteProtectionType) = prefs.edit().putInt(DELETE_PROTECTION_TYPE, deleteProtectionType).apply()
-
     fun isFolderProtected(path: String) = getFolderProtectionType(path) != PROTECTION_NONE
 
     fun getFolderProtectionHash(path: String) = prefs.getString("$PROTECTED_FOLDER_HASH$path", "") ?: ""
@@ -216,11 +186,6 @@ open class BaseConfig(val context: Context) {
         get() = prefs.getBoolean(IS_USING_SYSTEM_THEME, false)
         set(isUsingSystemTheme) = prefs.edit().putBoolean(IS_USING_SYSTEM_THEME, isUsingSystemTheme).apply()
 
-    var wasCustomThemeSwitchDescriptionShown: Boolean
-        get() = prefs.getBoolean(WAS_CUSTOM_THEME_SWITCH_DESCRIPTION_SHOWN, false)
-        set(wasCustomThemeSwitchDescriptionShown) = prefs.edit().putBoolean(WAS_CUSTOM_THEME_SWITCH_DESCRIPTION_SHOWN, wasCustomThemeSwitchDescriptionShown)
-            .apply()
-
     var wasSharedThemeForced: Boolean
         get() = prefs.getBoolean(WAS_SHARED_THEME_FORCED, false)
         set(wasSharedThemeForced) = prefs.edit().putBoolean(WAS_SHARED_THEME_FORCED, wasSharedThemeForced).apply()
@@ -233,10 +198,6 @@ open class BaseConfig(val context: Context) {
         get() = prefs.getInt(LAST_CONFLICT_RESOLUTION, CONFLICT_SKIP)
         set(lastConflictResolution) = prefs.edit().putInt(LAST_CONFLICT_RESOLUTION, lastConflictResolution).apply()
 
-    var sorting: Int
-        get() = prefs.getInt(SORT_ORDER, context.resources.getInteger(R.integer.default_sorting))
-        set(sorting) = prefs.edit().putInt(SORT_ORDER, sorting).apply()
-
     var hadThankYouInstalled: Boolean
         get() = prefs.getBoolean(HAD_THANK_YOU_INSTALLED, false)
         set(hadThankYouInstalled) = prefs.edit().putBoolean(HAD_THANK_YOU_INSTALLED, hadThankYouInstalled).apply()
@@ -244,17 +205,6 @@ open class BaseConfig(val context: Context) {
     var use24HourFormat: Boolean
         get() = prefs.getBoolean(USE_24_HOUR_FORMAT, DateFormat.is24HourFormat(context))
         set(use24HourFormat) = prefs.edit().putBoolean(USE_24_HOUR_FORMAT, use24HourFormat).apply()
-
-    var isSundayFirst: Boolean
-        get() {
-            val isSundayFirst = Calendar.getInstance(Locale.getDefault()).firstDayOfWeek == Calendar.SUNDAY
-            return prefs.getBoolean(SUNDAY_FIRST, isSundayFirst)
-        }
-        set(sundayFirst) = prefs.edit().putBoolean(SUNDAY_FIRST, sundayFirst).apply()
-
-    var yourAlarmSounds: String
-        get() = prefs.getString(YOUR_ALARM_SOUNDS, "")!!
-        set(yourAlarmSounds) = prefs.edit().putString(YOUR_ALARM_SOUNDS, yourAlarmSounds).apply()
 
     var isUsingModifiedAppIcon: Boolean
         get() = prefs.getBoolean(IS_USING_MODIFIED_APP_ICON, false)
@@ -308,14 +258,6 @@ open class BaseConfig(val context: Context) {
         get() = prefs.getBoolean(WAS_APP_RATED, false)
         set(wasAppRated) = prefs.edit().putBoolean(WAS_APP_RATED, wasAppRated).apply()
 
-    var wasFolderLockingNoticeShown: Boolean
-        get() = prefs.getBoolean(WAS_FOLDER_LOCKING_NOTICE_SHOWN, false)
-        set(wasFolderLockingNoticeShown) = prefs.edit().putBoolean(WAS_FOLDER_LOCKING_NOTICE_SHOWN, wasFolderLockingNoticeShown).apply()
-
-    var lastRenameUsed: Int
-        get() = prefs.getInt(LAST_RENAME_USED, RENAME_SIMPLE)
-        set(lastRenameUsed) = prefs.edit().putInt(LAST_RENAME_USED, lastRenameUsed).apply()
-
     var lastRenamePatternUsed: String
         get() = prefs.getString(LAST_RENAME_PATTERN_USED, "")!!
         set(lastRenamePatternUsed) = prefs.edit().putString(LAST_RENAME_PATTERN_USED, lastRenamePatternUsed).apply()
@@ -335,10 +277,6 @@ open class BaseConfig(val context: Context) {
     var fontSize: Int
         get() = prefs.getInt(FONT_SIZE, context.resources.getInteger(R.integer.default_font_size))
         set(size) = prefs.edit().putInt(FONT_SIZE, size).apply()
-
-    var startNameWithSurname: Boolean
-        get() = prefs.getBoolean(START_NAME_WITH_SURNAME, false)
-        set(startNameWithSurname) = prefs.edit().putBoolean(START_NAME_WITH_SURNAME, startNameWithSurname).apply()
 
     var favorites: MutableSet<String>
         get() = prefs.getStringSet(FAVORITES, HashSet())!!

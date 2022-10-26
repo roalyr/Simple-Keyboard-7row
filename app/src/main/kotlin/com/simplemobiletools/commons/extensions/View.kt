@@ -3,15 +3,10 @@ package com.simplemobiletools.commons.extensions
 import android.view.HapticFeedbackConstants
 import android.view.View
 import android.view.ViewTreeObserver
-import com.simplemobiletools.commons.helpers.SHORT_ANIMATION_DURATION
 
 fun View.beVisibleIf(beVisible: Boolean) = if (beVisible) beVisible() else beGone()
 
 fun View.beGoneIf(beGone: Boolean) = beVisibleIf(!beGone)
-
-fun View.beInvisible() {
-    visibility = View.INVISIBLE
-}
 
 fun View.beVisible() {
     visibility = View.VISIBLE

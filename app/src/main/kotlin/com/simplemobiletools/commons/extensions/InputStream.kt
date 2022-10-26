@@ -18,4 +18,3 @@ fun InputStream.getDigest(algorithm: String): String {
     }
 }
 
-fun InputStream.md5(): String = this.getDigest(MD5)

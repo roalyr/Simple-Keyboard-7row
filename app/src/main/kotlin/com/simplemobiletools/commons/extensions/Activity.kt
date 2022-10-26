@@ -335,40 +335,6 @@ fun Activity.redirectToRateUs() {
     }
 }
 
-fun Activity.sharePathIntent(path: String, applicationId: String) {
-    ensureBackgroundThread {
-        val newUri = getFinalUriFromPath(path, applicationId) ?: return@ensureBackgroundThread
-        Intent().apply {
-            action = Intent.ACTION_SEND
-            putExtra(EXTRA_STREAM, newUri)
-            type = getUriMimeType(path, newUri)
-            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-
-            try {
-                startActivity(Intent.createChooser(this, getString(R.string.share_via)))
-            } catch (e: ActivityNotFoundException) {
-                toast(R.string.no_app_found)
-            } catch (e: RuntimeException) {
-                if (e.cause is TransactionTooLargeException) {
-                    toast(R.string.maximum_share_reached)
-                } else {
-                    showErrorToast(e)
-                }
-            } catch (e: Exception) {
-                showErrorToast(e)
-            }
-        }
-    }
-}
-
-fun Activity.showLocationOnMap(coordinates: String) {
-    val uriBegin = "geo:${coordinates.replace(" ", "")}"
-    val encodedQuery = Uri.encode(coordinates)
-    val uriString = "$uriBegin?q=$encodedQuery&z=16"
-    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uriString))
-    launchActivityIntent(intent)
-}
-
 fun Activity.getFinalUriFromPath(path: String, applicationId: String): Uri? {
     val uri = try {
         ensurePublicUri(path, applicationId)
@@ -383,28 +349,6 @@ fun Activity.getFinalUriFromPath(path: String, applicationId: String): Uri? {
     }
 
     return uri
-}
-
-fun Activity.tryGenericMimeType(intent: Intent, mimeType: String, uri: Uri): Boolean {
-    var genericMimeType = mimeType.getGenericMimeType()
-    if (genericMimeType.isEmpty()) {
-        genericMimeType = "*/*"
-    }
-
-    intent.setDataAndType(uri, genericMimeType)
-
-    return try {
-        startActivity(intent)
-        true
-    } catch (e: Exception) {
-        false
-    }
-}
-
-fun BaseSimpleActivity.deleteFolders(folders: List<FileDirItem>, deleteMediaOnly: Boolean = true, callback: ((wasSuccess: Boolean) -> Unit)? = null) {
-    ensureBackgroundThread {
-        deleteFoldersBg(folders, deleteMediaOnly, callback)
-    }
 }
 
 fun BaseSimpleActivity.deleteFoldersBg(folders: List<FileDirItem>, deleteMediaOnly: Boolean = true, callback: ((wasSuccess: Boolean) -> Unit)? = null) {
@@ -459,12 +403,6 @@ fun BaseSimpleActivity.deleteFolderBg(fileDirItem: FileDirItem, deleteMediaOnly:
     }
     runOnUiThread {
         callback?.invoke(true)
-    }
-}
-
-fun BaseSimpleActivity.deleteFiles(files: List<FileDirItem>, allowDeleteFolder: Boolean = false, callback: ((wasSuccess: Boolean) -> Unit)? = null) {
-    ensureBackgroundThread {
-        deleteFilesBg(files, allowDeleteFolder, callback)
     }
 }
 
@@ -939,12 +877,6 @@ fun Activity.hideKeyboardSync() {
     currentFocus?.clearFocus()
 }
 
-fun Activity.showKeyboard(et: EditText) {
-    et.requestFocus()
-    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-    imm.showSoftInput(et, InputMethodManager.SHOW_IMPLICIT)
-}
-
 fun BaseSimpleActivity.getFileOutputStream(fileDirItem: FileDirItem, allowCreatingNewFile: Boolean = false, callback: (outputStream: OutputStream?) -> Unit) {
     val targetFile = File(fileDirItem.path)
     when {
@@ -1271,104 +1203,6 @@ fun Activity.getAlertDialogBuilder() = if (baseConfig.isUsingSystemTheme) {
     MaterialAlertDialogBuilder(this)
 } else {
     AlertDialog.Builder(this)
-}
-
-fun Activity.showPickSecondsDialog(
-    curSeconds: Int, isSnoozePicker: Boolean = false, showSecondsAtCustomDialog: Boolean = false, showDuringDayOption: Boolean = false,
-    cancelCallback: (() -> Unit)? = null, callback: (seconds: Int) -> Unit
-) {
-    hideKeyboard()
-    val seconds = TreeSet<Int>()
-    seconds.apply {
-        if (!isSnoozePicker) {
-            add(-1)
-            add(0)
-        }
-        add(1 * MINUTE_SECONDS)
-        add(5 * MINUTE_SECONDS)
-        add(10 * MINUTE_SECONDS)
-        add(30 * MINUTE_SECONDS)
-        add(60 * MINUTE_SECONDS)
-        add(curSeconds)
-    }
-
-    val items = ArrayList<RadioItem>(seconds.size + 1)
-    seconds.mapIndexedTo(items) { index, value ->
-        RadioItem(index, getFormattedSeconds(value, !isSnoozePicker), value)
-    }
-
-    var selectedIndex = 0
-    seconds.forEachIndexed { index, value ->
-        if (value == curSeconds) {
-            selectedIndex = index
-        }
-    }
-
-    items.add(RadioItem(-2, getString(R.string.custom)))
-
-    if (showDuringDayOption) {
-        items.add(RadioItem(-3, getString(R.string.during_day_at_hh_mm)))
-    }
-
-    RadioGroupDialog(this, items, selectedIndex, showOKButton = isSnoozePicker, cancelCallback = cancelCallback) {
-        when (it) {
-            -2 -> {
-                CustomIntervalPickerDialog(this, showSeconds = showSecondsAtCustomDialog) {
-                    callback(it)
-                }
-            }
-            -3 -> {
-                TimePickerDialog(
-                    this, getTimePickerDialogTheme(),
-                    { view, hourOfDay, minute -> callback(hourOfDay * -3600 + minute * -60) },
-                    curSeconds / 3600, curSeconds % 3600, baseConfig.use24HourFormat
-                ).show()
-            }
-            else -> {
-                callback(it as Int)
-            }
-        }
-    }
-}
-
-fun BaseSimpleActivity.getAlarmSounds(type: Int, callback: (ArrayList<AlarmSound>) -> Unit) {
-    val alarms = ArrayList<AlarmSound>()
-    val manager = RingtoneManager(this)
-    manager.setType(type)
-
-    try {
-        val cursor = manager.cursor
-        var curId = 1
-        val silentAlarm = AlarmSound(curId++, getString(R.string.no_sound), SILENT)
-        alarms.add(silentAlarm)
-
-        while (cursor.moveToNext()) {
-            val title = cursor.getString(RingtoneManager.TITLE_COLUMN_INDEX)
-            var uri = cursor.getString(RingtoneManager.URI_COLUMN_INDEX)
-            val id = cursor.getString(RingtoneManager.ID_COLUMN_INDEX)
-            if (!uri.endsWith(id)) {
-                uri += "/$id"
-            }
-
-            val alarmSound = AlarmSound(curId++, title, uri)
-            alarms.add(alarmSound)
-        }
-        callback(alarms)
-    } catch (e: Exception) {
-        if (e is SecurityException) {
-            handlePermission(PERMISSION_READ_STORAGE) {
-                if (it) {
-                    getAlarmSounds(type, callback)
-                } else {
-                    showErrorToast(e)
-                    callback(ArrayList())
-                }
-            }
-        } else {
-            showErrorToast(e)
-            callback(ArrayList())
-        }
-    }
 }
 
 fun Activity.checkAppSideloading(): Boolean {

@@ -105,48 +105,6 @@ fun Context.isBiometricIdAvailable(): Boolean = when (BiometricManager.from(this
     else -> false
 }
 
-private fun Context.queryCursorDesc(
-    uri: Uri,
-    projection: Array<String>,
-    sortColumn: String,
-    limit: Int,
-): Cursor? {
-    return if (isRPlus()) {
-        val queryArgs = bundleOf(
-            ContentResolver.QUERY_ARG_LIMIT to limit,
-            ContentResolver.QUERY_ARG_SORT_DIRECTION to ContentResolver.QUERY_SORT_DIRECTION_DESCENDING,
-            ContentResolver.QUERY_ARG_SORT_COLUMNS to arrayOf(sortColumn),
-        )
-        contentResolver.query(uri, projection, queryArgs, null)
-    } else {
-        val sortOrder = "$sortColumn DESC LIMIT $limit"
-        contentResolver.query(uri, projection, null, null, sortOrder)
-    }
-}
-
-fun Context.getDataColumn(uri: Uri, selection: String? = null, selectionArgs: Array<String>? = null): String? {
-    try {
-        val projection = arrayOf(Files.FileColumns.DATA)
-        val cursor = contentResolver.query(uri, projection, selection, selectionArgs, null)
-        cursor?.use {
-            if (cursor.moveToFirst()) {
-                val data = cursor.getStringValue(Files.FileColumns.DATA)
-                if (data != "null") {
-                    return data
-                }
-            }
-        }
-    } catch (e: Exception) {
-    }
-    return null
-}
-
-private fun isMediaDocument(uri: Uri) = uri.authority == "com.android.providers.media.documents"
-
-private fun isDownloadsDocument(uri: Uri) = uri.authority == "com.android.providers.downloads.documents"
-
-private fun isExternalStorageDocument(uri: Uri) = uri.authority == "com.android.externalstorage.documents"
-
 fun Context.hasPermission(permId: Int) = ContextCompat.checkSelfPermission(this, getPermissionString(permId)) == PackageManager.PERMISSION_GRANTED
 
 fun Context.getPermissionString(id: Int) = when (id) {
@@ -248,14 +206,6 @@ fun Context.queryCursor(
         if (showErrors) {
             showErrorToast(e)
         }
-    }
-}
-
-fun Context.getFilenameFromUri(uri: Uri): String {
-    return if (uri.scheme == "file") {
-        File(uri.toString()).name
-    } else {
-        getFilenameFromContentUri(uri) ?: uri.lastPathSegment ?: ""
     }
 }
 
@@ -385,39 +335,6 @@ fun Context.isPackageInstalled(pkgName: String): Boolean {
     }
 }
 
-fun Context.formatSecondsToTimeString(totalSeconds: Int): String {
-    val days = totalSeconds / DAY_SECONDS
-    val hours = (totalSeconds % DAY_SECONDS) / HOUR_SECONDS
-    val minutes = (totalSeconds % HOUR_SECONDS) / MINUTE_SECONDS
-    val seconds = totalSeconds % MINUTE_SECONDS
-    val timesString = StringBuilder()
-    if (days > 0) {
-        val daysString = String.format(resources.getQuantityString(R.plurals.days, days, days))
-        timesString.append("$daysString, ")
-    }
-
-    if (hours > 0) {
-        val hoursString = String.format(resources.getQuantityString(R.plurals.hours, hours, hours))
-        timesString.append("$hoursString, ")
-    }
-
-    if (minutes > 0) {
-        val minutesString = String.format(resources.getQuantityString(R.plurals.minutes, minutes, minutes))
-        timesString.append("$minutesString, ")
-    }
-
-    if (seconds > 0) {
-        val secondsString = String.format(resources.getQuantityString(R.plurals.seconds, seconds, seconds))
-        timesString.append(secondsString)
-    }
-
-    var result = timesString.toString().trim().trimEnd(',')
-    if (result.isEmpty()) {
-        result = String.format(resources.getQuantityString(R.plurals.minutes, 0, 0))
-    }
-    return result
-}
-
 fun Context.getFormattedSeconds(seconds: Int, showBefore: Boolean = true) = when (seconds) {
     -1 -> getString(R.string.no_reminder)
     0 -> getString(R.string.at_start)
@@ -457,22 +374,6 @@ fun Context.getFormattedSeconds(seconds: Int, showBefore: Boolean = true) = when
             }
         }
     }
-}
-
-fun Context.getDefaultAlarmTitle(type: Int): String {
-    val alarmString = getString(R.string.alarm)
-    return try {
-        RingtoneManager.getRingtone(this, RingtoneManager.getDefaultUri(type))?.getTitle(this) ?: alarmString
-    } catch (e: Exception) {
-        alarmString
-    }
-}
-
-fun Context.saveExifRotation(exif: ExifInterface, degrees: Int) {
-    val orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
-    val orientationDegrees = (orientation.degreesFromOrientation() + degrees) % 360
-    exif.setAttribute(ExifInterface.TAG_ORIENTATION, orientationDegrees.orientationFromDegrees())
-    exif.saveAttributes()
 }
 
 fun Context.getCanAppBeUpgraded() = proPackages.contains(baseConfig.appId.removeSuffix(".debug").removePrefix("com.simplemobiletools."))
@@ -689,13 +590,6 @@ val Context.notificationManager: NotificationManager get() = getSystemService(Co
 val Context.navigationBarOnSide: Boolean get() = usableScreenSize.x < realScreenSize.x && usableScreenSize.x > usableScreenSize.y
 val Context.navigationBarOnBottom: Boolean get() = usableScreenSize.y < realScreenSize.y
 
-val Context.navigationBarSize: Point
-    get() = when {
-        navigationBarOnSide -> Point(newNavigationBarHeight, usableScreenSize.y)
-        navigationBarOnBottom -> Point(usableScreenSize.x, newNavigationBarHeight)
-        else -> Point()
-    }
-
 val Context.newNavigationBarHeight: Int
     get() {
         var navigationBarHeight = 0
@@ -778,19 +672,6 @@ fun Context.deleteBlockedNumber(number: String) {
     val selection = "${BlockedNumbers.COLUMN_ORIGINAL_NUMBER} = ?"
     val selectionArgs = arrayOf(number)
     contentResolver.delete(BlockedNumbers.CONTENT_URI, selection, selectionArgs)
-}
-
-fun Context.isNumberBlockedByPattern(number: String, blockedNumbers: ArrayList<BlockedNumber> = getBlockedNumbers()): Boolean {
-    for (blockedNumber in blockedNumbers) {
-        val num = blockedNumber.number
-        if (num.contains("*")) {
-            val pattern = num.replace("+", "\\+").replace("*", ".*")
-            if (number.matches(pattern.toRegex())) {
-                return true
-            }
-        }
-    }
-    return false
 }
 
 fun Context.copyToClipboard(text: String) {

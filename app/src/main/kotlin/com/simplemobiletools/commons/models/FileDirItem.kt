@@ -88,43 +88,7 @@ open class FileDirItem(
         }
     }
 
-    fun getProperFileCount(context: Context, countHidden: Boolean): Int {
-        return when {
-            context.isRestrictedSAFOnlyRoot(path) -> context.getAndroidSAFFileCount(path, countHidden)
-            context.isPathOnOTG(path) -> context.getDocumentFile(path)?.getFileCount(countHidden) ?: 0
-            else -> File(path).getFileCount(countHidden)
-        }
-    }
-
-    fun getDirectChildrenCount(context: Context, countHiddenItems: Boolean): Int {
-        return when {
-            context.isRestrictedSAFOnlyRoot(path) -> context.getAndroidSAFDirectChildrenCount(path, countHiddenItems)
-            context.isPathOnOTG(path) -> context.getDocumentFile(path)?.listFiles()?.filter { if (countHiddenItems) true else !it.name!!.startsWith(".") }?.size
-                ?: 0
-            else -> File(path).getDirectChildrenCount(context, countHiddenItems)
-        }
-    }
-
-    fun getLastModified(context: Context): Long {
-        return when {
-            context.isRestrictedSAFOnlyRoot(path) -> context.getAndroidSAFLastModified(path)
-            context.isPathOnOTG(path) -> context.getFastDocumentFile(path)?.lastModified() ?: 0L
-            isNougatPlus() && path.startsWith("content://") -> context.getMediaStoreLastModified(path)
-            else -> File(path).lastModified()
-        }
-    }
-
     fun getParentPath() = path.getParentPath()
-
-    fun getDuration(context: Context) = context.getDuration(path)?.getFormattedDuration()
-
-    fun getArtist(context: Context) = context.getArtist(path)
-
-    fun getAlbum(context: Context) = context.getAlbum(path)
-
-    fun getTitle(context: Context) = context.getTitle(path)
-
-    fun getResolution(context: Context) = context.getResolution(path)
 
     fun getSignature(): String {
         val lastModified = if (modified > 1) {

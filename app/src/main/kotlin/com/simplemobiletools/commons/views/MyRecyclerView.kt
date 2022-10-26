@@ -200,11 +200,6 @@ open class MyRecyclerView : RecyclerView {
         this.dragListener = dragListener
     }
 
-    fun setupZoomListener(zoomListener: MyZoomListener?) {
-        isZoomEnabled = zoomListener != null
-        this.zoomListener = zoomListener
-    }
-
     fun setDragSelectActive(initialSelection: Int) {
         if (dragSelectActive || !isDragSelectionEnabled)
             return

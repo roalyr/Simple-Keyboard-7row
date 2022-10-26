@@ -8,8 +8,6 @@ import java.util.*
 
 fun File.isMediaFile() = absolutePath.isMediaFile()
 
-fun File.getMimeType() = absolutePath.getMimeType()
-
 fun File.getProperSize(countHiddenItems: Boolean): Long {
     return if (isDirectory) {
         getDirectorySize(this, countHiddenItems)
@@ -92,33 +90,6 @@ fun File.containsNoMedia(): Boolean {
     }
 }
 
-fun File.doesThisOrParentHaveNoMedia(
-    folderNoMediaStatuses: HashMap<String, Boolean>,
-    callback: ((path: String, hasNoMedia: Boolean) -> Unit)?
-): Boolean {
-    var curFile = this
-    while (true) {
-        val noMediaPath = "${curFile.absolutePath}/$NOMEDIA"
-        val hasNoMedia = if (folderNoMediaStatuses.keys.contains(noMediaPath)) {
-            folderNoMediaStatuses[noMediaPath]!!
-        } else {
-            val contains = curFile.containsNoMedia()
-            callback?.invoke(curFile.absolutePath, contains)
-            contains
-        }
-
-        if (hasNoMedia) {
-            return true
-        }
-
-        curFile = curFile.parentFile ?: break
-        if (curFile.absolutePath == "/") {
-            break
-        }
-    }
-    return false
-}
-
 fun File.getDigest(algorithm: String): String? {
     return try {
         inputStream().getDigest(algorithm)
@@ -127,4 +98,3 @@ fun File.getDigest(algorithm: String): String? {
     }
 }
 
-fun File.md5() = this.getDigest(MD5)

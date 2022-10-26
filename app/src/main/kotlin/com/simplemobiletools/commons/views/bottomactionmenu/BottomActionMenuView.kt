@@ -51,10 +51,6 @@ class BottomActionMenuView : LinearLayout {
         elevation = 2f
     }
 
-    fun setCallback(listener: BottomActionMenuCallback?) {
-        this.callback = listener
-    }
-
     fun hide() {
         slideDownToGone()
     }
@@ -97,11 +93,6 @@ class BottomActionMenuView : LinearLayout {
                         beVisibleIf(visible)
                     }
                 })
-    }
-
-    fun setup(items: List<BottomActionMenuItem>) {
-        items.forEach { itemsLookup[it.id] = it }
-        init()
     }
 
     fun add(item: BottomActionMenuItem) {

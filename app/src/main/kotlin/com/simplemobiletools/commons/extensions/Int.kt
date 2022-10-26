@@ -43,16 +43,6 @@ fun Int.getFormattedDuration(forceShowHours: Boolean = false): String {
     return sb.toString()
 }
 
-fun Int.isThisYear(): Boolean {
-    val time = Time()
-    time.set(this * 1000L)
-
-    val thenYear = time.year
-    time.set(System.currentTimeMillis())
-
-    return (thenYear == time.year)
-}
-
 // TODO: how to do "bits & ~bit" in kotlin?
 fun Int.removeBit(bit: Int) = addBit(bit) - bit
 

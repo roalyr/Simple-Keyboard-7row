@@ -101,10 +101,6 @@ fun String.isImageSlow() = isImageFast() || getMimeType().startsWith("image") ||
 fun String.isVideoSlow() = isVideoFast() || getMimeType().startsWith("video") || startsWith(MediaStore.Video.Media.EXTERNAL_CONTENT_URI.toString())
 fun String.isAudioSlow() = isAudioFast() || getMimeType().startsWith("audio") || startsWith(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI.toString())
 
-fun String.canModifyEXIF() = extensionsSupportingEXIF.any { endsWith(it, true) }
-
-fun String.areDigitsOnly() = matches(Regex("[0-9]+"))
-
 fun String.getGenericMimeType(): String {
     if (!contains("/"))
         return this
@@ -114,17 +110,6 @@ fun String.getGenericMimeType(): String {
 }
 
 fun String.getParentPath() = removeSuffix("/${getFilenameFromPath()}")
-
-fun String.getFileKey(lastModified: Long? = null): String {
-    val file = File(this)
-    val modified = if (lastModified != null && lastModified > 0) {
-        lastModified
-    } else {
-        file.lastModified()
-    }
-
-    return "${file.absolutePath}$modified"
-}
 
 fun String.getAvailableStorageB(): Long {
     return try {
@@ -145,9 +130,6 @@ fun String.trimToComparableNumber(): String {
     val startIndex = Math.max(0, normalizedNumber.length - 9)
     return normalizedNumber.substring(startIndex)
 }
-
-// get the contact names first letter at showing the placeholder without image
-fun String.getNameLetter() = normalizeString().toCharArray().getOrNull(0)?.toString()?.toUpperCase(Locale.getDefault()) ?: "A"
 
 fun String.normalizePhoneNumber() = PhoneNumberUtils.normalizeNumber(this)
 

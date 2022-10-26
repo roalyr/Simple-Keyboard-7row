@@ -19,20 +19,15 @@ const val APP_VERSION_NAME = "app_version_name"
 const val APP_ICON_IDS = "app_icon_ids"
 const val APP_ID = "app_id"
 const val APP_LAUNCHER_NAME = "app_launcher_name"
-const val REAL_FILE_PATH = "real_file_path_2"
-const val IS_FROM_GALLERY = "is_from_gallery"
 const val BLOCKED_NUMBERS_EXPORT_DELIMITER = ","
 const val BLOCKED_NUMBERS_EXPORT_EXTENSION = ".txt"
 const val NOMEDIA = ".nomedia"
-const val YOUR_ALARM_SOUNDS_MIN_ID = 1000
 const val SHOW_FAQ_BEFORE_MAIL = "show_faq_before_mail"
 const val INVALID_NAVIGATION_BAR_COLOR = -1
 const val SAVE_DISCARD_PROMPT_INTERVAL = 1000L
 const val SD_OTG_PATTERN = "^/storage/[A-Za-z0-9]{4}-[A-Za-z0-9]{4}$"
 const val SD_OTG_SHORT = "^[A-Za-z0-9]{4}-[A-Za-z0-9]{4}$"
-const val KEY_MAILTO = "mailto"
 const val MD5 = "MD5"
-const val SHORT_ANIMATION_DURATION = 150L
 val DARK_GREY = 0xFF333333.toInt()
 
 const val MEDIUM_ALPHA = 0.5f
@@ -73,7 +68,6 @@ const val ACCENT_COLOR = "accent_color"
 const val APP_ICON_COLOR = "app_icon_color"
 const val NAVIGATION_BAR_COLOR = "navigation_bar_color"
 const val DEFAULT_NAVIGATION_BAR_COLOR = "default_navigation_bar_color"
-const val LAST_HANDLED_SHORTCUT_COLOR = "last_handled_shortcut_color"
 const val LAST_ICON_COLOR = "last_icon_color"
 const val CUSTOM_TEXT_COLOR = "custom_text_color"
 const val CUSTOM_BACKGROUND_COLOR = "custom_background_color"
@@ -81,8 +75,6 @@ const val CUSTOM_PRIMARY_COLOR = "custom_primary_color"
 const val CUSTOM_ACCENT_COLOR = "custom_accent_color"
 const val CUSTOM_NAVIGATION_BAR_COLOR = "custom_navigation_bar_color"
 const val CUSTOM_APP_ICON_COLOR = "custom_app_icon_color"
-const val WIDGET_BG_COLOR = "widget_bg_color"
-const val WIDGET_TEXT_COLOR = "widget_text_color"
 const val PASSWORD_PROTECTION = "password_protection"
 const val PASSWORD_HASH = "password_hash"
 const val PROTECTION_TYPE = "protection_type"
@@ -104,41 +96,22 @@ const val IS_USING_SYSTEM_THEME = "is_using_system_theme"
 const val SHOULD_USE_SHARED_THEME = "should_use_shared_theme"
 const val WAS_SHARED_THEME_FORCED = "was_shared_theme_forced"
 const val WAS_CUSTOM_THEME_SWITCH_DESCRIPTION_SHOWN = "was_custom_theme_switch_description_shown"
-const val SHOW_INFO_BUBBLE = "show_info_bubble"
 const val LAST_CONFLICT_RESOLUTION = "last_conflict_resolution"
 const val LAST_CONFLICT_APPLY_TO_ALL = "last_conflict_apply_to_all"
 const val HAD_THANK_YOU_INSTALLED = "had_thank_you_installed"
-const val SKIP_DELETE_CONFIRMATION = "skip_delete_confirmation"
-const val ENABLE_PULL_TO_REFRESH = "enable_pull_to_refresh"
-const val SCROLL_HORIZONTALLY = "scroll_horizontally"
-const val PREVENT_PHONE_FROM_SLEEPING = "prevent_phone_from_sleeping"
-const val LAST_USED_VIEW_PAGER_PAGE = "last_used_view_pager_page"
 const val USE_24_HOUR_FORMAT = "use_24_hour_format"
 const val SUNDAY_FIRST = "sunday_first"
-const val WAS_ALARM_WARNING_SHOWN = "was_alarm_warning_shown"
-const val WAS_REMINDER_WARNING_SHOWN = "was_reminder_warning_shown"
-const val USE_SAME_SNOOZE = "use_same_snooze"
-const val SNOOZE_TIME = "snooze_delay"
-const val VIBRATE_ON_BUTTON_PRESS = "vibrate_on_button_press"
 const val YOUR_ALARM_SOUNDS = "your_alarm_sounds"
 const val SILENT = "silent"
 const val OTG_PARTITION = "otg_partition_2"
 const val IS_USING_MODIFIED_APP_ICON = "is_using_modified_app_icon"
-const val INITIAL_WIDGET_HEIGHT = "initial_widget_height"
-const val WIDGET_ID_TO_MEASURE = "widget_id_to_measure"
 const val WAS_ORANGE_ICON_CHECKED = "was_orange_icon_checked"
 const val WAS_APP_ON_SD_SHOWN = "was_app_on_sd_shown"
 const val WAS_BEFORE_ASKING_SHOWN = "was_before_asking_shown"
 const val WAS_BEFORE_RATE_SHOWN = "was_before_rate_shown"
-const val WAS_INITIAL_UPGRADE_TO_PRO_SHOWN = "was_initial_upgrade_to_pro_shown"
-const val WAS_APP_ICON_CUSTOMIZATION_WARNING_SHOWN = "was_app_icon_customization_warning_shown"
 const val APP_SIDELOADING_STATUS = "app_sideloading_status"
 const val DATE_FORMAT = "date_format"
-const val WAS_OTG_HANDLED = "was_otg_handled_2"
-const val WAS_UPGRADED_FROM_FREE_SHOWN = "was_upgraded_from_free_shown"
-const val WAS_RATE_US_PROMPT_SHOWN = "was_rate_us_prompt_shown"
 const val WAS_APP_RATED = "was_app_rated"
-const val WAS_SORTING_BY_NUMERIC_VALUE_ADDED = "was_sorting_by_numeric_value_added"
 const val WAS_FOLDER_LOCKING_NOTICE_SHOWN = "was_folder_locking_notice_shown"
 const val LAST_RENAME_USED = "last_rename_used"
 const val LAST_RENAME_PATTERN_USED = "last_rename_pattern_used"
@@ -146,11 +119,8 @@ const val LAST_EXPORTED_SETTINGS_FOLDER = "last_exported_settings_folder"
 const val LAST_BLOCKED_NUMBERS_EXPORT_PATH = "last_blocked_numbers_export_path"
 const val BLOCK_UNKNOWN_NUMBERS = "block_unknown_numbers"
 const val FONT_SIZE = "font_size"
-const val WAS_MESSENGER_RECORDER_SHOWN = "was_messenger_recorder_shown"
-const val DEFAULT_TAB = "default_tab"
 const val START_NAME_WITH_SURNAME = "start_name_with_surname"
 const val FAVORITES = "favorites"
-const val SHOW_CALL_CONFIRMATION = "show_call_confirmation"
 internal const val COLOR_PICKER_RECENT_COLORS = "color_picker_recent_colors"
 
 // licenses
@@ -192,15 +162,12 @@ const val OPEN_DOCUMENT_TREE_FOR_ANDROID_DATA_OR_OBB = 1000
 const val OPEN_DOCUMENT_TREE_OTG = 1001
 const val OPEN_DOCUMENT_TREE_SD = 1002
 const val OPEN_DOCUMENT_TREE_FOR_SDK_30 = 1003
-const val REQUEST_SET_AS = 1004
-const val REQUEST_EDIT_IMAGE = 1005
 const val SELECT_EXPORT_SETTINGS_FILE_INTENT = 1006
 const val REQUEST_CODE_SET_DEFAULT_DIALER = 1007
 const val CREATE_DOCUMENT_SDK_30 = 1008
 
 // sorting
 const val SORT_ORDER = "sort_order"
-const val SORT_FOLDER_PREFIX = "sort_folder_"       // storing folder specific values at using "Use for this folder only"
 const val SORT_BY_NAME = 1
 const val SORT_BY_DATE_MODIFIED = 2
 const val SORT_BY_SIZE = 4
@@ -216,7 +183,6 @@ const val PROTECTION_FINGERPRINT = 2
 
 // renaming
 const val RENAME_SIMPLE = 0
-const val RENAME_PATTERN = 1
 
 const val SHOW_ALL_TABS = -1
 
@@ -253,20 +219,9 @@ const val FONT_SIZE_SMALL = 0
 const val FONT_SIZE_MEDIUM = 1
 const val FONT_SIZE_LARGE = 2
 
-const val MONDAY_BIT = 1
-const val TUESDAY_BIT = 2
-const val WEDNESDAY_BIT = 4
-const val THURSDAY_BIT = 8
-const val FRIDAY_BIT = 16
-const val SATURDAY_BIT = 32
-const val SUNDAY_BIT = 64
-
 const val SIDELOADING_UNCHECKED = 0
 const val SIDELOADING_TRUE = 1
 const val SIDELOADING_FALSE = 2
-
-// default tabs
-const val TAB_LAST_USED = 0
 
 val photoExtensions: Array<String> get() = arrayOf(".jpg", ".png", ".jpeg", ".bmp", ".webp", ".heic", ".heif", ".apng", ".avif")
 val videoExtensions: Array<String> get() = arrayOf(".mp4", ".mkv", ".webm", ".avi", ".3gp", ".mov", ".m4v", ".3gpp")
@@ -283,12 +238,6 @@ const val DATE_FORMAT_FIVE = "d MMMM yyyy"
 const val DATE_FORMAT_SIX = "MMMM d yyyy"
 const val DATE_FORMAT_SEVEN = "MM-dd-yyyy"
 const val DATE_FORMAT_EIGHT = "dd-MM-yyyy"
-const val DATE_FORMAT_NINE = "yyyyMMdd"
-const val DATE_FORMAT_TEN = "yyyy.MM.dd"
-const val DATE_FORMAT_ELEVEN = "yy-MM-dd"
-const val DATE_FORMAT_TWELVE = "yyMMdd"
-const val DATE_FORMAT_THIRTEEN = "yy.MM.dd"
-const val DATE_FORMAT_FOURTEEN = "yy/MM/dd"
 
 const val TIME_FORMAT_12 = "hh:mm a"
 const val TIME_FORMAT_24 = "HH:mm"
@@ -373,21 +322,6 @@ fun isSPlus() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
 @ChecksSdkIntAtLeast(api = Build.VERSION_CODES.TIRAMISU)
 fun isTiramisuPlus() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
 
-fun getDateFormats() = arrayListOf(
-    "--MM-dd",
-    "yyyy-MM-dd",
-    "yyyyMMdd",
-    "yyyy.MM.dd",
-    "yy-MM-dd",
-    "yyMMdd",
-    "yy.MM.dd",
-    "yy/MM/dd",
-    "MM-dd",
-    "MMdd",
-    "MM/dd",
-    "MM.dd"
-)
-
 val normalizeRegex = "\\p{InCombiningDiacriticalMarks}+".toRegex()
 
 fun getConflictResolution(resolutions: LinkedHashMap<String, Int>, path: String): Int {
@@ -401,8 +335,6 @@ fun getConflictResolution(resolutions: LinkedHashMap<String, Int>, path: String)
 }
 
 val proPackages = arrayListOf("draw", "gallery", "filemanager", "contacts", "notes", "calendar")
-
-fun getQuestionMarks(size: Int) = ("?," * size).trimEnd(',')
 
 fun getFilePlaceholderDrawables(context: Context): HashMap<String, Drawable> {
     val fileDrawables = HashMap<String, Drawable>()
