@@ -6,7 +6,7 @@ import android.widget.AutoCompleteTextView
 import com.simplemobiletools.commons.extensions.adjustAlpha
 import com.simplemobiletools.commons.extensions.applyColorFilter
 
-class MyAutoCompleteTextView : AutoCompleteTextView {
+class MyAutoCompleteTextView : androidx.appcompat.widget.AppCompatAutoCompleteTextView {
     constructor(context: Context) : super(context)
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)

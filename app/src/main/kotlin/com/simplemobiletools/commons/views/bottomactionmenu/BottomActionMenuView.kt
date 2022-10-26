@@ -3,6 +3,7 @@ package com.simplemobiletools.commons.views.bottomactionmenu
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.TimeInterpolator
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
@@ -62,6 +63,7 @@ class BottomActionMenuView : LinearLayout {
         slideUpToVisible()
     }
 
+    @SuppressLint("RestrictedApi")
     private fun slideUpToVisible() {
         currentAnimator?.also {
             it.cancel()
@@ -70,6 +72,7 @@ class BottomActionMenuView : LinearLayout {
         animateChildTo(0, ENTER_ANIMATION_DURATION.toLong(), AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR, true)
     }
 
+    @SuppressLint("RestrictedApi")
     private fun slideDownToGone() {
         currentAnimator?.also {
             currentAnimator?.cancel()

@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="AppTheme.Base" parent="Theme.Material3.Dark.NoActionBar">
         <item name="colorPrimary">@color/color_primary</item>
@@ -15,7 +15,7 @@
         <item name="colorControlHighlight">@color/activated_item_foreground</item>
         <item name="bottomSheetDialogTheme">@style/BottomSheetDialogTheme</item>
         <item name="android:actionModeCloseDrawable">@drawable/ic_arrow_left_vector</item>
-        <item name="android:forceDarkAllowed">false</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
         <item name="windowActionModeOverlay">true</item>    <!-- replace casual top menu with contextual menu after long pressing an item -->
         <item name="android:actionOverflowButtonStyle">@style/ActionMenuOverflowIcon</item>
     </style>
@@ -24,7 +24,7 @@
         <item name="android:colorControlHighlight">@color/activated_item_foreground</item>
         <item name="colorControlHighlight">@color/activated_item_foreground</item>
         <item name="bottomSheetDialogTheme">@style/BottomSheetDialogTheme</item>
-        <item name="android:forceDarkAllowed">false</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
         <item name="actionOverflowMenuStyle">@style/TopPopupMenu.Overflow.Dark</item>
         <item name="android:actionOverflowButtonStyle">@style/ActionMenuOverflowIcon</item>
         <item name="android:windowLightStatusBar">false</item>
@@ -39,7 +39,7 @@
         <item name="actionBarPopupTheme">@style/TopPopupMenuTextYou</item>
         <item name="actionBarStyle">@style/AppTheme.ActionBar</item>
         <item name="actionModeStyle">@style/AppTheme.ActionMode</item>
-        <item name="android:forceDarkAllowed">false</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
         <item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="android:actionOverflowButtonStyle">@style/ActionMenuOverflowIcon</item>
@@ -209,13 +209,18 @@
         <item name="android:buttonBarNeutralButtonStyle">@style/MaterialDialogButtonStyle</item>
     </style>
 
+    <!--
     <style name="PinNumberStyle.Base">
         <item name="android:gravity">center</item>
         <item name="android:padding">@dimen/small_margin</item>
         <item name="android:textSize">@dimen/big_text_size</item>
     </style>
+    -->
 
-    <style name="PinNumberStyle" parent="PinNumberStyle.Base">
+    <style name="PinNumberStyle">
+        <item name="android:gravity">center</item>
+        <item name="android:padding">@dimen/small_margin</item>
+        <item name="android:textSize">@dimen/big_text_size</item>
         <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
     </style>
 
@@ -335,7 +340,7 @@
 
     <style name="SettingsTextValueStyle">
         <item name="android:alpha">0.6</item>
-        <item name="android:textFontWeight">300</item>
+        <item name="android:textFontWeight" tools:targetApi="p">300</item>
         <item name="android:textSize">@dimen/normal_text_size</item>
     </style>
 
