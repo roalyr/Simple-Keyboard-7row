@@ -100,10 +100,6 @@ open class BaseConfig(val context: Context) {
         get() = prefs.getInt(DEFAULT_NAVIGATION_BAR_COLOR, INVALID_NAVIGATION_BAR_COLOR)
         set(defaultNavigationBarColor) = prefs.edit().putInt(DEFAULT_NAVIGATION_BAR_COLOR, defaultNavigationBarColor).apply()
 
-    var lastHandledShortcutColor: Int
-        get() = prefs.getInt(LAST_HANDLED_SHORTCUT_COLOR, 1)
-        set(lastHandledShortcutColor) = prefs.edit().putInt(LAST_HANDLED_SHORTCUT_COLOR, lastHandledShortcutColor).apply()
-
     var keyColor: Int
         get() = prefs.getInt(APP_ICON_COLOR, context.resources.getColor(R.color.color_primary))
         set(keyColor) {
@@ -138,14 +134,6 @@ open class BaseConfig(val context: Context) {
     var customNavigationBarColor: Int
         get() = prefs.getInt(CUSTOM_NAVIGATION_BAR_COLOR, INVALID_NAVIGATION_BAR_COLOR)
         set(customNavigationBarColor) = prefs.edit().putInt(CUSTOM_NAVIGATION_BAR_COLOR, customNavigationBarColor).apply()
-
-    var widgetBgColor: Int
-        get() = prefs.getInt(WIDGET_BG_COLOR, context.resources.getInteger(R.integer.default_widget_bg_color))
-        set(widgetBgColor) = prefs.edit().putInt(WIDGET_BG_COLOR, widgetBgColor).apply()
-
-    var widgetTextColor: Int
-        get() = prefs.getInt(WIDGET_TEXT_COLOR, context.resources.getInteger(R.integer.default_widget_text_color))
-        set(widgetTextColor) = prefs.edit().putInt(WIDGET_TEXT_COLOR, widgetTextColor).apply()
 
     // hidden folder visibility protection
     var isHiddenPasswordProtectionOn: Boolean
@@ -185,21 +173,6 @@ open class BaseConfig(val context: Context) {
     var deleteProtectionType: Int
         get() = prefs.getInt(DELETE_PROTECTION_TYPE, PROTECTION_PATTERN)
         set(deleteProtectionType) = prefs.edit().putInt(DELETE_PROTECTION_TYPE, deleteProtectionType).apply()
-
-    // folder locking
-    fun addFolderProtection(path: String, hash: String, type: Int) {
-        prefs.edit()
-            .putString("$PROTECTED_FOLDER_HASH$path", hash)
-            .putInt("$PROTECTED_FOLDER_TYPE$path", type)
-            .apply()
-    }
-
-    fun removeFolderProtection(path: String) {
-        prefs.edit()
-            .remove("$PROTECTED_FOLDER_HASH$path")
-            .remove("$PROTECTED_FOLDER_TYPE$path")
-            .apply()
-    }
 
     fun isFolderProtected(path: String) = getFolderProtectionType(path) != PROTECTION_NONE
 
@@ -252,10 +225,6 @@ open class BaseConfig(val context: Context) {
         get() = prefs.getBoolean(WAS_SHARED_THEME_FORCED, false)
         set(wasSharedThemeForced) = prefs.edit().putBoolean(WAS_SHARED_THEME_FORCED, wasSharedThemeForced).apply()
 
-    var showInfoBubble: Boolean
-        get() = prefs.getBoolean(SHOW_INFO_BUBBLE, true)
-        set(showInfoBubble) = prefs.edit().putBoolean(SHOW_INFO_BUBBLE, showInfoBubble).apply()
-
     var lastConflictApplyToAll: Boolean
         get() = prefs.getBoolean(LAST_CONFLICT_APPLY_TO_ALL, true)
         set(lastConflictApplyToAll) = prefs.edit().putBoolean(LAST_CONFLICT_APPLY_TO_ALL, lastConflictApplyToAll).apply()
@@ -268,45 +237,9 @@ open class BaseConfig(val context: Context) {
         get() = prefs.getInt(SORT_ORDER, context.resources.getInteger(R.integer.default_sorting))
         set(sorting) = prefs.edit().putInt(SORT_ORDER, sorting).apply()
 
-    fun saveCustomSorting(path: String, value: Int) {
-        if (path.isEmpty()) {
-            sorting = value
-        } else {
-            prefs.edit().putInt(SORT_FOLDER_PREFIX + path.toLowerCase(), value).apply()
-        }
-    }
-
-    fun getFolderSorting(path: String) = prefs.getInt(SORT_FOLDER_PREFIX + path.toLowerCase(), sorting)
-
-    fun removeCustomSorting(path: String) {
-        prefs.edit().remove(SORT_FOLDER_PREFIX + path.toLowerCase()).apply()
-    }
-
-    fun hasCustomSorting(path: String) = prefs.contains(SORT_FOLDER_PREFIX + path.toLowerCase())
-
     var hadThankYouInstalled: Boolean
         get() = prefs.getBoolean(HAD_THANK_YOU_INSTALLED, false)
         set(hadThankYouInstalled) = prefs.edit().putBoolean(HAD_THANK_YOU_INSTALLED, hadThankYouInstalled).apply()
-
-    var skipDeleteConfirmation: Boolean
-        get() = prefs.getBoolean(SKIP_DELETE_CONFIRMATION, false)
-        set(skipDeleteConfirmation) = prefs.edit().putBoolean(SKIP_DELETE_CONFIRMATION, skipDeleteConfirmation).apply()
-
-    var enablePullToRefresh: Boolean
-        get() = prefs.getBoolean(ENABLE_PULL_TO_REFRESH, true)
-        set(enablePullToRefresh) = prefs.edit().putBoolean(ENABLE_PULL_TO_REFRESH, enablePullToRefresh).apply()
-
-    var scrollHorizontally: Boolean
-        get() = prefs.getBoolean(SCROLL_HORIZONTALLY, false)
-        set(scrollHorizontally) = prefs.edit().putBoolean(SCROLL_HORIZONTALLY, scrollHorizontally).apply()
-
-    var preventPhoneFromSleeping: Boolean
-        get() = prefs.getBoolean(PREVENT_PHONE_FROM_SLEEPING, true)
-        set(preventPhoneFromSleeping) = prefs.edit().putBoolean(PREVENT_PHONE_FROM_SLEEPING, preventPhoneFromSleeping).apply()
-
-    var lastUsedViewPagerPage: Int
-        get() = prefs.getInt(LAST_USED_VIEW_PAGER_PAGE, context.resources.getInteger(R.integer.default_viewpager_page))
-        set(lastUsedViewPagerPage) = prefs.edit().putInt(LAST_USED_VIEW_PAGER_PAGE, lastUsedViewPagerPage).apply()
 
     var use24HourFormat: Boolean
         get() = prefs.getBoolean(USE_24_HOUR_FORMAT, DateFormat.is24HourFormat(context))
@@ -319,26 +252,6 @@ open class BaseConfig(val context: Context) {
         }
         set(sundayFirst) = prefs.edit().putBoolean(SUNDAY_FIRST, sundayFirst).apply()
 
-    var wasAlarmWarningShown: Boolean
-        get() = prefs.getBoolean(WAS_ALARM_WARNING_SHOWN, false)
-        set(wasAlarmWarningShown) = prefs.edit().putBoolean(WAS_ALARM_WARNING_SHOWN, wasAlarmWarningShown).apply()
-
-    var wasReminderWarningShown: Boolean
-        get() = prefs.getBoolean(WAS_REMINDER_WARNING_SHOWN, false)
-        set(wasReminderWarningShown) = prefs.edit().putBoolean(WAS_REMINDER_WARNING_SHOWN, wasReminderWarningShown).apply()
-
-    var useSameSnooze: Boolean
-        get() = prefs.getBoolean(USE_SAME_SNOOZE, true)
-        set(useSameSnooze) = prefs.edit().putBoolean(USE_SAME_SNOOZE, useSameSnooze).apply()
-
-    var snoozeTime: Int
-        get() = prefs.getInt(SNOOZE_TIME, 10)
-        set(snoozeDelay) = prefs.edit().putInt(SNOOZE_TIME, snoozeDelay).apply()
-
-    var vibrateOnButtonPress: Boolean
-        get() = prefs.getBoolean(VIBRATE_ON_BUTTON_PRESS, context.resources.getBoolean(R.bool.default_vibrate_on_press))
-        set(vibrateOnButton) = prefs.edit().putBoolean(VIBRATE_ON_BUTTON_PRESS, vibrateOnButton).apply()
-
     var yourAlarmSounds: String
         get() = prefs.getString(YOUR_ALARM_SOUNDS, "")!!
         set(yourAlarmSounds) = prefs.edit().putString(YOUR_ALARM_SOUNDS, yourAlarmSounds).apply()
@@ -350,14 +263,6 @@ open class BaseConfig(val context: Context) {
     var appId: String
         get() = prefs.getString(APP_ID, "")!!
         set(appId) = prefs.edit().putString(APP_ID, appId).apply()
-
-    var initialWidgetHeight: Int
-        get() = prefs.getInt(INITIAL_WIDGET_HEIGHT, 0)
-        set(initialWidgetHeight) = prefs.edit().putInt(INITIAL_WIDGET_HEIGHT, initialWidgetHeight).apply()
-
-    var widgetIdToMeasure: Int
-        get() = prefs.getInt(WIDGET_ID_TO_MEASURE, 0)
-        set(widgetIdToMeasure) = prefs.edit().putInt(WIDGET_ID_TO_MEASURE, widgetIdToMeasure).apply()
 
     var wasOrangeIconChecked: Boolean
         get() = prefs.getBoolean(WAS_ORANGE_ICON_CHECKED, false)
@@ -374,15 +279,6 @@ open class BaseConfig(val context: Context) {
     var wasBeforeRateShown: Boolean
         get() = prefs.getBoolean(WAS_BEFORE_RATE_SHOWN, false)
         set(wasBeforeRateShown) = prefs.edit().putBoolean(WAS_BEFORE_RATE_SHOWN, wasBeforeRateShown).apply()
-
-    var wasInitialUpgradeToProShown: Boolean
-        get() = prefs.getBoolean(WAS_INITIAL_UPGRADE_TO_PRO_SHOWN, false)
-        set(wasInitialUpgradeToProShown) = prefs.edit().putBoolean(WAS_INITIAL_UPGRADE_TO_PRO_SHOWN, wasInitialUpgradeToProShown).apply()
-
-    var wasAppIconCustomizationWarningShown: Boolean
-        get() = prefs.getBoolean(WAS_APP_ICON_CUSTOMIZATION_WARNING_SHOWN, false)
-        set(wasAppIconCustomizationWarningShown) = prefs.edit().putBoolean(WAS_APP_ICON_CUSTOMIZATION_WARNING_SHOWN, wasAppIconCustomizationWarningShown)
-            .apply()
 
     var appSideloadingStatus: Int
         get() = prefs.getInt(APP_SIDELOADING_STATUS, SIDELOADING_UNCHECKED)
@@ -408,25 +304,9 @@ open class BaseConfig(val context: Context) {
         }
     }
 
-    var wasOTGHandled: Boolean
-        get() = prefs.getBoolean(WAS_OTG_HANDLED, false)
-        set(wasOTGHandled) = prefs.edit().putBoolean(WAS_OTG_HANDLED, wasOTGHandled).apply()
-
-    var wasUpgradedFromFreeShown: Boolean
-        get() = prefs.getBoolean(WAS_UPGRADED_FROM_FREE_SHOWN, false)
-        set(wasUpgradedFromFreeShown) = prefs.edit().putBoolean(WAS_UPGRADED_FROM_FREE_SHOWN, wasUpgradedFromFreeShown).apply()
-
-    var wasRateUsPromptShown: Boolean
-        get() = prefs.getBoolean(WAS_RATE_US_PROMPT_SHOWN, false)
-        set(wasRateUsPromptShown) = prefs.edit().putBoolean(WAS_RATE_US_PROMPT_SHOWN, wasRateUsPromptShown).apply()
-
     var wasAppRated: Boolean
         get() = prefs.getBoolean(WAS_APP_RATED, false)
         set(wasAppRated) = prefs.edit().putBoolean(WAS_APP_RATED, wasAppRated).apply()
-
-    var wasSortingByNumericValueAdded: Boolean
-        get() = prefs.getBoolean(WAS_SORTING_BY_NUMERIC_VALUE_ADDED, false)
-        set(wasSortingByNumericValueAdded) = prefs.edit().putBoolean(WAS_SORTING_BY_NUMERIC_VALUE_ADDED, wasSortingByNumericValueAdded).apply()
 
     var wasFolderLockingNoticeShown: Boolean
         get() = prefs.getBoolean(WAS_FOLDER_LOCKING_NOTICE_SHOWN, false)
@@ -456,15 +336,6 @@ open class BaseConfig(val context: Context) {
         get() = prefs.getInt(FONT_SIZE, context.resources.getInteger(R.integer.default_font_size))
         set(size) = prefs.edit().putInt(FONT_SIZE, size).apply()
 
-    // notify the users about new SMS Messenger and Voice Recorder released
-    var wasMessengerRecorderShown: Boolean
-        get() = prefs.getBoolean(WAS_MESSENGER_RECORDER_SHOWN, false)
-        set(wasMessengerRecorderShown) = prefs.edit().putBoolean(WAS_MESSENGER_RECORDER_SHOWN, wasMessengerRecorderShown).apply()
-
-    var defaultTab: Int
-        get() = prefs.getInt(DEFAULT_TAB, TAB_LAST_USED)
-        set(defaultTab) = prefs.edit().putInt(DEFAULT_TAB, defaultTab).apply()
-
     var startNameWithSurname: Boolean
         get() = prefs.getBoolean(START_NAME_WITH_SURNAME, false)
         set(startNameWithSurname) = prefs.edit().putBoolean(START_NAME_WITH_SURNAME, startNameWithSurname).apply()
@@ -472,10 +343,6 @@ open class BaseConfig(val context: Context) {
     var favorites: MutableSet<String>
         get() = prefs.getStringSet(FAVORITES, HashSet())!!
         set(favorites) = prefs.edit().remove(FAVORITES).putStringSet(FAVORITES, favorites).apply()
-
-    var showCallConfirmation: Boolean
-        get() = prefs.getBoolean(SHOW_CALL_CONFIRMATION, false)
-        set(showCallConfirmation) = prefs.edit().putBoolean(SHOW_CALL_CONFIRMATION, showCallConfirmation).apply()
 
     // color picker last used colors
     internal var colorPickerRecentColors: LinkedList<Int>

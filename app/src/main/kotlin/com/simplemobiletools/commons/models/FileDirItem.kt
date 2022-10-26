@@ -118,8 +118,6 @@ open class FileDirItem(
 
     fun getDuration(context: Context) = context.getDuration(path)?.getFormattedDuration()
 
-    fun getFileDurationSeconds(context: Context) = context.getDuration(path)
-
     fun getArtist(context: Context) = context.getArtist(path)
 
     fun getAlbum(context: Context) = context.getAlbum(path)
@@ -127,12 +125,6 @@ open class FileDirItem(
     fun getTitle(context: Context) = context.getTitle(path)
 
     fun getResolution(context: Context) = context.getResolution(path)
-
-    fun getVideoResolution(context: Context) = context.getVideoResolution(path)
-
-    fun getImageResolution(context: Context) = context.getImageResolution(path)
-
-    fun getPublicUri(context: Context) = context.getDocumentFile(path)?.uri ?: ""
 
     fun getSignature(): String {
         val lastModified = if (modified > 1) {

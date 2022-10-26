@@ -64,7 +64,6 @@ class MyKeyboard {
         private const val EDGE_LEFT = 0x01
         private const val EDGE_RIGHT = 0x02
         const val EDGE_TOP = 1
-        const val EDGE_BOTTOM = 2
 
         const val KEYCODE_SHIFT = -1
         const val KEYCODE_MODE_CHANGE = -2
@@ -331,15 +330,6 @@ class MyKeyboard {
     fun setShifted(shiftState: Int): Boolean {
         if (this.mShiftState != shiftState) {
             this.mShiftState = shiftState
-            return true
-        }
-
-        return false
-    }
-
-    fun setControl(controlState: Int): Boolean {
-        if (this.mControlState != controlState) {
-            this.mControlState = controlState
             return true
         }
 

@@ -43,45 +43,6 @@ fun Int.getFormattedDuration(forceShowHours: Boolean = false): String {
     return sb.toString()
 }
 
-fun Int.formatSize(): String {
-    if (this <= 0) {
-        return "0 B"
-    }
-
-    val units = arrayOf("B", "kB", "MB", "GB", "TB")
-    val digitGroups = (Math.log10(toDouble()) / Math.log10(1024.0)).toInt()
-    return "${DecimalFormat("#,##0.#").format(this / Math.pow(1024.0, digitGroups.toDouble()))} ${units[digitGroups]}"
-}
-
-fun Int.formatDate(context: Context, dateFormat: String? = null, timeFormat: String? = null): String {
-    val useDateFormat = dateFormat ?: context.baseConfig.dateFormat
-    val useTimeFormat = timeFormat ?: context.getTimeFormat()
-    val cal = Calendar.getInstance(Locale.ENGLISH)
-    cal.timeInMillis = this * 1000L
-    return DateFormat.format("$useDateFormat, $useTimeFormat", cal).toString()
-}
-
-// if the given date is today, we show only the time. Else we show the date and optionally the time too
-fun Int.formatDateOrTime(context: Context, hideTimeAtOtherDays: Boolean, showYearEvenIfCurrent: Boolean): String {
-    val cal = Calendar.getInstance(Locale.ENGLISH)
-    cal.timeInMillis = this * 1000L
-
-    return if (DateUtils.isToday(this * 1000L)) {
-        DateFormat.format(context.getTimeFormat(), cal).toString()
-    } else {
-        var format = context.baseConfig.dateFormat
-        if (!showYearEvenIfCurrent && isThisYear()) {
-            format = format.replace("y", "").trim().trim('-').trim('.').trim('/')
-        }
-
-        if (!hideTimeAtOtherDays) {
-            format += ", ${context.getTimeFormat()}"
-        }
-
-        DateFormat.format(format, cal).toString()
-    }
-}
-
 fun Int.isThisYear(): Boolean {
     val time = Time()
     time.set(this * 1000L)
@@ -92,21 +53,10 @@ fun Int.isThisYear(): Boolean {
     return (thenYear == time.year)
 }
 
-fun Int.addBitIf(add: Boolean, bit: Int) =
-    if (add) {
-        addBit(bit)
-    } else {
-        removeBit(bit)
-    }
-
 // TODO: how to do "bits & ~bit" in kotlin?
 fun Int.removeBit(bit: Int) = addBit(bit) - bit
 
 fun Int.addBit(bit: Int) = this or bit
-
-fun Int.flipBit(bit: Int) = if (this and bit == 0) addBit(bit) else removeBit(bit)
-
-fun ClosedRange<Int>.random() = Random().nextInt(endInclusive - start) + start
 
 // taken from https://stackoverflow.com/a/40964456/1967672
 fun Int.darkenColor(factor: Int = 8): Int {
@@ -184,12 +134,3 @@ fun Int.ensureTwoDigits(): String {
     }
 }
 
-fun Int.getColorStateList(): ColorStateList {
-    val states = arrayOf(intArrayOf(android.R.attr.state_enabled),
-        intArrayOf(-android.R.attr.state_enabled),
-        intArrayOf(-android.R.attr.state_checked),
-        intArrayOf(android.R.attr.state_pressed)
-    )
-    val colors = intArrayOf(this, this, this, this)
-    return ColorStateList(states, colors)
-}

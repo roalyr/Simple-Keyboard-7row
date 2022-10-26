@@ -361,202 +361,6 @@ fun Activity.sharePathIntent(path: String, applicationId: String) {
     }
 }
 
-fun Activity.sharePathsIntent(paths: List<String>, applicationId: String) {
-    ensureBackgroundThread {
-        if (paths.size == 1) {
-            sharePathIntent(paths.first(), applicationId)
-        } else {
-            val uriPaths = ArrayList<String>()
-            val newUris = paths.map {
-                val uri = getFinalUriFromPath(it, applicationId) ?: return@ensureBackgroundThread
-                uriPaths.add(uri.path!!)
-                uri
-            } as ArrayList<Uri>
-
-            var mimeType = uriPaths.getMimeType()
-            if (mimeType.isEmpty() || mimeType == "*/*") {
-                mimeType = paths.getMimeType()
-            }
-
-            Intent().apply {
-                action = Intent.ACTION_SEND_MULTIPLE
-                type = mimeType
-                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                putParcelableArrayListExtra(EXTRA_STREAM, newUris)
-
-                try {
-                    startActivity(Intent.createChooser(this, getString(R.string.share_via)))
-                } catch (e: ActivityNotFoundException) {
-                    toast(R.string.no_app_found)
-                } catch (e: RuntimeException) {
-                    if (e.cause is TransactionTooLargeException) {
-                        toast(R.string.maximum_share_reached)
-                    } else {
-                        showErrorToast(e)
-                    }
-                } catch (e: Exception) {
-                    showErrorToast(e)
-                }
-            }
-        }
-    }
-}
-
-fun Activity.shareTextIntent(text: String) {
-    ensureBackgroundThread {
-        Intent().apply {
-            action = Intent.ACTION_SEND
-            type = "text/plain"
-            putExtra(Intent.EXTRA_TEXT, text)
-
-            try {
-                startActivity(Intent.createChooser(this, getString(R.string.share_via)))
-            } catch (e: ActivityNotFoundException) {
-                toast(R.string.no_app_found)
-            } catch (e: RuntimeException) {
-                if (e.cause is TransactionTooLargeException) {
-                    toast(R.string.maximum_share_reached)
-                } else {
-                    showErrorToast(e)
-                }
-            } catch (e: Exception) {
-                showErrorToast(e)
-            }
-        }
-    }
-}
-
-fun Activity.setAsIntent(path: String, applicationId: String) {
-    ensureBackgroundThread {
-        val newUri = getFinalUriFromPath(path, applicationId) ?: return@ensureBackgroundThread
-        Intent().apply {
-            action = Intent.ACTION_ATTACH_DATA
-            setDataAndType(newUri, getUriMimeType(path, newUri))
-            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            val chooser = Intent.createChooser(this, getString(R.string.set_as))
-
-            try {
-                startActivityForResult(chooser, REQUEST_SET_AS)
-            } catch (e: ActivityNotFoundException) {
-                toast(R.string.no_app_found)
-            } catch (e: Exception) {
-                showErrorToast(e)
-            }
-        }
-    }
-}
-
-fun Activity.openEditorIntent(path: String, forceChooser: Boolean, applicationId: String) {
-    ensureBackgroundThread {
-        val newUri = getFinalUriFromPath(path, applicationId) ?: return@ensureBackgroundThread
-        Intent().apply {
-            action = Intent.ACTION_EDIT
-            setDataAndType(newUri, getUriMimeType(path, newUri))
-            if (!isRPlus() || (isRPlus() && (hasProperStoredDocumentUriSdk30(path) || Environment.isExternalStorageManager()))) {
-                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-            }
-
-            val parent = path.getParentPath()
-            val newFilename = "${path.getFilenameFromPath().substringBeforeLast('.')}_1"
-            val extension = path.getFilenameExtension()
-            val newFilePath = File(parent, "$newFilename.$extension")
-
-            val outputUri = if (isPathOnOTG(path)) newUri else getFinalUriFromPath("$newFilePath", applicationId)
-            if (!isRPlus()) {
-                val resInfoList = packageManager.queryIntentActivities(this, PackageManager.MATCH_DEFAULT_ONLY)
-                for (resolveInfo in resInfoList) {
-                    val packageName = resolveInfo.activityInfo.packageName
-                    grantUriPermission(packageName, outputUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                }
-            }
-
-            if (!isRPlus()) {
-                putExtra(MediaStore.EXTRA_OUTPUT, outputUri)
-            }
-
-            putExtra(REAL_FILE_PATH, path)
-
-            try {
-                val chooser = Intent.createChooser(this, getString(R.string.edit_with))
-                startActivityForResult(if (forceChooser) chooser else this, REQUEST_EDIT_IMAGE)
-            } catch (e: ActivityNotFoundException) {
-                toast(R.string.no_app_found)
-            } catch (e: Exception) {
-                showErrorToast(e)
-            }
-        }
-    }
-}
-
-fun Activity.openPathIntent(
-    path: String,
-    forceChooser: Boolean,
-    applicationId: String,
-    forceMimeType: String = "",
-    extras: HashMap<String, Boolean> = HashMap()
-) {
-    ensureBackgroundThread {
-        val newUri = getFinalUriFromPath(path, applicationId) ?: return@ensureBackgroundThread
-        val mimeType = if (forceMimeType.isNotEmpty()) forceMimeType else getUriMimeType(path, newUri)
-        Intent().apply {
-            action = Intent.ACTION_VIEW
-            setDataAndType(newUri, mimeType)
-            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-
-            if (applicationId == "com.simplemobiletools.gallery.pro" || applicationId == "com.simplemobiletools.gallery.pro.debug") {
-                putExtra(IS_FROM_GALLERY, true)
-            }
-
-            for ((key, value) in extras) {
-                putExtra(key, value)
-            }
-
-            putExtra(REAL_FILE_PATH, path)
-
-            try {
-                val chooser = Intent.createChooser(this, getString(R.string.open_with))
-                startActivity(if (forceChooser) chooser else this)
-            } catch (e: ActivityNotFoundException) {
-                if (!tryGenericMimeType(this, mimeType, newUri)) {
-                    toast(R.string.no_app_found)
-                }
-            } catch (e: Exception) {
-                showErrorToast(e)
-            }
-        }
-    }
-}
-
-fun Activity.launchViewContactIntent(uri: Uri) {
-    Intent().apply {
-        action = ContactsContract.QuickContact.ACTION_QUICK_CONTACT
-        data = uri
-        launchActivityIntent(this)
-    }
-}
-
-fun BaseSimpleActivity.launchCallIntent(recipient: String, handle: PhoneAccountHandle? = null) {
-    handlePermission(PERMISSION_CALL_PHONE) {
-        val action = if (it) Intent.ACTION_CALL else Intent.ACTION_DIAL
-        Intent(action).apply {
-            data = Uri.fromParts("tel", recipient, null)
-
-            if (isMarshmallowPlus() && handle != null) {
-                putExtra(TelecomManager.EXTRA_PHONE_ACCOUNT_HANDLE, handle)
-            }
-
-            launchActivityIntent(this)
-        }
-    }
-}
-
-fun Activity.launchSendSMSIntent(recipient: String) {
-    Intent(Intent.ACTION_SENDTO).apply {
-        data = Uri.fromParts("smsto", recipient, null)
-        launchActivityIntent(this)
-    }
-}
-
 fun Activity.showLocationOnMap(coordinates: String) {
     val uriBegin = "geo:${coordinates.replace(" ", "")}"
     val encodedQuery = Uri.encode(coordinates)
@@ -597,22 +401,6 @@ fun Activity.tryGenericMimeType(intent: Intent, mimeType: String, uri: Uri): Boo
     }
 }
 
-fun BaseSimpleActivity.checkWhatsNew(releases: List<Release>, currVersion: Int) {
-    if (baseConfig.lastVersion == 0) {
-        baseConfig.lastVersion = currVersion
-        return
-    }
-
-    val newReleases = arrayListOf<Release>()
-    releases.filterTo(newReleases) { it.id > baseConfig.lastVersion }
-
-    if (newReleases.isNotEmpty()) {
-        WhatsNewDialog(this, newReleases)
-    }
-
-    baseConfig.lastVersion = currVersion
-}
-
 fun BaseSimpleActivity.deleteFolders(folders: List<FileDirItem>, deleteMediaOnly: Boolean = true, callback: ((wasSuccess: Boolean) -> Unit)? = null) {
     ensureBackgroundThread {
         deleteFoldersBg(folders, deleteMediaOnly, callback)
@@ -649,12 +437,6 @@ fun BaseSimpleActivity.deleteFoldersBg(folders: List<FileDirItem>, deleteMediaOn
     }
 }
 
-fun BaseSimpleActivity.deleteFolder(folder: FileDirItem, deleteMediaOnly: Boolean = true, callback: ((wasSuccess: Boolean) -> Unit)? = null) {
-    ensureBackgroundThread {
-        deleteFolderBg(folder, deleteMediaOnly, callback)
-    }
-}
-
 fun BaseSimpleActivity.deleteFolderBg(fileDirItem: FileDirItem, deleteMediaOnly: Boolean = true, callback: ((wasSuccess: Boolean) -> Unit)? = null) {
     val folder = File(fileDirItem.path)
     if (folder.exists()) {
@@ -678,10 +460,6 @@ fun BaseSimpleActivity.deleteFolderBg(fileDirItem: FileDirItem, deleteMediaOnly:
     runOnUiThread {
         callback?.invoke(true)
     }
-}
-
-fun BaseSimpleActivity.deleteFile(file: FileDirItem, allowDeleteFolder: Boolean = false, callback: ((wasSuccess: Boolean) -> Unit)? = null) {
-    deleteFiles(arrayListOf(file), allowDeleteFolder, callback)
 }
 
 fun BaseSimpleActivity.deleteFiles(files: List<FileDirItem>, allowDeleteFolder: Boolean = false, callback: ((wasSuccess: Boolean) -> Unit)? = null) {
@@ -755,17 +533,6 @@ private fun BaseSimpleActivity.deleteFilesCasual(
                 }
             }
         }
-    }
-}
-
-fun BaseSimpleActivity.deleteFile(
-    fileDirItem: FileDirItem,
-    allowDeleteFolder: Boolean = false,
-    isDeletingMultipleFiles: Boolean,
-    callback: ((wasSuccess: Boolean) -> Unit)? = null
-) {
-    ensureBackgroundThread {
-        deleteFileBg(fileDirItem, allowDeleteFolder, isDeletingMultipleFiles, callback)
     }
 }
 
@@ -856,16 +623,8 @@ private fun deleteRecursively(file: File, context: Context): Boolean {
     return deleted
 }
 
-fun Activity.scanFileRecursively(file: File, callback: (() -> Unit)? = null) {
-    applicationContext.scanFileRecursively(file, callback)
-}
-
 fun Activity.scanPathRecursively(path: String, callback: (() -> Unit)? = null) {
     applicationContext.scanPathRecursively(path, callback)
-}
-
-fun Activity.scanFilesRecursively(files: List<File>, callback: (() -> Unit)? = null) {
-    applicationContext.scanFilesRecursively(files, callback)
 }
 
 fun Activity.scanPathsRecursively(paths: List<String>, callback: (() -> Unit)? = null) {
@@ -1186,11 +945,6 @@ fun Activity.showKeyboard(et: EditText) {
     imm.showSoftInput(et, InputMethodManager.SHOW_IMPLICIT)
 }
 
-fun Activity.hideKeyboard(view: View) {
-    val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-    inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-}
-
 fun BaseSimpleActivity.getFileOutputStream(fileDirItem: FileDirItem, allowCreatingNewFile: Boolean = false, callback: (outputStream: OutputStream?) -> Unit) {
     val targetFile = File(fileDirItem.path)
     when {
@@ -1354,30 +1108,6 @@ private fun createCasualFileOutputStream(activity: BaseSimpleActivity, targetFil
     }
 }
 
-fun Activity.performSecurityCheck(
-    protectionType: Int,
-    requiredHash: String,
-    successCallback: ((String, Int) -> Unit)? = null,
-    failureCallback: (() -> Unit)? = null
-) {
-    if (protectionType == PROTECTION_FINGERPRINT && isRPlus()) {
-        showBiometricPrompt(successCallback, failureCallback)
-    } else {
-        SecurityDialog(
-            activity = this,
-            requiredHash = requiredHash,
-            showTabIndex = protectionType,
-            callback = { hash, type, success ->
-                if (success) {
-                    successCallback?.invoke(hash, type)
-                } else {
-                    failureCallback?.invoke()
-                }
-            }
-        )
-    }
-}
-
 fun Activity.showBiometricPrompt(
     successCallback: ((String, Int) -> Unit)? = null,
     failureCallback: (() -> Unit)? = null
@@ -1410,28 +1140,6 @@ fun Activity.showBiometricPrompt(
 fun Activity.handleHiddenFolderPasswordProtection(callback: () -> Unit) {
     if (baseConfig.isHiddenPasswordProtectionOn) {
         SecurityDialog(this, baseConfig.hiddenPasswordHash, baseConfig.hiddenProtectionType) { _, _, success ->
-            if (success) {
-                callback()
-            }
-        }
-    } else {
-        callback()
-    }
-}
-
-fun Activity.handleAppPasswordProtection(callback: (success: Boolean) -> Unit) {
-    if (baseConfig.isAppPasswordProtectionOn) {
-        SecurityDialog(this, baseConfig.appPasswordHash, baseConfig.appProtectionType) { _, _, success ->
-            callback(success)
-        }
-    } else {
-        callback(true)
-    }
-}
-
-fun Activity.handleDeletePasswordProtection(callback: () -> Unit) {
-    if (baseConfig.isDeletePasswordProtectionOn) {
-        SecurityDialog(this, baseConfig.deletePasswordHash, baseConfig.deleteProtectionType) { _, _, success ->
             if (success) {
                 callback()
             }
@@ -1563,14 +1271,6 @@ fun Activity.getAlertDialogBuilder() = if (baseConfig.isUsingSystemTheme) {
     MaterialAlertDialogBuilder(this)
 } else {
     AlertDialog.Builder(this)
-}
-
-fun Activity.showPickSecondsDialogHelper(
-    curMinutes: Int, isSnoozePicker: Boolean = false, showSecondsAtCustomDialog: Boolean = false, showDuringDayOption: Boolean = false,
-    cancelCallback: (() -> Unit)? = null, callback: (seconds: Int) -> Unit
-) {
-    val seconds = if (curMinutes == -1) curMinutes else curMinutes * 60
-    showPickSecondsDialog(seconds, isSnoozePicker, showSecondsAtCustomDialog, showDuringDayOption, cancelCallback, callback)
 }
 
 fun Activity.showPickSecondsDialog(

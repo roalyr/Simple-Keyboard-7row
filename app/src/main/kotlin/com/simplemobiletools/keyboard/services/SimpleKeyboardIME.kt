@@ -23,10 +23,8 @@ import kotlinx.android.synthetic.main.keyboard_view_keyboard.view.*
 // based on https://www.androidauthority.com/lets-build-custom-keyboard-android-832362/
 class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionListener {
     private var SHIFT_PERM_TOGGLE_SPEED = 500   // how quickly do we have to doubletap shift to enable permanent caps lock
-    private var CONTROL_PERM_TOGGLE_SPEED = 500   // how quickly do we have to doubletap ctrl to enable permanent ctrl
     private val KEYBOARD_LETTERS = 0
     private val KEYBOARD_LETTERS_SECOND = 1
-    private val KEYBOARD_LETTERS_SECOND_SHIFT = 2
 
     private var keyboard: MyKeyboard? = null
     private var keyboardView: MyKeyboardView? = null
@@ -83,19 +81,6 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
         // Disable auto capitalization.
         //updateShiftKeyState()
 
-    }
-
-    // Prevents those keys from losing their state on cursor move?
-    private fun updateShiftKeyState() {
-        if (keyboardMode == KEYBOARD_LETTERS) {
-            val editorInfo = currentInputEditorInfo
-            if (editorInfo != null && editorInfo.inputType != InputType.TYPE_NULL && keyboard?.mShiftState != SHIFT_ON_PERMANENT) {
-                if (currentInputConnection.getCursorCapsMode(editorInfo.inputType) != 0) {
-                    keyboard?.setShifted(SHIFT_ON_ONE_CHAR)
-                    keyboardView?.invalidateAllKeys()
-                }
-            }
-        }
     }
 
 
@@ -365,14 +350,6 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
         }
 
         currentInputConnection?.setSelection(newCursorPosition, newCursorPosition)
-    }
-
-    private fun getImeOptionsActionId(): Int {
-        return if (currentInputEditorInfo.imeOptions and IME_FLAG_NO_ENTER_ACTION != 0) {
-            IME_ACTION_NONE
-        } else {
-            currentInputEditorInfo.imeOptions and IME_MASK_ACTION
-        }
     }
 
     // Temporary disable other layouts.

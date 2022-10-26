@@ -21,28 +21,20 @@ const val APP_ID = "app_id"
 const val APP_LAUNCHER_NAME = "app_launcher_name"
 const val REAL_FILE_PATH = "real_file_path_2"
 const val IS_FROM_GALLERY = "is_from_gallery"
-const val BROADCAST_REFRESH_MEDIA = "com.simplemobiletools.REFRESH_MEDIA"
-const val REFRESH_PATH = "refresh_path"
-const val IS_CUSTOMIZING_COLORS = "is_customizing_colors"
 const val BLOCKED_NUMBERS_EXPORT_DELIMITER = ","
 const val BLOCKED_NUMBERS_EXPORT_EXTENSION = ".txt"
 const val NOMEDIA = ".nomedia"
 const val YOUR_ALARM_SOUNDS_MIN_ID = 1000
 const val SHOW_FAQ_BEFORE_MAIL = "show_faq_before_mail"
 const val INVALID_NAVIGATION_BAR_COLOR = -1
-const val CHOPPED_LIST_DEFAULT_SIZE = 50
 const val SAVE_DISCARD_PROMPT_INTERVAL = 1000L
 const val SD_OTG_PATTERN = "^/storage/[A-Za-z0-9]{4}-[A-Za-z0-9]{4}$"
 const val SD_OTG_SHORT = "^[A-Za-z0-9]{4}-[A-Za-z0-9]{4}$"
-const val KEY_PHONE = "phone"
 const val KEY_MAILTO = "mailto"
-const val CONTACT_ID = "contact_id"
-const val IS_PRIVATE = "is_private"
 const val MD5 = "MD5"
 const val SHORT_ANIMATION_DURATION = 150L
 val DARK_GREY = 0xFF333333.toInt()
 
-const val LOWER_ALPHA = 0.25f
 const val MEDIUM_ALPHA = 0.5f
 const val HIGHER_ALPHA = 0.75f
 
@@ -100,7 +92,6 @@ const val APP_PROTECTION_TYPE = "app_protection_type"
 const val DELETE_PASSWORD_PROTECTION = "delete_password_protection"
 const val DELETE_PASSWORD_HASH = "delete_password_hash"
 const val DELETE_PROTECTION_TYPE = "delete_protection_type"
-const val PROTECTED_FOLDER_PATH = "protected_folder_path_"
 const val PROTECTED_FOLDER_HASH = "protected_folder_hash_"
 const val PROTECTED_FOLDER_TYPE = "protected_folder_type_"
 const val KEEP_LAST_MODIFIED = "keep_last_modified"
@@ -152,7 +143,6 @@ const val WAS_FOLDER_LOCKING_NOTICE_SHOWN = "was_folder_locking_notice_shown"
 const val LAST_RENAME_USED = "last_rename_used"
 const val LAST_RENAME_PATTERN_USED = "last_rename_pattern_used"
 const val LAST_EXPORTED_SETTINGS_FOLDER = "last_exported_settings_folder"
-const val LAST_EXPORTED_SETTINGS_FILE = "last_exported_settings_file"
 const val LAST_BLOCKED_NUMBERS_EXPORT_PATH = "last_blocked_numbers_export_path"
 const val BLOCK_UNKNOWN_NUMBERS = "block_unknown_numbers"
 const val FONT_SIZE = "font_size"
@@ -214,25 +204,11 @@ const val SORT_FOLDER_PREFIX = "sort_folder_"       // storing folder specific v
 const val SORT_BY_NAME = 1
 const val SORT_BY_DATE_MODIFIED = 2
 const val SORT_BY_SIZE = 4
-const val SORT_BY_DATE_TAKEN = 8
 const val SORT_BY_EXTENSION = 16
-const val SORT_BY_PATH = 32
-const val SORT_BY_NUMBER = 64
-const val SORT_BY_FIRST_NAME = 128
-const val SORT_BY_MIDDLE_NAME = 256
-const val SORT_BY_SURNAME = 512
 const val SORT_DESCENDING = 1024
-const val SORT_BY_TITLE = 2048
-const val SORT_BY_ARTIST = 4096
-const val SORT_BY_DURATION = 8192
-const val SORT_BY_RANDOM = 16384
 const val SORT_USE_NUMERIC_VALUE = 32768
 const val SORT_BY_FULL_NAME = 65536
-const val SORT_BY_CUSTOM = 131072
-const val SORT_BY_DATE_CREATED = 262144
 
-// security
-const val WAS_PROTECTION_HANDLED = "was_protection_handled"
 const val PROTECTION_NONE = -1
 const val PROTECTION_PATTERN = 0
 const val PROTECTION_PIN = 1
@@ -243,9 +219,6 @@ const val RENAME_SIMPLE = 0
 const val RENAME_PATTERN = 1
 
 const val SHOW_ALL_TABS = -1
-const val SHOW_PATTERN = 0
-const val SHOW_PIN = 1
-const val SHOW_FINGERPRINT = 2
 
 // permissions
 const val PERMISSION_READ_STORAGE = 1
@@ -279,7 +252,6 @@ const val CONFLICT_KEEP_BOTH = 4
 const val FONT_SIZE_SMALL = 0
 const val FONT_SIZE_MEDIUM = 1
 const val FONT_SIZE_LARGE = 2
-const val FONT_SIZE_EXTRA_LARGE = 3
 
 const val MONDAY_BIT = 1
 const val TUESDAY_BIT = 2
@@ -288,9 +260,6 @@ const val THURSDAY_BIT = 8
 const val FRIDAY_BIT = 16
 const val SATURDAY_BIT = 32
 const val SUNDAY_BIT = 64
-const val EVERY_DAY_BIT = MONDAY_BIT or TUESDAY_BIT or WEDNESDAY_BIT or THURSDAY_BIT or FRIDAY_BIT or SATURDAY_BIT or SUNDAY_BIT
-const val WEEK_DAYS_BIT = MONDAY_BIT or TUESDAY_BIT or WEDNESDAY_BIT or THURSDAY_BIT or FRIDAY_BIT
-const val WEEKENDS_BIT = SATURDAY_BIT or SUNDAY_BIT
 
 const val SIDELOADING_UNCHECKED = 0
 const val SIDELOADING_TRUE = 1
@@ -298,13 +267,6 @@ const val SIDELOADING_FALSE = 2
 
 // default tabs
 const val TAB_LAST_USED = 0
-const val TAB_CONTACTS = 1
-const val TAB_FAVORITES = 2
-const val TAB_CALL_HISTORY = 4
-const val TAB_GROUPS = 8
-const val TAB_FILES = 16
-const val TAB_RECENT_FILES = 32
-const val TAB_STORAGE_ANALYSIS = 64
 
 val photoExtensions: Array<String> get() = arrayOf(".jpg", ".png", ".jpeg", ".bmp", ".webp", ".heic", ".heif", ".apng", ".avif")
 val videoExtensions: Array<String> get() = arrayOf(".mp4", ".mkv", ".webm", ".avi", ".3gp", ".mov", ".m4v", ".3gpp")
@@ -375,10 +337,6 @@ val letterBackgroundColors = arrayListOf(
     0xCCE64A19
 )
 
-// view types
-const val VIEW_TYPE_GRID = 1
-const val VIEW_TYPE_LIST = 2
-
 fun isOnMainThread() = Looper.myLooper() == Looper.getMainLooper()
 
 fun ensureBackgroundThread(callback: () -> Unit) {
@@ -397,14 +355,8 @@ fun isMarshmallowPlus() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
 @ChecksSdkIntAtLeast(api = Build.VERSION_CODES.N)
 fun isNougatPlus() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
 
-@ChecksSdkIntAtLeast(api = Build.VERSION_CODES.N_MR1)
-fun isNougatMR1Plus() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1
-
 @ChecksSdkIntAtLeast(api = Build.VERSION_CODES.O)
 fun isOreoPlus() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
-
-@ChecksSdkIntAtLeast(api = Build.VERSION_CODES.O_MR1)
-fun isOreoMr1Plus() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1
 
 @ChecksSdkIntAtLeast(api = Build.VERSION_CODES.P)
 fun isPiePlus() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
@@ -436,16 +388,6 @@ fun getDateFormats() = arrayListOf(
     "MM.dd"
 )
 
-fun getDateFormatsWithYear() = arrayListOf(
-    DATE_FORMAT_FOUR,
-    DATE_FORMAT_NINE,
-    DATE_FORMAT_TEN,
-    DATE_FORMAT_ELEVEN,
-    DATE_FORMAT_TWELVE,
-    DATE_FORMAT_THIRTEEN,
-    DATE_FORMAT_FOURTEEN,
-)
-
 val normalizeRegex = "\\p{InCombiningDiacriticalMarks}+".toRegex()
 
 fun getConflictResolution(resolutions: LinkedHashMap<String, Int>, path: String): Int {
@@ -459,8 +401,6 @@ fun getConflictResolution(resolutions: LinkedHashMap<String, Int>, path: String)
 }
 
 val proPackages = arrayListOf("draw", "gallery", "filemanager", "contacts", "notes", "calendar")
-
-fun mydebug(message: String) = Log.e("DEBUG", message)
 
 fun getQuestionMarks(size: Int) = ("?," * size).trimEnd(',')
 

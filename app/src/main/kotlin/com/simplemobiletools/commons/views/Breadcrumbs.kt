@@ -240,11 +240,6 @@ class Breadcrumbs(context: Context, attrs: AttributeSet) : HorizontalScrollView(
         }
     }
 
-    fun updateColor(color: Int) {
-        textColor = color
-        setBreadcrumb(lastPath)
-    }
-
     fun updateFontSize(size: Float, updateTexts: Boolean) {
         fontSize = size
         if (updateTexts) {

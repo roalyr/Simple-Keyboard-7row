@@ -105,22 +105,6 @@ fun Context.isBiometricIdAvailable(): Boolean = when (BiometricManager.from(this
     else -> false
 }
 
-fun Context.getLatestMediaId(uri: Uri = Files.getContentUri("external")): Long {
-    val projection = arrayOf(
-        BaseColumns._ID
-    )
-    try {
-        val cursor = queryCursorDesc(uri, projection, BaseColumns._ID, 1)
-        cursor?.use {
-            if (cursor.moveToFirst()) {
-                return cursor.getLongValue(BaseColumns._ID)
-            }
-        }
-    } catch (ignored: Exception) {
-    }
-    return 0
-}
-
 private fun Context.queryCursorDesc(
     uri: Uri,
     projection: Array<String>,
@@ -138,65 +122,6 @@ private fun Context.queryCursorDesc(
         val sortOrder = "$sortColumn DESC LIMIT $limit"
         contentResolver.query(uri, projection, null, null, sortOrder)
     }
-}
-
-fun Context.getLatestMediaByDateId(uri: Uri = Files.getContentUri("external")): Long {
-    val projection = arrayOf(
-        BaseColumns._ID
-    )
-    try {
-        val cursor = queryCursorDesc(uri, projection, Images.ImageColumns.DATE_TAKEN, 1)
-        cursor?.use {
-            if (cursor.moveToFirst()) {
-                return cursor.getLongValue(BaseColumns._ID)
-            }
-        }
-    } catch (ignored: Exception) {
-    }
-    return 0
-}
-
-// some helper functions were taken from https://github.com/iPaulPro/aFileChooser/blob/master/aFileChooser/src/com/ipaulpro/afilechooser/utils/FileUtils.java
-fun Context.getRealPathFromURI(uri: Uri): String? {
-    if (uri.scheme == "file") {
-        return uri.path
-    }
-
-    if (isDownloadsDocument(uri)) {
-        val id = DocumentsContract.getDocumentId(uri)
-        if (id.areDigitsOnly()) {
-            val newUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), id.toLong())
-            val path = getDataColumn(newUri)
-            if (path != null) {
-                return path
-            }
-        }
-    } else if (isExternalStorageDocument(uri)) {
-        val documentId = DocumentsContract.getDocumentId(uri)
-        val parts = documentId.split(":")
-        if (parts[0].equals("primary", true)) {
-            return "${Environment.getExternalStorageDirectory().absolutePath}/${parts[1]}"
-        }
-    } else if (isMediaDocument(uri)) {
-        val documentId = DocumentsContract.getDocumentId(uri)
-        val split = documentId.split(":").dropLastWhile { it.isEmpty() }.toTypedArray()
-        val type = split[0]
-
-        val contentUri = when (type) {
-            "video" -> Video.Media.EXTERNAL_CONTENT_URI
-            "audio" -> Audio.Media.EXTERNAL_CONTENT_URI
-            else -> Images.Media.EXTERNAL_CONTENT_URI
-        }
-
-        val selection = "_id=?"
-        val selectionArgs = arrayOf(split[1])
-        val path = getDataColumn(contentUri, selection, selectionArgs)
-        if (path != null) {
-            return path
-        }
-    }
-
-    return getDataColumn(uri)
 }
 
 fun Context.getDataColumn(uri: Uri, selection: String? = null, selectionArgs: Array<String>? = null): String? {
@@ -369,15 +294,6 @@ fun Context.ensurePublicUri(path: String, applicationId: String): Uri? {
     }
 }
 
-fun Context.ensurePublicUri(uri: Uri, applicationId: String): Uri {
-    return if (uri.scheme == "content") {
-        uri
-    } else {
-        val file = File(uri.path)
-        getFilePublicUri(file, applicationId)
-    }
-}
-
 fun Context.getFilenameFromContentUri(uri: Uri): String? {
     val projection = arrayOf(
         OpenableColumns.DISPLAY_NAME
@@ -410,15 +326,6 @@ fun Context.getSizeFromContentUri(uri: Uri): Long {
 }
 
 fun Context.getMyContentProviderCursorLoader() = CursorLoader(this, MyContentProvider.MY_CONTENT_URI, null, null, null, null)
-
-fun Context.getMyContactsCursor(favoritesOnly: Boolean, withPhoneNumbersOnly: Boolean) = try {
-    val getFavoritesOnly = if (favoritesOnly) "1" else "0"
-    val getWithPhoneNumbersOnly = if (withPhoneNumbersOnly) "1" else "0"
-    val args = arrayOf(getFavoritesOnly, getWithPhoneNumbersOnly)
-    CursorLoader(this, MyContactsContentProvider.CONTACTS_CONTENT_URI, null, null, args, null).loadInBackground()
-} catch (e: Exception) {
-    null
-}
 
 fun Context.getCurrentFormattedDateTime(): String {
     val simpleDateFormat = SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.getDefault())
@@ -478,27 +385,6 @@ fun Context.isPackageInstalled(pkgName: String): Boolean {
     }
 }
 
-// format day bits to strings like "Mon, Tue, Wed"
-fun Context.getSelectedDaysString(bitMask: Int): String {
-    val dayBits = arrayListOf(MONDAY_BIT, TUESDAY_BIT, WEDNESDAY_BIT, THURSDAY_BIT, FRIDAY_BIT, SATURDAY_BIT, SUNDAY_BIT)
-    val weekDays = resources.getStringArray(R.array.week_days_short).toList() as ArrayList<String>
-
-    if (baseConfig.isSundayFirst) {
-        dayBits.moveLastItemToFront()
-        weekDays.moveLastItemToFront()
-    }
-
-    var days = ""
-    dayBits.forEachIndexed { index, bit ->
-        if (bitMask and bit != 0) {
-            days += "${weekDays[index]}, "
-        }
-    }
-    return days.trim().trimEnd(',')
-}
-
-fun Context.formatMinutesToTimeString(totalMinutes: Int) = formatSecondsToTimeString(totalMinutes * 60)
-
 fun Context.formatSecondsToTimeString(totalSeconds: Int): String {
     val days = totalSeconds / DAY_SECONDS
     val hours = (totalSeconds % DAY_SECONDS) / HOUR_SECONDS
@@ -531,8 +417,6 @@ fun Context.formatSecondsToTimeString(totalSeconds: Int): String {
     }
     return result
 }
-
-fun Context.getFormattedMinutes(minutes: Int, showBefore: Boolean = true) = getFormattedSeconds(if (minutes == -1) minutes else minutes * 60, showBefore)
 
 fun Context.getFormattedSeconds(seconds: Int, showBefore: Boolean = true) = when (seconds) {
     -1 -> getString(R.string.no_reminder)
@@ -584,57 +468,6 @@ fun Context.getDefaultAlarmTitle(type: Int): String {
     }
 }
 
-fun Context.getDefaultAlarmSound(type: Int) = AlarmSound(0, getDefaultAlarmTitle(type), RingtoneManager.getDefaultUri(type).toString())
-
-fun Context.grantReadUriPermission(uriString: String) {
-    try {
-        // ensure custom reminder sounds play well
-        grantUriPermission("com.android.systemui", Uri.parse(uriString), Intent.FLAG_GRANT_READ_URI_PERMISSION)
-    } catch (ignored: Exception) {
-    }
-}
-
-fun Context.storeNewYourAlarmSound(resultData: Intent): AlarmSound {
-    val uri = resultData.data
-    var filename = getFilenameFromUri(uri!!)
-    if (filename.isEmpty()) {
-        filename = getString(R.string.alarm)
-    }
-
-    val token = object : TypeToken<ArrayList<AlarmSound>>() {}.type
-    val yourAlarmSounds = Gson().fromJson<ArrayList<AlarmSound>>(baseConfig.yourAlarmSounds, token)
-        ?: ArrayList()
-    val newAlarmSoundId = (yourAlarmSounds.maxByOrNull { it.id }?.id ?: YOUR_ALARM_SOUNDS_MIN_ID) + 1
-    val newAlarmSound = AlarmSound(newAlarmSoundId, filename, uri.toString())
-    if (yourAlarmSounds.firstOrNull { it.uri == uri.toString() } == null) {
-        yourAlarmSounds.add(newAlarmSound)
-    }
-
-    baseConfig.yourAlarmSounds = Gson().toJson(yourAlarmSounds)
-
-    val takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-    contentResolver.takePersistableUriPermission(uri, takeFlags)
-
-    return newAlarmSound
-}
-
-@RequiresApi(Build.VERSION_CODES.N)
-fun Context.saveImageRotation(path: String, degrees: Int): Boolean {
-    if (!needsStupidWritePermissions(path)) {
-        saveExifRotation(ExifInterface(path), degrees)
-        return true
-    } else if (isNougatPlus()) {
-        val documentFile = getSomeDocumentFile(path)
-        if (documentFile != null) {
-            val parcelFileDescriptor = contentResolver.openFileDescriptor(documentFile.uri, "rw")
-            val fileDescriptor = parcelFileDescriptor!!.fileDescriptor
-            saveExifRotation(ExifInterface(fileDescriptor), degrees)
-            return true
-        }
-    }
-    return false
-}
-
 fun Context.saveExifRotation(exif: ExifInterface, degrees: Int) {
     val orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
     val orientationDegrees = (orientation.degreesFromOrientation() + degrees) % 360
@@ -642,11 +475,7 @@ fun Context.saveExifRotation(exif: ExifInterface, degrees: Int) {
     exif.saveAttributes()
 }
 
-fun Context.getLaunchIntent() = packageManager.getLaunchIntentForPackage(baseConfig.appId)
-
 fun Context.getCanAppBeUpgraded() = proPackages.contains(baseConfig.appId.removeSuffix(".debug").removePrefix("com.simplemobiletools."))
-
-fun Context.getProUrl() = "https://play.google.com/store/apps/details?id=${baseConfig.appId.removeSuffix(".debug")}.pro"
 
 fun Context.getStoreUrl() = "https://play.google.com/store/apps/details?id=${packageName.removeSuffix(".debug")}"
 
@@ -846,15 +675,6 @@ fun Context.getMediaStoreLastModified(path: String): Long {
 
 fun Context.getStringsPackageName() = getString(R.string.package_name)
 
-fun Context.getFontSizeText() = getString(
-    when (baseConfig.fontSize) {
-        FONT_SIZE_SMALL -> R.string.small
-        FONT_SIZE_MEDIUM -> R.string.medium
-        FONT_SIZE_LARGE -> R.string.large
-        else -> R.string.extra_large
-    }
-)
-
 fun Context.getTextSize() = when (baseConfig.fontSize) {
     FONT_SIZE_SMALL -> resources.getDimension(R.dimen.smaller_text_size)
     FONT_SIZE_MEDIUM -> resources.getDimension(R.dimen.bigger_text_size)
@@ -865,17 +685,9 @@ fun Context.getTextSize() = when (baseConfig.fontSize) {
 val Context.telecomManager: TelecomManager get() = getSystemService(Context.TELECOM_SERVICE) as TelecomManager
 val Context.windowManager: WindowManager get() = getSystemService(Context.WINDOW_SERVICE) as WindowManager
 val Context.notificationManager: NotificationManager get() = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-val Context.shortcutManager: ShortcutManager get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
-    getSystemService(ShortcutManager::class.java) as ShortcutManager
-} else {
-    TODO("VERSION.SDK_INT < N_MR1")
-}
 
-val Context.portrait get() = resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
 val Context.navigationBarOnSide: Boolean get() = usableScreenSize.x < realScreenSize.x && usableScreenSize.x > usableScreenSize.y
 val Context.navigationBarOnBottom: Boolean get() = usableScreenSize.y < realScreenSize.y
-val Context.navigationBarHeight: Int get() = if (navigationBarOnBottom && navigationBarSize.y != usableScreenSize.y) navigationBarSize.y else 0
-val Context.navigationBarWidth: Int get() = if (navigationBarOnSide) navigationBarSize.x else 0
 
 val Context.navigationBarSize: Point
     get() = when {
@@ -894,24 +706,6 @@ val Context.newNavigationBarHeight: Int
         return navigationBarHeight
     }
 
-val Context.statusBarHeight: Int
-    get() {
-        var statusBarHeight = 0
-        val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
-        if (resourceId > 0) {
-            statusBarHeight = resources.getDimensionPixelSize(resourceId)
-        }
-        return statusBarHeight
-    }
-
-val Context.actionBarHeight: Int
-    get() {
-        val styledAttributes = theme.obtainStyledAttributes(intArrayOf(android.R.attr.actionBarSize))
-        val actionBarHeight = styledAttributes.getDimension(0, 0f)
-        styledAttributes.recycle()
-        return actionBarHeight.toInt()
-    }
-
 
 val Context.usableScreenSize: Point
     get() {
@@ -926,8 +720,6 @@ val Context.realScreenSize: Point
         windowManager.defaultDisplay.getRealSize(size)
         return size
     }
-
-fun Context.getCornerRadius() = resources.getDimension(R.dimen.rounded_corner_radius_small)
 
 // we need the Default Dialer functionality only in Simple Dialer and in Simple Contacts for now
 @TargetApi(Build.VERSION_CODES.M)
@@ -988,15 +780,6 @@ fun Context.deleteBlockedNumber(number: String) {
     contentResolver.delete(BlockedNumbers.CONTENT_URI, selection, selectionArgs)
 }
 
-fun Context.isNumberBlocked(number: String, blockedNumbers: ArrayList<BlockedNumber> = getBlockedNumbers()): Boolean {
-    if (!isNougatPlus()) {
-        return false
-    }
-
-    val numberToCompare = number.trimToComparableNumber()
-    return blockedNumbers.any { numberToCompare in it.numberToCompare || numberToCompare in it.number } || isNumberBlockedByPattern(number, blockedNumbers)
-}
-
 fun Context.isNumberBlockedByPattern(number: String, blockedNumbers: ArrayList<BlockedNumber> = getBlockedNumbers()): Boolean {
     for (blockedNumber in blockedNumbers) {
         val num = blockedNumber.number
@@ -1017,39 +800,3 @@ fun Context.copyToClipboard(text: String) {
     toast(toastText)
 }
 
-fun Context.getPhoneNumberTypeText(type: Int, label: String): String {
-    return if (type == BaseTypes.TYPE_CUSTOM) {
-        label
-    } else {
-        getString(
-            when (type) {
-                Phone.TYPE_MOBILE -> R.string.mobile
-                Phone.TYPE_HOME -> R.string.home
-                Phone.TYPE_WORK -> R.string.work
-                Phone.TYPE_MAIN -> R.string.main_number
-                Phone.TYPE_FAX_WORK -> R.string.work_fax
-                Phone.TYPE_FAX_HOME -> R.string.home_fax
-                Phone.TYPE_PAGER -> R.string.pager
-                else -> R.string.other
-            }
-        )
-    }
-}
-
-fun Context.updateBottomTabItemColors(view: View?, isActive: Boolean) {
-    val color = if (isActive) {
-        getProperPrimaryColor()
-    } else {
-        getProperTextColor()
-    }
-
-    view?.findViewById<ImageView>(R.id.clips_section_label)?.applyColorFilter(color)
-    view?.findViewById<TextView>(R.id.clips_section_label)?.setTextColor(color)
-}
-
-fun Context.sendEmailIntent(recipient: String) {
-    Intent(Intent.ACTION_SENDTO).apply {
-        data = Uri.fromParts(KEY_MAILTO, recipient, null)
-        launchActivityIntent(this)
-    }
-}

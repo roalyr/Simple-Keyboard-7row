@@ -18,7 +18,6 @@ import kotlinx.android.synthetic.main.activity_customization.*
 class CustomizationActivity : BaseSimpleActivity() {
     private val THEME_LIGHT = 0
     private val THEME_DARK = 1
-    private val THEME_SOLARIZED = 2
     private val THEME_DARK_RED = 3
     private val THEME_BLACK_WHITE = 4
     private val THEME_CUSTOM = 5
@@ -206,33 +205,6 @@ class CustomizationActivity : BaseSimpleActivity() {
 
         if (customization_theme.value == getString(R.string.system_default)) {
             apply_to_all_holder.beGone()
-        }
-    }
-
-    private fun themePickerClicked() {
-        val items = arrayListOf<RadioItem>()
-        for ((key, value) in predefinedThemes) {
-            items.add(RadioItem(key, getString(value.nameId)))
-        }
-
-        RadioGroupDialog(this@CustomizationActivity, items, curSelectedThemeId) {
-            if (it == THEME_SHARED && !isThankYouInstalled()) {
-                PurchaseThankYouDialog(this)
-                return@RadioGroupDialog
-            }
-
-            updateColorTheme(it as Int, true)
-            if (it != THEME_CUSTOM && it != THEME_SHARED && it != THEME_AUTO && it != THEME_SYSTEM && !baseConfig.wasCustomThemeSwitchDescriptionShown) {
-                baseConfig.wasCustomThemeSwitchDescriptionShown = true
-                toast(R.string.changing_color_description)
-            }
-
-            val hideGoogleRelations = resources.getBoolean(R.bool.hide_google_relations) && !isThankYou
-            apply_to_all_holder.beVisibleIf(
-                curSelectedThemeId != THEME_AUTO && curSelectedThemeId != THEME_SYSTEM && curSelectedThemeId != THEME_SHARED && !hideGoogleRelations
-            )
-            updateMenuItemColors(customization_toolbar.menu, true, getCurrentStatusBarColor())
-            setupToolbar(customization_toolbar, NavigationIcon.Cross, getCurrentStatusBarColor())
         }
     }
 

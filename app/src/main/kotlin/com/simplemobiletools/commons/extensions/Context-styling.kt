@@ -76,14 +76,6 @@ fun Context.updateTextColors(viewGroup: ViewGroup) {
     }
 }
 
-fun Context.getLinkTextColor(): Int {
-    return if (baseConfig.primaryColor == resources.getColor(R.color.color_primary)) {
-        baseConfig.primaryColor
-    } else {
-        baseConfig.textColor
-    }
-}
-
 fun Context.isBlackAndWhiteTheme() = baseConfig.textColor == Color.WHITE && baseConfig.primaryColor == Color.BLACK && baseConfig.backgroundColor == Color.BLACK
 
 fun Context.isWhiteTheme() = baseConfig.textColor == DARK_GREY && baseConfig.primaryColor == Color.WHITE && baseConfig.backgroundColor == Color.WHITE
@@ -108,12 +100,6 @@ fun Context.getPopupMenuTheme(): Int {
     } else {
         R.style.AppTheme_PopupMenuDarkStyle
     }
-}
-
-fun Context.getDatePickerDialogTheme() = when {
-    baseConfig.isUsingSystemTheme -> R.style.MyDateTimePickerMaterialTheme
-    baseConfig.backgroundColor.getContrastColor() == Color.WHITE -> R.style.MyDialogTheme_Dark
-    else -> R.style.MyDialogTheme
 }
 
 fun Context.getSharedTheme(callback: (sharedTheme: SharedTheme?) -> Unit) {

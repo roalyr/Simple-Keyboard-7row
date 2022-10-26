@@ -105,10 +105,6 @@ open class MyRecyclerView : RecyclerView {
         }
     }
 
-    fun resetItemCount() {
-        totalItemCount = 0
-    }
-
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
         if (!dragSelectActive) {
             try {

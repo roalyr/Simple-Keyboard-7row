@@ -27,8 +27,5 @@ abstract class ClipsDatabase : RoomDatabase() {
             return db!!
         }
 
-        fun destroyInstance() {
-            db = null
-        }
     }
 }

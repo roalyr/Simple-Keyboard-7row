@@ -264,14 +264,6 @@ fun Context.isAStorageRootFolder(path: String): Boolean {
     return trimmed.isEmpty() || trimmed.equals(internalStoragePath, true) || trimmed.equals(sdCardPath, true) || trimmed.equals(otgPath, true)
 }
 
-fun Context.getMyFileUri(file: File): Uri {
-    return if (isNougatPlus()) {
-        FileProvider.getUriForFile(this, "$packageName.provider", file)
-    } else {
-        Uri.fromFile(file)
-    }
-}
-
 fun Context.tryFastDocumentDelete(path: String, allowDeleteFolder: Boolean): Boolean {
     val document = getFastDocumentFile(path)
     return if (document?.isFile == true || allowDeleteFolder) {
@@ -708,12 +700,6 @@ fun Context.getFastAndroidSAFDocument(path: String): DocumentFile? {
 
     val uri = getAndroidSAFUri(path)
     return DocumentFile.fromSingleUri(this, uri)
-}
-
-fun Context.getAndroidSAFChildrenUri(path: String): Uri {
-    val treeUri = getAndroidTreeUri(path).toUri()
-    val documentId = createAndroidSAFDocumentId(path)
-    return DocumentsContract.buildChildDocumentsUriUsingTree(treeUri, documentId)
 }
 
 fun Context.createAndroidSAFDirectory(path: String): Boolean {

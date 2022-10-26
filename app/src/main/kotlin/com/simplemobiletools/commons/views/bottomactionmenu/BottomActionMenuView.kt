@@ -118,11 +118,6 @@ class BottomActionMenuView : LinearLayout {
         }
     }
 
-    fun toggleItemVisibility(@IdRes itemId: Int, show: Boolean) {
-        val item = itemsLookup[itemId]
-        setItem(item?.copy(isVisible = show))
-    }
-
     private fun init() {
         removeAllViews()
         val maxItemsBeforeOverflow = computeMaxItemsBeforeOverflow()
