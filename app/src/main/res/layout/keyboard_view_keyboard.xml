@@ -151,7 +151,6 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/emoji_content_holder"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@id/emoji_palette_bottom_bar"
@@ -259,7 +258,6 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/clipboard_content_holder"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/clipboard_manager_top_bar">

@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/export_clips_wrapper"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/export_clips_holder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -31,7 +29,6 @@
             android:paddingBottom="@dimen/activity_margin" />
 
         <com.simplemobiletools.commons.views.MyTextInputLayout
-            android:id="@+id/export_clips_hint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/filename_without_txt">

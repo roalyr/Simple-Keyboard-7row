@@ -40,7 +40,6 @@
             android:text="@string/append_filenames" />
 
         <com.simplemobiletools.commons.views.MyCompatRadioButton
-            android:id="@+id/rename_simple_radio_prepend"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/normal_margin"

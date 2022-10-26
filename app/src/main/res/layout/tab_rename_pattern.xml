@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.simplemobiletools.commons.views.RenamePatternTab xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/rename_items_holder"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingStart="@dimen/activity_margin"
@@ -27,7 +26,6 @@
     </com.simplemobiletools.commons.views.MyTextInputLayout>
 
     <com.simplemobiletools.commons.views.MyTextView
-        android:id="@+id/rename_items_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/rename_items_hint"

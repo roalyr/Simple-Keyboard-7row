@@ -2,12 +2,10 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/settings_coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/settings_app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -30,7 +28,6 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
-            android:id="@+id/settings_holder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -90,7 +87,6 @@
                     android:background="@drawable/ripple_top_corners">
 
                     <com.simplemobiletools.commons.views.MyTextView
-                        android:id="@+id/settings_purchase_thank_you"
                         style="@style/SettingsTextLabelStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -146,7 +142,6 @@
                     android:background="@drawable/ripple_background">
 
                     <com.simplemobiletools.commons.views.MyTextView
-                        android:id="@+id/settings_manage_clipboard_items_label"
                         style="@style/SettingsTextLabelStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

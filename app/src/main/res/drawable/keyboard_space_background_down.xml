@@ -2,8 +2,7 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <layer-list>
-            <item android:id="@+id/space_normal"
-                android:bottom="@dimen/space_margin"
+            <item android:bottom="@dimen/space_margin"
                 android:left="@dimen/space_margin"
                 android:right="@dimen/space_margin"
                 android:top="0dp"

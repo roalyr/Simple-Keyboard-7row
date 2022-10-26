@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/main_coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/main_app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -30,7 +28,6 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <RelativeLayout
-            android:id="@+id/change_keyboard_wrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -50,7 +47,6 @@
             </RelativeLayout>
 
             <com.simplemobiletools.commons.views.MyEditText
-                android:id="@+id/text_edittext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/change_keyboard_holder"

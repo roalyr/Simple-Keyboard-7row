@@ -2,12 +2,10 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/about_coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/about_app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -31,7 +29,6 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
-            android:id="@+id/about_holder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -69,7 +66,6 @@
                         android:src="@drawable/ic_question_mark_vector" />
 
                     <com.simplemobiletools.commons.views.MyTextView
-                        android:id="@+id/about_faq"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_alignTop="@+id/about_faq_icon"
@@ -99,7 +95,6 @@
                         android:src="@drawable/ic_mail_vector" />
 
                     <com.simplemobiletools.commons.views.MyTextView
-                        android:id="@+id/about_email"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_alignTop="@+id/about_email_icon"
@@ -147,7 +142,6 @@
                         android:src="@drawable/ic_star_vector" />
 
                     <com.simplemobiletools.commons.views.MyTextView
-                        android:id="@+id/about_rate_us"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_alignTop="@+id/about_rate_us_icon"
@@ -177,7 +171,6 @@
                         android:src="@drawable/ic_add_person_vector" />
 
                     <com.simplemobiletools.commons.views.MyTextView
-                        android:id="@+id/about_invite"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_alignTop="@+id/about_invite_icon"
@@ -207,7 +200,6 @@
                         android:src="@drawable/ic_face_vector" />
 
                     <com.simplemobiletools.commons.views.MyTextView
-                        android:id="@+id/about_contributors"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_alignTop="@+id/about_contributors_icon"
@@ -238,7 +230,6 @@
                         android:src="@drawable/ic_dollar_vector" />
 
                     <com.simplemobiletools.commons.views.MyTextView
-                        android:id="@+id/about_donate"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_alignTop="@+id/about_donate_icon"
@@ -286,7 +277,6 @@
                         android:src="@drawable/ic_facebook_vector" />
 
                     <com.simplemobiletools.commons.views.MyTextView
-                        android:id="@+id/about_facebook"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_alignTop="@+id/about_facebook_icon"
@@ -316,7 +306,6 @@
                         android:src="@drawable/ic_reddit_vector" />
 
                     <com.simplemobiletools.commons.views.MyTextView
-                        android:id="@+id/about_reddit"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_alignTop="@+id/about_reddit_icon"
@@ -346,7 +335,6 @@
                         android:src="@drawable/ic_telegram_vector" />
 
                     <com.simplemobiletools.commons.views.MyTextView
-                        android:id="@+id/about_telegram"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_alignTop="@+id/about_telegram_icon"
@@ -394,7 +382,6 @@
                         android:src="@drawable/ic_simple_phone_vector" />
 
                     <com.simplemobiletools.commons.views.MyTextView
-                        android:id="@+id/about_get_simple_phone"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_alignTop="@+id/about_get_simple_phone_icon"
@@ -424,7 +411,6 @@
                         android:src="@drawable/ic_heart_vector" />
 
                     <com.simplemobiletools.commons.views.MyTextView
-                        android:id="@+id/about_more_apps"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_alignTop="@+id/about_more_apps_icon"
@@ -455,7 +441,6 @@
                         android:src="@drawable/ic_link_vector" />
 
                     <com.simplemobiletools.commons.views.MyTextView
-                        android:id="@+id/about_website"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_alignTop="@+id/about_website_icon"
@@ -485,7 +470,6 @@
                         android:src="@drawable/ic_unhide_vector" />
 
                     <com.simplemobiletools.commons.views.MyTextView
-                        android:id="@+id/about_privacy_policy"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_alignTop="@+id/about_privacy_policy_icon"
@@ -515,7 +499,6 @@
                         android:src="@drawable/ic_article_vector" />
 
                     <com.simplemobiletools.commons.views.MyTextView
-                        android:id="@+id/about_licenses"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_alignTop="@+id/about_licenses_icon"
@@ -561,7 +544,6 @@
             </LinearLayout>
 
             <com.simplemobiletools.commons.views.MyTextView
-                android:id="@+id/footer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/medium_margin"

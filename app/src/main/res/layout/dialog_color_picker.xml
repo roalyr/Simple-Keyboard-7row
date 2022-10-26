@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/color_picker_scrollview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="@dimen/activity_margin"
@@ -128,7 +127,6 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/color_picker_bottom_holder"
             android:layout_width="match_parent"
             android:layout_height="@dimen/colorpicker_items_height"
             android:layout_below="@id/color_picker_hex_codes_holder"

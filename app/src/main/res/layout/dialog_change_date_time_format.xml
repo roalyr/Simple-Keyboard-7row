@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/change_date_time_dialog_scrollview"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/change_date_time_dialog_holder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -91,9 +89,7 @@
 
         </RadioGroup>
 
-        <include
-            android:id="@+id/sorting_dialog_order_divider"
-            layout="@layout/divider" />
+        <include layout="@layout/divider" />
 
         <com.simplemobiletools.commons.views.MyAppCompatCheckbox
             android:id="@+id/change_date_time_dialog_24_hour"

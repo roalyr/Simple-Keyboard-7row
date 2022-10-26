@@ -7,7 +7,6 @@
     <color name="pressed_item_foreground">#08000000</color>
     <color name="activated_item_foreground">#44888888</color>
     <color name="divider_grey">#88808080</color>
-    <color name="gradient_grey_start">#CC000000</color>
     <color name="dark_grey">#FF333333</color>
     <color name="bottom_tabs_light_background">#FFF1F1F1</color>
     <color name="disabled_text_color_highlight">#00FFFFFF</color>
@@ -23,9 +22,6 @@
     <color name="theme_dark_background_color">@color/md_grey_800</color>
     <color name="default_text_color">@color/theme_dark_text_color</color>
     <color name="default_background_color">@color/theme_dark_background_color</color>
-    <color name="theme_solarized_background_color">@color/md_indigo_900_dark</color>
-    <color name="theme_solarized_text_color">@color/md_amber_700</color>
-    <color name="theme_solarized_primary_color">@color/md_indigo_900</color>
     <color name="theme_dark_red_primary_color">@color/md_red_700</color>
 
     <!-- SwitchCompat -->
@@ -33,7 +29,6 @@
     <color name="track_deactivated">#FFB2B2B2</color>
 
     <!-- Radiobutton -->
-    <color name="radiobutton_disabled">#FF757575</color>
 
     <!-- Primary colors -->
     <color name="md_amber">#FFC107</color>

@@ -1039,8 +1039,8 @@ fun Context.updateBottomTabItemColors(view: View?, isActive: Boolean) {
         getProperTextColor()
     }
 
-    view?.findViewById<ImageView>(R.id.tab_item_icon)?.applyColorFilter(color)
-    view?.findViewById<TextView>(R.id.tab_item_label)?.setTextColor(color)
+    view?.findViewById<ImageView>(R.id.clips_section_label)?.applyColorFilter(color)
+    view?.findViewById<TextView>(R.id.clips_section_label)?.setTextColor(color)
 }
 
 fun Context.sendEmailIntent(recipient: String) {
