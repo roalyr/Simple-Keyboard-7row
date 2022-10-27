@@ -30,11 +30,10 @@ fun Int.darkenColor(factor: Int = 8): Int {
         return this
     }
 
-    val DARK_FACTOR = factor
     var hsv = FloatArray(3)
     Color.colorToHSV(this, hsv)
     val hsl = hsv2hsl(hsv)
-    hsl[2] -= DARK_FACTOR / 100f
+    hsl[2] -= factor / 100f
     if (hsl[2] < 0)
         hsl[2] = 0f
     hsv = hsl2hsv(hsl)
@@ -46,11 +45,10 @@ fun Int.lightenColor(factor: Int = 8): Int {
         return this
     }
 
-    val LIGHT_FACTOR = factor
     var hsv = FloatArray(3)
     Color.colorToHSV(this, hsv)
     val hsl = hsv2hsl(hsv)
-    hsl[2] += LIGHT_FACTOR / 100f
+    hsl[2] += factor / 100f
     if (hsl[2] < 0)
         hsl[2] = 0f
     hsv = hsl2hsv(hsl)

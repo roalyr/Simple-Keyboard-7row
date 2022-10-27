@@ -133,6 +133,7 @@ class CustomizationActivity : BaseSimpleActivity() {
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         if (hasUnsavedChanges && System.currentTimeMillis() - lastSavePromptTS > SAVE_DISCARD_PROMPT_INTERVAL) {
             promptSaveDiscard()

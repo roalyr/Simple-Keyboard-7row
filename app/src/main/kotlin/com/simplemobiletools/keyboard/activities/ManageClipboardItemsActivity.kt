@@ -50,6 +50,7 @@ class ManageClipboardItemsActivity : SimpleActivity(), RefreshRecyclerViewListen
         setupToolbar(clipboard_toolbar, NavigationIcon.Arrow)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
         super.onActivityResult(requestCode, resultCode, resultData)
         if (requestCode == PICK_EXPORT_CLIPS_INTENT && resultCode == Activity.RESULT_OK && resultData != null && resultData.data != null) {

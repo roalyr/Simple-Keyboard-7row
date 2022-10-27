@@ -52,7 +52,8 @@ class CopyMoveTask(
         mNotificationBuilder = NotificationCompat.Builder(activity)
     }
 
-    override fun doInBackground(vararg params: Pair<ArrayList<FileDirItem>, String>): Boolean? {
+    @Deprecated("Deprecated in Java")
+    override fun doInBackground(vararg params: Pair<ArrayList<FileDirItem>, String>): Boolean {
         if (params.isEmpty()) {
             return false
         }
@@ -105,6 +106,7 @@ class CopyMoveTask(
         return true
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onPostExecute(success: Boolean) {
         if (activity.isFinishing || activity.isDestroyed) {
             return

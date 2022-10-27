@@ -87,6 +87,7 @@ class ManageBlockedNumbersActivity : BaseSimpleActivity(), RefreshRecyclerViewLi
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
         super.onActivityResult(requestCode, resultCode, resultData)
         if (requestCode == REQUEST_CODE_SET_DEFAULT_DIALER && isDefaultDialer()) {

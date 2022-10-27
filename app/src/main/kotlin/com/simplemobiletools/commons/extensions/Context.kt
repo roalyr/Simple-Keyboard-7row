@@ -8,9 +8,6 @@ import android.app.role.RoleManager
 import android.content.*
 import android.content.pm.PackageManager
 import android.database.Cursor
-import android.graphics.BitmapFactory
-import android.graphics.Point
-import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.Build
 import android.os.Handler
@@ -26,13 +23,11 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.biometric.BiometricManager
 import androidx.core.content.ContextCompat
-import androidx.core.content.FileProvider
 import androidx.loader.content.CursorLoader
 import com.github.ajalt.reprint.core.Reprint
-import com.simplemobiletools.keyboard.R
 import com.simplemobiletools.commons.helpers.*
 import com.simplemobiletools.commons.models.BlockedNumber
-import java.io.File
+import com.simplemobiletools.keyboard.R
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -113,22 +108,6 @@ fun getPermissionString(id: Int) = when (id) {
     PERMISSION_READ_MEDIA_VIDEO -> Manifest.permission.READ_MEDIA_VIDEO
     PERMISSION_READ_MEDIA_AUDIO -> Manifest.permission.READ_MEDIA_AUDIO
     else -> ""
-}
-
-fun Context.getFilePublicUri(file: File, applicationId: String): Uri {
-    // for images/videos/gifs try getting a media content uri first, like content://media/external/images/media/438
-    // if media content uri is null, get our custom uri like content://com.simplemobiletools.gallery.provider/external_files/emulated/0/DCIM/IMG_20171104_233915.jpg
-    var uri = if (file.isMediaFile()) {
-        getMediaContentUri(file.absolutePath)
-    } else {
-        getMediaContent(file.absolutePath, Files.getContentUri("external"))
-    }
-
-    if (uri == null) {
-        uri = FileProvider.getUriForFile(this, "$applicationId.provider", file)
-    }
-
-    return uri!!
 }
 
 fun Context.getMediaContentUri(path: String): Uri? {
