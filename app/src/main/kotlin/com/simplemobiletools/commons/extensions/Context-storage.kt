@@ -155,8 +155,6 @@ fun Context.isPathOnSD(path: String) = sdCardPath.isNotEmpty() && path.startsWit
 
 fun Context.isPathOnOTG(path: String) = otgPath.isNotEmpty() && path.startsWith(otgPath)
 
-fun Context.isPathOnInternalStorage(path: String) = internalStoragePath.isNotEmpty() && path.startsWith(internalStoragePath)
-
 fun Context.getSAFOnlyDirs(): List<String> {
     return DIRS_ACCESSIBLE_ONLY_WITH_SAF.map { "$internalStoragePath$it" } +
         DIRS_ACCESSIBLE_ONLY_WITH_SAF.map { "$sdCardPath$it" }
@@ -439,21 +437,6 @@ fun Context.updateInMediaStore(oldPath: String, newPath: String) {
     }
 }
 
-fun Context.updateLastModified(path: String, lastModified: Long) {
-    val values = ContentValues().apply {
-        put(MediaColumns.DATE_MODIFIED, lastModified / 1000)
-    }
-    File(path).setLastModified(lastModified)
-    val uri = getFileUri(path)
-    val selection = "${MediaColumns.DATA} = ?"
-    val selectionArgs = arrayOf(path)
-
-    try {
-        contentResolver.update(uri, values, selection, selectionArgs)
-    } catch (ignored: Exception) {
-    }
-}
-
 fun Context.getOTGItems(path: String, shouldShowHidden: Boolean, getProperFileSize: Boolean, callback: (ArrayList<FileDirItem>) -> Unit) {
     val items = ArrayList<FileDirItem>()
     val OTGTreeUri = baseConfig.OTGTreeUri
@@ -691,18 +674,6 @@ fun Context.createAndroidSAFFile(path: String): Boolean {
         val documentId = createAndroidSAFDocumentId(path.getParentPath())
         val parentUri = DocumentsContract.buildDocumentUriUsingTree(treeUri, documentId)
         DocumentsContract.createDocument(contentResolver, parentUri, path.getMimeType(), path.getFilenameFromPath()) != null
-    } catch (e: IllegalStateException) {
-        showErrorToast(e)
-        false
-    }
-}
-
-fun Context.renameAndroidSAFDocument(oldPath: String, newPath: String): Boolean {
-    return try {
-        val treeUri = getAndroidTreeUri(oldPath).toUri()
-        val documentId = createAndroidSAFDocumentId(oldPath)
-        val parentUri = DocumentsContract.buildDocumentUriUsingTree(treeUri, documentId)
-        DocumentsContract.renameDocument(contentResolver, parentUri, newPath.getFilenameFromPath()) != null
     } catch (e: IllegalStateException) {
         showErrorToast(e)
         false

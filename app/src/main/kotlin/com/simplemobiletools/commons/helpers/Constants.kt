@@ -84,7 +84,6 @@ const val WAS_BEFORE_RATE_SHOWN = "was_before_rate_shown"
 const val APP_SIDELOADING_STATUS = "app_sideloading_status"
 const val DATE_FORMAT = "date_format"
 const val WAS_APP_RATED = "was_app_rated"
-const val LAST_RENAME_PATTERN_USED = "last_rename_pattern_used"
 const val LAST_EXPORTED_SETTINGS_FOLDER = "last_exported_settings_folder"
 const val LAST_BLOCKED_NUMBERS_EXPORT_PATH = "last_blocked_numbers_export_path"
 const val BLOCK_UNKNOWN_NUMBERS = "block_unknown_numbers"
@@ -131,8 +130,6 @@ const val OPEN_DOCUMENT_TREE_FOR_ANDROID_DATA_OR_OBB = 1000
 const val OPEN_DOCUMENT_TREE_OTG = 1001
 const val OPEN_DOCUMENT_TREE_SD = 1002
 const val OPEN_DOCUMENT_TREE_FOR_SDK_30 = 1003
-const val SELECT_EXPORT_SETTINGS_FILE_INTENT = 1006
-const val REQUEST_CODE_SET_DEFAULT_DIALER = 1007
 const val CREATE_DOCUMENT_SDK_30 = 1008
 
 const val SORT_BY_NAME = 1
@@ -232,21 +229,6 @@ val keyColorStrings = arrayListOf(
     ".Grey_black"
 )
 
-// most app icon colors from md_app_icon_colors with reduced alpha
-// used at showing contact placeholders without image
-val letterBackgroundColors = arrayListOf(
-    0xCCD32F2F,
-    0xCCC2185B,
-    0xCC1976D2,
-    0xCC0288D1,
-    0xCC0097A7,
-    0xCC00796B,
-    0xCC388E3C,
-    0xCC689F38,
-    0xCCF57C00,
-    0xCCE64A19
-)
-
 fun isOnMainThread() = Looper.myLooper() == Looper.getMainLooper()
 
 fun ensureBackgroundThread(callback: () -> Unit) {
@@ -265,9 +247,6 @@ fun isMarshmallowPlus() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
 @ChecksSdkIntAtLeast(api = Build.VERSION_CODES.N)
 fun isNougatPlus() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
 
-@ChecksSdkIntAtLeast(api = Build.VERSION_CODES.O)
-fun isOreoPlus() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
-
 @ChecksSdkIntAtLeast(api = Build.VERSION_CODES.P)
 fun isPiePlus() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
 
@@ -284,16 +263,6 @@ fun isSPlus() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
 fun isTiramisuPlus() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
 
 val normalizeRegex = "\\p{InCombiningDiacriticalMarks}+".toRegex()
-
-fun getConflictResolution(resolutions: LinkedHashMap<String, Int>, path: String): Int {
-    return if (resolutions.size == 1 && resolutions.containsKey("")) {
-        resolutions[""]!!
-    } else if (resolutions.containsKey(path)) {
-        resolutions[path]!!
-    } else {
-        CONFLICT_SKIP
-    }
-}
 
 val proPackages = arrayListOf("draw", "gallery", "filemanager", "contacts", "notes", "calendar")
 

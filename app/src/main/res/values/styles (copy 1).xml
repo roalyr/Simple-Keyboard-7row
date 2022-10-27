@@ -156,58 +156,9 @@
         <item name="android:inputType">textNoSuggestions|textMultiLine</item>
     </style>
 
-    <style name="MyDialogTheme" parent="Theme.Material3.Light.Dialog">
-        <item name="colorAccent">@color/color_primary</item>
-        <item name="android:windowBackground">@color/theme_light_background_color</item>
-        <item name="android:textColor">@color/theme_light_text_color</item>
-        <item name="android:buttonBarNegativeButtonStyle">@style/DialogButtonStyle</item>
-        <item name="android:buttonBarPositiveButtonStyle">@style/DialogButtonStyle</item>
-        <item name="android:buttonBarNeutralButtonStyle">@style/DialogButtonStyle</item>
-    </style>
-
-    <style name="MyDialogTheme.Dark" parent="Theme.Material3.Dark.Dialog">
-        <item name="colorAccent">@color/color_primary</item>
-        <item name="android:windowBackground">@color/theme_dark_background_color</item>
-        <item name="android:textColor">@color/theme_dark_text_color</item>
-
-        <item name="android:buttonBarNegativeButtonStyle">@style/DialogButtonStyle</item>
-        <item name="android:buttonBarPositiveButtonStyle">@style/DialogButtonStyle</item>
-        <item name="android:buttonBarNeutralButtonStyle">@style/DialogButtonStyle</item>
-    </style>
-
-    <style name="DialogButtonStyle" parent="Widget.Material3.Button.TextButton.Dialog">
-        <item name="android:textColor">@color/color_primary</item>
-    </style>
-
-    <style name="MaterialDialogButtonStyle" parent="Widget.Material3.Button.TextButton.Dialog">
-        <item name="android:textColor">@color/you_primary_color</item>
-    </style>
-
     <!-- Used at dark Material You Time picker. Some of its parts cannot be customized through themes, we use these hacky ways. -->
-    <style name="MyTimePickerMaterialTheme.Dark" parent="@android:style/Theme.DeviceDefault.Dialog">
-        <item name="colorAccent">@color/you_primary_color</item>
-        <item name="android:colorAccent">@color/you_primary_color</item>
-        <item name="android:windowBackground">@drawable/dialog_you_background</item>
-        <item name="android:textColor">@color/you_primary_color</item>
-        <item name="android:textColorSecondary">@color/you_neutral_text_color</item>
-        <item name="android:textColorPrimary">@color/you_neutral_text_color</item>
-        <item name="android:buttonBarNegativeButtonStyle">@style/MaterialDialogButtonStyle</item>
-        <item name="android:buttonBarPositiveButtonStyle">@style/MaterialDialogButtonStyle</item>
-        <item name="android:buttonBarNeutralButtonStyle">@style/MaterialDialogButtonStyle</item>
-    </style>
 
     <!-- Used at both dark and light Material You Date pickers and light Time Picker, as otherwise it glitches -->
-    <style name="MyDateTimePickerMaterialTheme" parent="@style/Theme.AppCompat.Light.Dialog">
-        <item name="colorAccent">@color/you_primary_color</item>
-        <item name="android:colorAccent">@color/you_primary_color</item>
-        <item name="android:windowBackground">@drawable/dialog_you_background</item>
-        <item name="android:textColor">@color/you_primary_color</item>
-        <item name="android:textColorPrimary">@color/you_neutral_text_color</item>
-        <item name="android:textColorSecondary">@color/you_neutral_text_color</item>
-        <item name="android:buttonBarNegativeButtonStyle">@style/MaterialDialogButtonStyle</item>
-        <item name="android:buttonBarPositiveButtonStyle">@style/MaterialDialogButtonStyle</item>
-        <item name="android:buttonBarNeutralButtonStyle">@style/MaterialDialogButtonStyle</item>
-    </style>
 
     <!--
     <style name="PinNumberStyle.Base">
@@ -259,22 +210,6 @@
 
     <style name="TopPopupMenu.Overflow.Dark" parent="@style/Widget.MaterialComponents.PopupMenu.Overflow">
         <item name="android:popupBackground">@drawable/top_popup_menu_bg_dark</item>
-    </style>
-
-    <style name="OverflowMenuIconStyle">
-        <item name="srcCompat">@drawable/ic_three_dots_vector</item>
-        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
-        <item name="android:paddingStart">@dimen/activity_margin</item>
-        <item name="android:paddingTop">@dimen/normal_margin</item>
-        <item name="android:paddingEnd">@dimen/activity_margin</item>
-        <item name="android:paddingBottom">@dimen/normal_margin</item>
-    </style>
-
-    <style name="OverflowMenuAnchorStyle">
-        <item name="android:layout_width">@dimen/one_dp</item>
-        <item name="android:layout_height">@dimen/one_dp</item>
-        <item name="android:layout_marginEnd">@dimen/activity_margin</item>
-        <item name="android:visibility">invisible</item>
     </style>
 
     <style name="AppTheme.YouPopupMenuStyle" parent="ThemeOverlay.AppCompat.Dark">

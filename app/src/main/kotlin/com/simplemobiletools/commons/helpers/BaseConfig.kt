@@ -218,18 +218,6 @@ open class BaseConfig(val context: Context) {
         get() = prefs.getBoolean(WAS_ORANGE_ICON_CHECKED, false)
         set(wasOrangeIconChecked) = prefs.edit().putBoolean(WAS_ORANGE_ICON_CHECKED, wasOrangeIconChecked).apply()
 
-    var wasAppOnSDShown: Boolean
-        get() = prefs.getBoolean(WAS_APP_ON_SD_SHOWN, false)
-        set(wasAppOnSDShown) = prefs.edit().putBoolean(WAS_APP_ON_SD_SHOWN, wasAppOnSDShown).apply()
-
-    var wasBeforeAskingShown: Boolean
-        get() = prefs.getBoolean(WAS_BEFORE_ASKING_SHOWN, false)
-        set(wasBeforeAskingShown) = prefs.edit().putBoolean(WAS_BEFORE_ASKING_SHOWN, wasBeforeAskingShown).apply()
-
-    var wasBeforeRateShown: Boolean
-        get() = prefs.getBoolean(WAS_BEFORE_RATE_SHOWN, false)
-        set(wasBeforeRateShown) = prefs.edit().putBoolean(WAS_BEFORE_RATE_SHOWN, wasBeforeRateShown).apply()
-
     var appSideloadingStatus: Int
         get() = prefs.getInt(APP_SIDELOADING_STATUS, SIDELOADING_UNCHECKED)
         set(appSideloadingStatus) = prefs.edit().putInt(APP_SIDELOADING_STATUS, appSideloadingStatus).apply()
@@ -258,10 +246,6 @@ open class BaseConfig(val context: Context) {
         get() = prefs.getBoolean(WAS_APP_RATED, false)
         set(wasAppRated) = prefs.edit().putBoolean(WAS_APP_RATED, wasAppRated).apply()
 
-    var lastRenamePatternUsed: String
-        get() = prefs.getString(LAST_RENAME_PATTERN_USED, "")!!
-        set(lastRenamePatternUsed) = prefs.edit().putString(LAST_RENAME_PATTERN_USED, lastRenamePatternUsed).apply()
-
     var lastExportedSettingsFolder: String
         get() = prefs.getString(LAST_EXPORTED_SETTINGS_FOLDER, "")!!
         set(lastExportedSettingsFolder) = prefs.edit().putString(LAST_EXPORTED_SETTINGS_FOLDER, lastExportedSettingsFolder).apply()
@@ -269,10 +253,6 @@ open class BaseConfig(val context: Context) {
     var lastBlockedNumbersExportPath: String
         get() = prefs.getString(LAST_BLOCKED_NUMBERS_EXPORT_PATH, "")!!
         set(lastBlockedNumbersExportPath) = prefs.edit().putString(LAST_BLOCKED_NUMBERS_EXPORT_PATH, lastBlockedNumbersExportPath).apply()
-
-    var blockUnknownNumbers: Boolean
-        get() = prefs.getBoolean(BLOCK_UNKNOWN_NUMBERS, false)
-        set(blockUnknownNumbers) = prefs.edit().putBoolean(BLOCK_UNKNOWN_NUMBERS, blockUnknownNumbers).apply()
 
     var fontSize: Int
         get() = prefs.getInt(FONT_SIZE, context.resources.getInteger(R.integer.default_font_size))

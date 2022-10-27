@@ -180,8 +180,6 @@ fun Context.isOrWasThankYouInstalled(): Boolean {
     }
 }
 
-fun Context.isAProApp() = packageName.startsWith("com.simplemobiletools.") && packageName.removeSuffix(".debug").endsWith(".pro")
-
 fun Context.getCustomizeColorsString(): String {
     val textId = if (isOrWasThankYouInstalled()) {
         R.string.customize_colors
@@ -218,7 +216,6 @@ fun Context.getTextSize() = when (baseConfig.fontSize) {
 
 val Context.telecomManager: TelecomManager get() = getSystemService(Context.TELECOM_SERVICE) as TelecomManager
 val Context.windowManager: WindowManager get() = getSystemService(Context.WINDOW_SERVICE) as WindowManager
-val Context.notificationManager: NotificationManager get() = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
 
 // we need the Default Dialer functionality only in Simple Dialer and in Simple Contacts for now
@@ -232,32 +229,6 @@ fun Context.isDefaultDialer(): Boolean {
     } else {
         isMarshmallowPlus() && telecomManager.defaultDialerPackage == packageName
     }
-}
-
-@TargetApi(Build.VERSION_CODES.N)
-fun Context.getBlockedNumbers(): ArrayList<BlockedNumber> {
-    val blockedNumbers = ArrayList<BlockedNumber>()
-    if (!isNougatPlus() || !isDefaultDialer()) {
-        return blockedNumbers
-    }
-
-    val uri = BlockedNumbers.CONTENT_URI
-    val projection = arrayOf(
-        BlockedNumbers.COLUMN_ID,
-        BlockedNumbers.COLUMN_ORIGINAL_NUMBER,
-        BlockedNumbers.COLUMN_E164_NUMBER
-    )
-
-    queryCursor(uri, projection) { cursor ->
-        val id = cursor.getLongValue(BlockedNumbers.COLUMN_ID)
-        val number = cursor.getStringValue(BlockedNumbers.COLUMN_ORIGINAL_NUMBER) ?: ""
-        val normalizedNumber = cursor.getStringValue(BlockedNumbers.COLUMN_E164_NUMBER) ?: number
-        val comparableNumber = normalizedNumber.trimToComparableNumber()
-        val blockedNumber = BlockedNumber(id, number, normalizedNumber, comparableNumber)
-        blockedNumbers.add(blockedNumber)
-    }
-
-    return blockedNumbers
 }
 
 @TargetApi(Build.VERSION_CODES.N)

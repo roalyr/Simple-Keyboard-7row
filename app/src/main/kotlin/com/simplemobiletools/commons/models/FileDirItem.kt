@@ -74,21 +74,6 @@ open class FileDirItem(
         else -> name
     }
 
-    fun getProperSize(context: Context, countHidden: Boolean): Long {
-        return when {
-            context.isRestrictedSAFOnlyRoot(path) -> context.getAndroidSAFFileSize(path)
-            context.isPathOnOTG(path) -> context.getDocumentFile(path)?.getItemSize(countHidden) ?: 0
-            isNougatPlus() && path.startsWith("content://") -> {
-                try {
-                    context.contentResolver.openInputStream(Uri.parse(path))?.available()?.toLong() ?: 0L
-                } catch (e: Exception) {
-                    context.getSizeFromContentUri(Uri.parse(path))
-                }
-            }
-            else -> File(path).getProperSize(countHidden)
-        }
-    }
-
     fun getParentPath() = path.getParentPath()
 
     fun getSignature(): String {

@@ -152,13 +152,3 @@ fun Context.togglekeyColor(appId: String, colorIndex: Int, color: Int, enable: B
 
 fun Context.getkeyColors() = resources.getIntArray(R.array.md_app_icon_colors).toCollection(ArrayList())
 
-@SuppressLint("NewApi")
-fun Context.getBottomNavigationBackgroundColor(): Int {
-    val baseColor = baseConfig.backgroundColor
-    val bottomColor = when {
-        baseConfig.isUsingSystemTheme -> resources.getColor(R.color.you_status_bar_color, theme)
-        baseColor == Color.WHITE -> resources.getColor(R.color.bottom_tabs_light_background)
-        else -> baseConfig.backgroundColor.lightenColor(4)
-    }
-    return bottomColor
-}

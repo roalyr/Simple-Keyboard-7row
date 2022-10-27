@@ -19,9 +19,6 @@ fun Int.adjustAlpha(factor: Float): Int {
     return Color.argb(alpha, red, green, blue)
 }
 
-// TODO: how to do "bits & ~bit" in kotlin?
-fun Int.removeBit(bit: Int) = addBit(bit) - bit
-
 fun Int.addBit(bit: Int) = this or bit
 
 // taken from https://stackoverflow.com/a/40964456/1967672
@@ -74,13 +71,5 @@ private fun hsv2hsl(hsv: FloatArray): FloatArray {
         newSat = 1f
 
     return floatArrayOf(hue, newSat, newHue / 2f)
-}
-
-fun Int.ensureTwoDigits(): String {
-    return if (toString().length == 1) {
-        "0$this"
-    } else {
-        toString()
-    }
 }
 

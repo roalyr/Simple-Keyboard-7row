@@ -1,5 +1,4 @@
 <resources>
-    <dimen name="one_dp">1dp</dimen>
     <dimen name="tiny_margin">2dp</dimen>
     <dimen name="small_margin">4dp</dimen>
     <dimen name="smaller_margin">6dp</dimen>
@@ -12,7 +11,6 @@
     <dimen name="material_dialog_corner_radius">28dp</dimen>
     <dimen name="material_button_corner_radius">24dp</dimen>
     <dimen name="color_sample_size">34dp</dimen>
-    <dimen name="shortcut_size">64dp</dimen>
     <dimen name="colorpicker_size">240dp</dimen>
     <dimen name="colorpicker_size_with_padding">272dp</dimen>
     <dimen name="colorpicker_hue_width">30dp</dimen>
@@ -24,7 +22,6 @@
     <dimen name="fab_size">56dp</dimen>
     <dimen name="secondary_fab_bottom_margin">76dp</dimen>
     <dimen name="file_picker_icon_size">54dp</dimen>
-    <dimen name="min_row_height">60dp</dimen>
     <dimen name="rounded_corner_radius_small">4dp</dimen>
     <dimen name="bottom_sheet_corner_radius">24dp</dimen>
     <dimen name="breadcrumbs_layout_height">48dp</dimen>

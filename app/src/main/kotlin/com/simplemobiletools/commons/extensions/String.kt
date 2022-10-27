@@ -66,8 +66,6 @@ fun String.isAValidFilename(): Boolean {
 fun String.getOTGPublicPath(context: Context) =
     "${context.baseConfig.OTGTreeUri}/document/${context.baseConfig.OTGPartition}%3A${substring(context.baseConfig.OTGPath.length).replace("/", "%2F")}"
 
-fun String.isMediaFile() = isImageFast() || isVideoFast() || isGif() || isRawFast() || isSvg() || isPortrait()
-
 fun String.isGif() = endsWith(".gif", true)
 
 fun String.isSvg() = endsWith(".svg", true)
@@ -86,16 +84,6 @@ fun String.isVideoSlow() = isVideoFast() || getMimeType().startsWith("video") ||
 fun String.isAudioSlow() = isAudioFast() || getMimeType().startsWith("audio") || startsWith(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI.toString())
 
 fun String.getParentPath() = removeSuffix("/${getFilenameFromPath()}")
-
-fun String.getAvailableStorageB(): Long {
-    return try {
-        val stat = StatFs(this)
-        val bytesAvailable = stat.blockSizeLong * stat.availableBlocksLong
-        bytesAvailable
-    } catch (e: Exception) {
-        -1L
-    }
-}
 
 // remove diacritics, for example č -> c
 fun String.normalizeString() = Normalizer.normalize(this, Normalizer.Form.NFD).replace(normalizeRegex, "")
