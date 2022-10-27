@@ -29,9 +29,6 @@ val DARK_GREY = 0xFF333333.toInt()
 const val MEDIUM_ALPHA = 0.5f
 const val HIGHER_ALPHA = 0.75f
 
-const val HOUR_MINUTES = 60
-const val DAY_MINUTES = 24 * HOUR_MINUTES
-
 // shared preferences
 const val PREFS_KEY = "Prefs"
 const val APP_RUN_COUNT = "app_run_count"

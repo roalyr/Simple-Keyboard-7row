@@ -3,7 +3,6 @@ package com.simplemobiletools.commons.views
 import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
-import android.view.View
 import androidx.viewpager.widget.ViewPager
 
 class MyDialogViewPager : ViewPager {

@@ -110,33 +110,6 @@ fun getPermissionString(id: Int) = when (id) {
     else -> ""
 }
 
-fun Context.getMediaContentUri(path: String): Uri? {
-    val uri = when {
-        path.isImageFast() -> Images.Media.EXTERNAL_CONTENT_URI
-        path.isVideoFast() -> Video.Media.EXTERNAL_CONTENT_URI
-        else -> Files.getContentUri("external")
-    }
-
-    return getMediaContent(path, uri)
-}
-
-fun Context.getMediaContent(path: String, uri: Uri): Uri? {
-    val projection = arrayOf(Images.Media._ID)
-    val selection = Images.Media.DATA + "= ?"
-    val selectionArgs = arrayOf(path)
-    try {
-        val cursor = contentResolver.query(uri, projection, selection, selectionArgs, null)
-        cursor?.use {
-            if (cursor.moveToFirst()) {
-                val id = cursor.getIntValue(Images.Media._ID).toString()
-                return Uri.withAppendedPath(uri, id)
-            }
-        }
-    } catch (e: Exception) {
-    }
-    return null
-}
-
 fun Context.queryCursor(
     uri: Uri,
     projection: Array<String>,
