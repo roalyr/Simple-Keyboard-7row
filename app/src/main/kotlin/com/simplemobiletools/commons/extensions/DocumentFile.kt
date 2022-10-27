@@ -26,19 +26,3 @@ private fun getDirectorySize(dir: DocumentFile, countHiddenItems: Boolean): Long
     return size
 }
 
-private fun getDirectoryFileCount(dir: DocumentFile, countHiddenItems: Boolean): Int {
-    var count = 0
-    if (dir.exists()) {
-        val files = dir.listFiles()
-        for (i in files.indices) {
-            val file = files[i]
-            if (file.isDirectory) {
-                count++
-                count += getDirectoryFileCount(file, countHiddenItems)
-            } else if (!file.name!!.startsWith(".") || countHiddenItems) {
-                count++
-            }
-        }
-    }
-    return count
-}

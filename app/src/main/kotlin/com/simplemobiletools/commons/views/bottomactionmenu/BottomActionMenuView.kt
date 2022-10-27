@@ -12,14 +12,13 @@ import android.view.View
 import android.view.ViewPropertyAnimator
 import android.widget.ImageView
 import android.widget.LinearLayout
-import androidx.annotation.IdRes
 import com.google.android.material.animation.AnimationUtils
-import com.simplemobiletools.keyboard.R
 import com.simplemobiletools.commons.extensions.applyColorFilter
 import com.simplemobiletools.commons.extensions.beVisibleIf
 import com.simplemobiletools.commons.extensions.toast
 import com.simplemobiletools.commons.extensions.windowManager
 import com.simplemobiletools.commons.helpers.isRPlus
+import com.simplemobiletools.keyboard.R
 
 class BottomActionMenuView : LinearLayout {
     companion object {

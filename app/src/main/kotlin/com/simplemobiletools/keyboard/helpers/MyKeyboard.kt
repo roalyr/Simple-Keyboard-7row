@@ -8,7 +8,6 @@ import android.content.res.XmlResourceParser
 import android.graphics.drawable.Drawable
 import android.util.TypedValue
 import android.util.Xml
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.EditorInfo.IME_ACTION_NONE
 import androidx.annotation.XmlRes
 import com.simplemobiletools.keyboard.R

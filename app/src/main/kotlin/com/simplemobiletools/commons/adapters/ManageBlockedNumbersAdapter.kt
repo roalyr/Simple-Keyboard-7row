@@ -1,9 +1,7 @@
 package com.simplemobiletools.commons.adapters
 
-import android.content.Context
 import android.view.*
 import android.widget.PopupMenu
-import com.simplemobiletools.keyboard.R
 import com.simplemobiletools.commons.activities.BaseSimpleActivity
 import com.simplemobiletools.commons.extensions.copyToClipboard
 import com.simplemobiletools.commons.extensions.deleteBlockedNumber
@@ -12,6 +10,7 @@ import com.simplemobiletools.commons.extensions.getProperTextColor
 import com.simplemobiletools.commons.interfaces.RefreshRecyclerViewListener
 import com.simplemobiletools.commons.models.BlockedNumber
 import com.simplemobiletools.commons.views.MyRecyclerView
+import com.simplemobiletools.keyboard.R
 import kotlinx.android.synthetic.main.item_manage_blocked_number.view.*
 
 class ManageBlockedNumbersAdapter(

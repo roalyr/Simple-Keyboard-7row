@@ -2,7 +2,6 @@ package com.simplemobiletools.commons.views
 
 import android.content.Context
 import android.util.AttributeSet
-import android.widget.SeekBar
 import com.simplemobiletools.commons.extensions.applyColorFilter
 
 class MySeekBar : androidx.appcompat.widget.AppCompatSeekBar {

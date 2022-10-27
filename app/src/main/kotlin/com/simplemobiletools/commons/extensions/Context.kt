@@ -183,41 +183,6 @@ fun Context.queryCursor(
     }
 }
 
-fun Context.getMimeTypeFromUri(uri: Uri): String {
-    var mimetype = uri.path?.getMimeType() ?: ""
-    if (mimetype.isEmpty()) {
-        try {
-            mimetype = contentResolver.getType(uri) ?: ""
-        } catch (e: IllegalStateException) {
-        }
-    }
-    return mimetype
-}
-
-fun Context.ensurePublicUri(path: String, applicationId: String): Uri? {
-    return when {
-        hasProperStoredAndroidTreeUri(path) && isRestrictedSAFOnlyRoot(path) -> {
-            getAndroidSAFUri(path)
-        }
-        hasProperStoredDocumentUriSdk30(path) && isAccessibleWithSAFSdk30(path) -> {
-            createDocumentUriUsingFirstParentTreeUri(path)
-        }
-        isPathOnOTG(path) -> {
-            getDocumentFile(path)?.uri
-        }
-        else -> {
-            val uri = Uri.parse(path)
-            if (uri.scheme == "content") {
-                uri
-            } else {
-                val newPath = if (uri.toString().startsWith("/")) uri.toString() else uri.path
-                val file = File(newPath)
-                getFilePublicUri(file, applicationId)
-            }
-        }
-    }
-}
-
 fun Context.getSizeFromContentUri(uri: Uri): Long {
     val projection = arrayOf(OpenableColumns.SIZE)
     try {
@@ -290,55 +255,6 @@ fun Context.getStoreUrl() = "https://play.google.com/store/apps/details?id=${pac
 
 fun Context.getTimeFormat() = if (baseConfig.use24HourFormat) TIME_FORMAT_24 else TIME_FORMAT_12
 
-fun Context.getImageResolution(path: String): Point? {
-    val options = BitmapFactory.Options()
-    options.inJustDecodeBounds = true
-    if (isRestrictedSAFOnlyRoot(path)) {
-        BitmapFactory.decodeStream(contentResolver.openInputStream(getAndroidSAFUri(path)), null, options)
-    } else {
-        BitmapFactory.decodeFile(path, options)
-    }
-
-    val width = options.outWidth
-    val height = options.outHeight
-    return if (width > 0 && height > 0) {
-        Point(options.outWidth, options.outHeight)
-    } else {
-        null
-    }
-}
-
-fun Context.getVideoResolution(path: String): Point? {
-    var point = try {
-        val retriever = MediaMetadataRetriever()
-        if (isRestrictedSAFOnlyRoot(path)) {
-            retriever.setDataSource(this, getAndroidSAFUri(path))
-        } else {
-            retriever.setDataSource(path)
-        }
-
-        val width = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH)!!.toInt()
-        val height = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT)!!.toInt()
-        Point(width, height)
-    } catch (ignored: Exception) {
-        null
-    }
-
-    if (point == null && path.startsWith("content://", true)) {
-        try {
-            val fd = contentResolver.openFileDescriptor(Uri.parse(path), "r")?.fileDescriptor
-            val retriever = MediaMetadataRetriever()
-            retriever.setDataSource(fd)
-            val width = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH)!!.toInt()
-            val height = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT)!!.toInt()
-            point = Point(width, height)
-        } catch (ignored: Exception) {
-        }
-    }
-
-    return point
-}
-
 fun Context.getStringsPackageName() = getString(R.string.package_name)
 
 fun Context.getTextSize() = when (baseConfig.fontSize) {
@@ -352,20 +268,6 @@ val Context.telecomManager: TelecomManager get() = getSystemService(Context.TELE
 val Context.windowManager: WindowManager get() = getSystemService(Context.WINDOW_SERVICE) as WindowManager
 val Context.notificationManager: NotificationManager get() = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-
-val Context.usableScreenSize: Point
-    get() {
-        val size = Point()
-        windowManager.defaultDisplay.getSize(size)
-        return size
-    }
-
-val Context.realScreenSize: Point
-    get() {
-        val size = Point()
-        windowManager.defaultDisplay.getRealSize(size)
-        return size
-    }
 
 // we need the Default Dialer functionality only in Simple Dialer and in Simple Contacts for now
 @TargetApi(Build.VERSION_CODES.M)

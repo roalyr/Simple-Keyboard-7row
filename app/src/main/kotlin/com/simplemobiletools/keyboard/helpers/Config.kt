@@ -2,7 +2,6 @@ package com.simplemobiletools.keyboard.helpers
 
 import android.content.Context
 import com.simplemobiletools.commons.helpers.BaseConfig
-import java.util.*
 
 class Config(context: Context) : BaseConfig(context) {
     companion object {

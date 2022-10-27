@@ -1,28 +1,12 @@
 package com.simplemobiletools.commons.extensions
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Point
 import android.os.StatFs
 import android.provider.MediaStore
-import android.telephony.PhoneNumberUtils
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.TextUtils
-import android.text.style.ForegroundColorSpan
-import android.widget.TextView
-import com.bumptech.glide.signature.ObjectKey
 import com.simplemobiletools.commons.helpers.*
-import org.joda.time.DateTime
-import org.joda.time.Years
-import org.joda.time.format.DateTimeFormat
 import java.io.File
-import java.text.DateFormat
 import java.text.Normalizer
-import java.text.SimpleDateFormat
 import java.util.*
-import java.util.regex.Pattern
 
 fun String.getFilenameFromPath() = substring(lastIndexOf("/") + 1)
 

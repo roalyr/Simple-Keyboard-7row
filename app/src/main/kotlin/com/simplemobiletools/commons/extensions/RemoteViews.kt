@@ -1,7 +1,6 @@
 package com.simplemobiletools.commons.extensions
 
 import android.graphics.Color
-import android.view.View
 import android.widget.RemoteViews
 
 fun RemoteViews.setText(id: Int, text: String) {

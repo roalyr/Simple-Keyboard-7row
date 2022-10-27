@@ -4,10 +4,8 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Looper
-import android.util.Log
 import androidx.annotation.ChecksSdkIntAtLeast
 import com.simplemobiletools.keyboard.R
-import com.simplemobiletools.commons.overloads.times
 
 const val EXTERNAL_STORAGE_PROVIDER_AUTHORITY = "com.android.externalstorage.documents"
 const val EXTRA_SHOW_ADVANCED = "android.content.extra.SHOW_ADVANCED"
@@ -21,7 +19,6 @@ const val APP_ID = "app_id"
 const val APP_LAUNCHER_NAME = "app_launcher_name"
 const val BLOCKED_NUMBERS_EXPORT_DELIMITER = ","
 const val BLOCKED_NUMBERS_EXPORT_EXTENSION = ".txt"
-const val NOMEDIA = ".nomedia"
 const val SHOW_FAQ_BEFORE_MAIL = "show_faq_before_mail"
 const val INVALID_NAVIGATION_BAR_COLOR = -1
 const val SAVE_DISCARD_PROMPT_INTERVAL = 1000L
@@ -37,13 +34,6 @@ const val DAY_MINUTES = 24 * HOUR_MINUTES
 const val WEEK_MINUTES = DAY_MINUTES * 7
 const val MONTH_MINUTES = DAY_MINUTES * 30
 const val YEAR_MINUTES = DAY_MINUTES * 365
-
-const val MINUTE_SECONDS = 60
-const val HOUR_SECONDS = HOUR_MINUTES * 60
-const val DAY_SECONDS = DAY_MINUTES * 60
-const val WEEK_SECONDS = WEEK_MINUTES * 60
-const val MONTH_SECONDS = MONTH_MINUTES * 60
-const val YEAR_SECONDS = YEAR_MINUTES * 60
 
 // shared preferences
 const val PREFS_KEY = "Prefs"
@@ -157,7 +147,6 @@ const val SORT_BY_SIZE = 4
 const val SORT_BY_EXTENSION = 16
 const val SORT_DESCENDING = 1024
 const val SORT_USE_NUMERIC_VALUE = 32768
-const val SORT_BY_FULL_NAME = 65536
 
 const val PROTECTION_NONE = -1
 const val PROTECTION_PATTERN = 0

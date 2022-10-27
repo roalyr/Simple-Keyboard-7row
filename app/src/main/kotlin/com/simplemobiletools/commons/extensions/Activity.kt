@@ -326,64 +326,6 @@ fun Activity.redirectToRateUs() {
     }
 }
 
-fun BaseSimpleActivity.deleteFolderBg(fileDirItem: FileDirItem, deleteMediaOnly: Boolean = true, callback: ((wasSuccess: Boolean) -> Unit)? = null) {
-    val folder = File(fileDirItem.path)
-    if (folder.exists()) {
-        val filesArr = folder.listFiles()
-        if (filesArr == null) {
-            runOnUiThread {
-                callback?.invoke(true)
-            }
-            return
-        }
-
-        val files = filesArr.toMutableList().filter { !deleteMediaOnly || it.isMediaFile() }
-        for (file in files) {
-            deleteFileBg(file.toFileDirItem(applicationContext), allowDeleteFolder = false, isDeletingMultipleFiles = false) { }
-        }
-
-        if (folder.listFiles()?.isEmpty() == true) {
-            deleteFileBg(fileDirItem, allowDeleteFolder = true, isDeletingMultipleFiles = false) { }
-        }
-    }
-    runOnUiThread {
-        callback?.invoke(true)
-    }
-}
-
-private fun BaseSimpleActivity.deleteFilesCasual(
-    files: List<FileDirItem>,
-    allowDeleteFolder: Boolean = false,
-    callback: ((wasSuccess: Boolean) -> Unit)? = null
-) {
-    var wasSuccess = false
-    val failedFileDirItems = ArrayList<FileDirItem>()
-    files.forEachIndexed { index, file ->
-        deleteFileBg(file, allowDeleteFolder, true) {
-            if (it) {
-                wasSuccess = true
-            } else {
-                failedFileDirItems.add(file)
-            }
-
-            if (index == files.lastIndex) {
-                if (isRPlus() && failedFileDirItems.isNotEmpty()) {
-                    val fileUris = getFileUrisFromFileDirItems(failedFileDirItems)
-                    deleteSDK30Uris(fileUris) { success ->
-                        runOnUiThread {
-                            callback?.invoke(success)
-                        }
-                    }
-                } else {
-                    runOnUiThread {
-                        callback?.invoke(wasSuccess)
-                    }
-                }
-            }
-        }
-    }
-}
-
 fun BaseSimpleActivity.deleteFileBg(
     fileDirItem: FileDirItem,
     allowDeleteFolder: Boolean = false,
