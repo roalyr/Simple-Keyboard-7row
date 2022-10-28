@@ -19,8 +19,6 @@ fun Int.adjustAlpha(factor: Float): Int {
     return Color.argb(alpha, red, green, blue)
 }
 
-fun Int.addBit(bit: Int) = this or bit
-
 // taken from https://stackoverflow.com/a/40964456/1967672
 fun Int.darkenColor(factor: Int = 8): Int {
     if (this == Color.WHITE || this == Color.BLACK) {

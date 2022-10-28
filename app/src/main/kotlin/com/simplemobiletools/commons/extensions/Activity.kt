@@ -3,13 +3,11 @@ package com.simplemobiletools.commons.extensions
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.*
-import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import android.provider.DocumentsContract
-import android.provider.MediaStore
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
@@ -22,16 +20,15 @@ import androidx.biometric.BiometricPrompt
 import androidx.biometric.auth.AuthPromptCallback
 import androidx.biometric.auth.AuthPromptHost
 import androidx.biometric.auth.Class2BiometricAuthPrompt
-import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.FragmentActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.simplemobiletools.keyboard.R
 import com.simplemobiletools.commons.activities.BaseSimpleActivity
 import com.simplemobiletools.commons.dialogs.*
 import com.simplemobiletools.commons.dialogs.WritePermissionDialog.Mode
 import com.simplemobiletools.commons.helpers.*
 import com.simplemobiletools.commons.models.*
 import com.simplemobiletools.commons.views.MyTextView
+import com.simplemobiletools.keyboard.R
 import kotlinx.android.synthetic.main.dialog_title.view.*
 import java.io.*
 import java.util.*
@@ -265,14 +262,6 @@ fun Activity.launchPurchaseThankYouIntent() {
     }
 }
 
-fun Activity.launchUpgradeToProIntent() {
-    try {
-        launchViewIntent("market://details?id=${baseConfig.appId.removeSuffix(".debug")}.pro")
-    } catch (ignored: Exception) {
-        launchViewIntent(getStoreUrl())
-    }
-}
-
 fun Activity.launchViewIntent(id: Int) = launchViewIntent(getString(id))
 
 fun Activity.launchViewIntent(url: String) {
@@ -286,64 +275,6 @@ fun Activity.launchViewIntent(url: String) {
             } catch (e: Exception) {
                 showErrorToast(e)
             }
-        }
-    }
-}
-
-fun Activity.redirectToRateUs() {
-    hideKeyboard()
-    try {
-        launchViewIntent("market://details?id=${packageName.removeSuffix(".debug")}")
-    } catch (ignored: ActivityNotFoundException) {
-        launchViewIntent(getStoreUrl())
-    }
-}
-
-private fun BaseSimpleActivity.deleteSdk30(fileDirItem: FileDirItem, callback: ((wasSuccess: Boolean) -> Unit)?) {
-    val fileUris = getFileUrisFromFileDirItems(arrayListOf(fileDirItem))
-    deleteSDK30Uris(fileUris) { success ->
-        runOnUiThread {
-            callback?.invoke(success)
-        }
-    }
-}
-
-private fun deleteRecursively(file: File, context: Context): Boolean {
-    if (file.isDirectory) {
-        val files = file.listFiles() ?: return file.delete()
-        for (child in files) {
-            deleteRecursively(child, context)
-        }
-    }
-
-    val deleted = file.delete()
-    if (deleted) {
-        context.deleteFromMediaStore(file.absolutePath)
-    }
-    return deleted
-}
-
-fun Activity.scanPathRecursively(path: String, callback: (() -> Unit)? = null) {
-    applicationContext.scanPathRecursively(path, callback)
-}
-
-fun Activity.scanPathsRecursively(paths: List<String>, callback: (() -> Unit)? = null) {
-    applicationContext.scanPathsRecursively(paths, callback)
-}
-
-fun Activity.rescanPath(path: String, callback: (() -> Unit)? = null) {
-    applicationContext.rescanPath(path, callback)
-}
-
-fun createTempFile(file: File): File? {
-    return if (file.isDirectory) {
-        createTempDir("temp", "${System.currentTimeMillis()}", file.parentFile)
-    } else {
-        if (isRPlus()) {
-            // this can throw FileSystemException, lets catch and handle it at the place calling this function
-            kotlin.io.path.createTempFile(file.parentFile.toPath(), "temp", "${System.currentTimeMillis()}").toFile()
-        } else {
-            createTempFile("temp", "${System.currentTimeMillis()}", file.parentFile)
         }
     }
 }
@@ -456,65 +387,6 @@ fun BaseSimpleActivity.showFileCreateError(path: String) {
     showErrorToast(error)
 }
 
-fun BaseSimpleActivity.getFileOutputStreamSync(path: String, mimeType: String, parentDocumentFile: DocumentFile? = null): OutputStream? {
-    val targetFile = File(path)
-
-    return when {
-        isRestrictedSAFOnlyRoot(path) -> {
-            val uri = getAndroidSAFUri(path)
-            if (!getDoesFilePathExist(path)) {
-                createAndroidSAFFile(path)
-            }
-            applicationContext.contentResolver.openOutputStream(uri)
-        }
-        needsStupidWritePermissions(path) -> {
-            var documentFile = parentDocumentFile
-            if (documentFile == null) {
-                if (getDoesFilePathExist(targetFile.parentFile.absolutePath)) {
-                    documentFile = getDocumentFile(targetFile.parent)
-                } else {
-                    documentFile = getDocumentFile(targetFile.parentFile.parent)
-                    documentFile = documentFile!!.createDirectory(targetFile.parentFile.name) ?: getDocumentFile(targetFile.parentFile.absolutePath)
-                }
-            }
-
-            if (documentFile == null) {
-                val casualOutputStream = createCasualFileOutputStream(this, targetFile)
-                return if (casualOutputStream == null) {
-                    showFileCreateError(targetFile.parent)
-                    null
-                } else {
-                    casualOutputStream
-                }
-            }
-
-            try {
-                val uri = if (getDoesFilePathExist(path)) {
-                    createDocumentUriFromRootTree(path)
-                } else {
-                    documentFile.createFile(mimeType, path.getFilenameFromPath())!!.uri
-                }
-                applicationContext.contentResolver.openOutputStream(uri)
-            } catch (e: Exception) {
-                showErrorToast(e)
-                null
-            }
-        }
-        isAccessibleWithSAFSdk30(path) -> {
-            try {
-                val uri = createDocumentUriUsingFirstParentTreeUri(path)
-                if (!getDoesFilePathExist(path)) {
-                    createSAFFileSdk30(path)
-                }
-                applicationContext.contentResolver.openOutputStream(uri)
-            } catch (e: Exception) {
-                null
-            } ?: createCasualFileOutputStream(this, targetFile)
-        }
-        else -> return createCasualFileOutputStream(this, targetFile)
-    }
-}
-
 private fun createCasualFileOutputStream(activity: BaseSimpleActivity, targetFile: File): OutputStream? {
     if (targetFile.parentFile?.exists() == false) {
         targetFile.parentFile?.mkdirs()
@@ -577,28 +449,6 @@ fun Activity.handleLockedFolderOpening(path: String, callback: (success: Boolean
     } else {
         callback(true)
     }
-}
-
-fun BaseSimpleActivity.createDirectorySync(directory: String): Boolean {
-    if (getDoesFilePathExist(directory)) {
-        return true
-    }
-
-    if (needsStupidWritePermissions(directory)) {
-        val documentFile = getDocumentFile(directory.getParentPath()) ?: return false
-        val newDir = documentFile.createDirectory(directory.getFilenameFromPath()) ?: getDocumentFile(directory)
-        return newDir != null
-    }
-
-    if (isRestrictedSAFOnlyRoot(directory)) {
-        return createAndroidSAFDirectory(directory)
-    }
-
-    if (isAccessibleWithSAFSdk30(directory)) {
-        return createSAFDirectorySdk30(directory)
-    }
-
-    return File(directory).mkdirs()
 }
 
 fun Activity.updateSharedTheme(sharedTheme: SharedTheme) {

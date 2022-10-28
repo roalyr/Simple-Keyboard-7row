@@ -17,8 +17,6 @@ const val APP_VERSION_NAME = "app_version_name"
 const val APP_ICON_IDS = "app_icon_ids"
 const val APP_ID = "app_id"
 const val APP_LAUNCHER_NAME = "app_launcher_name"
-const val BLOCKED_NUMBERS_EXPORT_DELIMITER = ","
-const val BLOCKED_NUMBERS_EXPORT_EXTENSION = ".txt"
 const val SHOW_FAQ_BEFORE_MAIL = "show_faq_before_mail"
 const val INVALID_NAVIGATION_BAR_COLOR = -1
 const val SAVE_DISCARD_PROMPT_INTERVAL = 1000L
@@ -62,7 +60,6 @@ const val PASSWORD_HASH = "password_hash"
 const val PROTECTION_TYPE = "protection_type"
 const val PROTECTED_FOLDER_HASH = "protected_folder_hash_"
 const val PROTECTED_FOLDER_TYPE = "protected_folder_type_"
-const val KEEP_LAST_MODIFIED = "keep_last_modified"
 const val USE_ENGLISH = "use_english"
 const val WAS_USE_ENGLISH_TOGGLED = "was_use_english_toggled"
 const val WAS_SHARED_THEME_EVER_ACTIVATED = "was_shared_theme_ever_activated"
@@ -71,22 +68,13 @@ const val IS_USING_AUTO_THEME = "is_using_auto_theme"
 const val IS_USING_SYSTEM_THEME = "is_using_system_theme"
 const val SHOULD_USE_SHARED_THEME = "should_use_shared_theme"
 const val WAS_SHARED_THEME_FORCED = "was_shared_theme_forced"
-const val LAST_CONFLICT_RESOLUTION = "last_conflict_resolution"
-const val LAST_CONFLICT_APPLY_TO_ALL = "last_conflict_apply_to_all"
 const val HAD_THANK_YOU_INSTALLED = "had_thank_you_installed"
 const val USE_24_HOUR_FORMAT = "use_24_hour_format"
 const val OTG_PARTITION = "otg_partition_2"
 const val IS_USING_MODIFIED_APP_ICON = "is_using_modified_app_icon"
 const val WAS_ORANGE_ICON_CHECKED = "was_orange_icon_checked"
-const val WAS_APP_ON_SD_SHOWN = "was_app_on_sd_shown"
-const val WAS_BEFORE_ASKING_SHOWN = "was_before_asking_shown"
-const val WAS_BEFORE_RATE_SHOWN = "was_before_rate_shown"
 const val APP_SIDELOADING_STATUS = "app_sideloading_status"
 const val DATE_FORMAT = "date_format"
-const val WAS_APP_RATED = "was_app_rated"
-const val LAST_EXPORTED_SETTINGS_FOLDER = "last_exported_settings_folder"
-const val LAST_BLOCKED_NUMBERS_EXPORT_PATH = "last_blocked_numbers_export_path"
-const val BLOCK_UNKNOWN_NUMBERS = "block_unknown_numbers"
 const val FONT_SIZE = "font_size"
 const val FAVORITES = "favorites"
 internal const val COLOR_PICKER_RECENT_COLORS = "color_picker_recent_colors"
@@ -168,12 +156,6 @@ const val PERMISSION_READ_MEDIA_IMAGES = 18
 const val PERMISSION_READ_MEDIA_VIDEO = 19
 const val PERMISSION_READ_MEDIA_AUDIO = 20
 
-// conflict resolving
-const val CONFLICT_SKIP = 1
-const val CONFLICT_OVERWRITE = 2
-const val CONFLICT_MERGE = 3
-const val CONFLICT_KEEP_BOTH = 4
-
 // font sizes
 const val FONT_SIZE_SMALL = 0
 const val FONT_SIZE_MEDIUM = 1
@@ -186,7 +168,6 @@ const val SIDELOADING_FALSE = 2
 val photoExtensions: Array<String> get() = arrayOf(".jpg", ".png", ".jpeg", ".bmp", ".webp", ".heic", ".heif", ".apng", ".avif")
 val videoExtensions: Array<String> get() = arrayOf(".mp4", ".mkv", ".webm", ".avi", ".3gp", ".mov", ".m4v", ".3gpp")
 val audioExtensions: Array<String> get() = arrayOf(".mp3", ".wav", ".wma", ".ogg", ".m4a", ".opus", ".flac", ".aac")
-val rawExtensions: Array<String> get() = arrayOf(".dng", ".orf", ".nef", ".arw", ".rw2", ".cr2", ".cr3")
 
 const val DATE_FORMAT_ONE = "dd.MM.yyyy"
 const val DATE_FORMAT_TWO = "dd/MM/yyyy"
@@ -256,15 +237,10 @@ fun isQPlus() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
 @ChecksSdkIntAtLeast(api = Build.VERSION_CODES.R)
 fun isRPlus() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
 
-@ChecksSdkIntAtLeast(api = Build.VERSION_CODES.S)
-fun isSPlus() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
-
 @ChecksSdkIntAtLeast(api = Build.VERSION_CODES.TIRAMISU)
 fun isTiramisuPlus() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
 
 val normalizeRegex = "\\p{InCombiningDiacriticalMarks}+".toRegex()
-
-val proPackages = arrayListOf("draw", "gallery", "filemanager", "contacts", "notes", "calendar")
 
 fun getFilePlaceholderDrawables(context: Context): HashMap<String, Drawable> {
     val fileDrawables = HashMap<String, Drawable>()

@@ -1,26 +1,21 @@
 package com.simplemobiletools.commons.activities
 
 import android.content.Intent
-import android.graphics.Color
 import android.graphics.drawable.LayerDrawable
 import android.graphics.drawable.RippleDrawable
 import android.os.Bundle
-import com.simplemobiletools.keyboard.R
 import com.simplemobiletools.commons.dialogs.*
 import com.simplemobiletools.commons.extensions.*
 import com.simplemobiletools.commons.helpers.*
 import com.simplemobiletools.commons.models.MyTheme
 import com.simplemobiletools.commons.models.SharedTheme
 import com.simplemobiletools.commons.views.MyTextView
+import com.simplemobiletools.keyboard.R
 import kotlinx.android.synthetic.main.activity_customization.*
 
 class CustomizationActivity : BaseSimpleActivity() {
-    private val THEME_LIGHT = 0
-    private val THEME_DARK = 1
-    private val THEME_BLACK_WHITE = 4
     private val THEME_CUSTOM = 5
     private val THEME_SHARED = 6
-    private val THEME_WHITE = 7
     private val THEME_AUTO = 8
     private val THEME_SYSTEM = 9    // Material You
 

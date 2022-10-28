@@ -1,10 +1,11 @@
 package com.simplemobiletools.commons.extensions
 
 import android.content.Context
-import android.os.StatFs
 import android.provider.MediaStore
-import com.simplemobiletools.commons.helpers.*
-import java.io.File
+import com.simplemobiletools.commons.helpers.audioExtensions
+import com.simplemobiletools.commons.helpers.normalizeRegex
+import com.simplemobiletools.commons.helpers.photoExtensions
+import com.simplemobiletools.commons.helpers.videoExtensions
 import java.text.Normalizer
 import java.util.*
 
@@ -68,16 +69,11 @@ fun String.getOTGPublicPath(context: Context) =
 
 fun String.isGif() = endsWith(".gif", true)
 
-fun String.isSvg() = endsWith(".svg", true)
-
-fun String.isPortrait() = getFilenameFromPath().contains("portrait", true) && File(this).parentFile?.name?.startsWith("img_", true) == true
-
 // fast extension checks, not guaranteed to be accurate
 fun String.isVideoFast() = videoExtensions.any { endsWith(it, true) }
 
 fun String.isImageFast() = photoExtensions.any { endsWith(it, true) }
 fun String.isAudioFast() = audioExtensions.any { endsWith(it, true) }
-fun String.isRawFast() = rawExtensions.any { endsWith(it, true) }
 
 fun String.isImageSlow() = isImageFast() || getMimeType().startsWith("image") || startsWith(MediaStore.Images.Media.EXTERNAL_CONTENT_URI.toString())
 fun String.isVideoSlow() = isVideoFast() || getMimeType().startsWith("video") || startsWith(MediaStore.Video.Media.EXTERNAL_CONTENT_URI.toString())
@@ -87,13 +83,6 @@ fun String.getParentPath() = removeSuffix("/${getFilenameFromPath()}")
 
 // remove diacritics, for example č -> c
 fun String.normalizeString() = Normalizer.normalize(this, Normalizer.Form.NFD).replace(normalizeRegex, "")
-
-// if we are comparing phone numbers, compare just the last 9 digits
-fun String.trimToComparableNumber(): String {
-    val normalizedNumber = this.normalizeString()
-    val startIndex = Math.max(0, normalizedNumber.length - 9)
-    return normalizedNumber.substring(startIndex)
-}
 
 fun String.getMimeType(): String {
     val typesMap = HashMap<String, String>().apply {

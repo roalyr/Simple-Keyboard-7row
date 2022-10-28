@@ -4,12 +4,9 @@ import android.content.Context
 import android.net.Uri
 import android.os.Environment
 import android.provider.DocumentsContract
-import android.provider.MediaStore
 import androidx.documentfile.provider.DocumentFile
 import com.simplemobiletools.commons.helpers.EXTERNAL_STORAGE_PROVIDER_AUTHORITY
 import com.simplemobiletools.commons.helpers.isRPlus
-import com.simplemobiletools.commons.helpers.isSPlus
-import com.simplemobiletools.commons.models.FileDirItem
 import java.io.File
 
 private const val DOWNLOAD_DIR = "Download"
@@ -91,11 +88,6 @@ fun Context.isInAndroidDir(path: String): Boolean {
 
 fun isExternalStorageManager(): Boolean {
     return isRPlus() && Environment.isExternalStorageManager()
-}
-
-// is the app a Media Management App on Android 12+?
-fun Context.canManageMedia(): Boolean {
-    return isSPlus() && MediaStore.canManageMedia(this)
 }
 
 fun Context.createFirstParentTreeUriUsingRootTree(fullPath: String): Uri {
@@ -199,25 +191,6 @@ fun Context.getDocumentSdk30(path: String): DocumentFile? {
         document
     } catch (ignored: Exception) {
         null
-    }
-}
-
-fun Context.deleteDocumentWithSAFSdk30(fileDirItem: FileDirItem, allowDeleteFolder: Boolean, callback: ((wasSuccess: Boolean) -> Unit)?) {
-    try {
-        var fileDeleted = false
-        if (fileDirItem.isDirectory.not() || allowDeleteFolder) {
-            val fileUri = createDocumentUriUsingFirstParentTreeUri(fileDirItem.path)
-            fileDeleted = DocumentsContract.deleteDocument(contentResolver, fileUri)
-        }
-
-        if (fileDeleted) {
-            deleteFromMediaStore(fileDirItem.path)
-            callback?.invoke(true)
-        }
-
-    } catch (e: Exception) {
-        callback?.invoke(false)
-        showErrorToast(e)
     }
 }
 

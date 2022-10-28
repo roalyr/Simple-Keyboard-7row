@@ -1,23 +1,16 @@
 package com.simplemobiletools.commons.extensions
 
 import android.Manifest
-import android.annotation.TargetApi
 import android.app.Activity
-import android.app.NotificationManager
-import android.app.role.RoleManager
-import android.content.*
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
-import android.os.Build
 import android.os.Handler
 import android.os.Looper
-import android.provider.BlockedNumberContract.BlockedNumbers
-import android.provider.MediaStore.*
-import android.provider.OpenableColumns
 import android.provider.Settings
-import android.telecom.TelecomManager
-import android.telephony.PhoneNumberUtils
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
@@ -26,7 +19,6 @@ import androidx.core.content.ContextCompat
 import androidx.loader.content.CursorLoader
 import com.github.ajalt.reprint.core.Reprint
 import com.simplemobiletools.commons.helpers.*
-import com.simplemobiletools.commons.models.BlockedNumber
 import com.simplemobiletools.keyboard.R
 import java.text.SimpleDateFormat
 import java.util.*
@@ -135,20 +127,6 @@ fun Context.queryCursor(
     }
 }
 
-fun Context.getSizeFromContentUri(uri: Uri): Long {
-    val projection = arrayOf(OpenableColumns.SIZE)
-    try {
-        val cursor = contentResolver.query(uri, projection, null, null, null)
-        cursor?.use {
-            if (cursor.moveToFirst()) {
-                return cursor.getLongValue(OpenableColumns.SIZE)
-            }
-        }
-    } catch (e: Exception) {
-    }
-    return 0L
-}
-
 fun Context.getMyContentProviderCursorLoader() = CursorLoader(this, MyContentProvider.MY_CONTENT_URI, null, null, null, null)
 
 fun getCurrentFormattedDateTime(): String {
@@ -199,10 +177,6 @@ fun Context.isPackageInstalled(pkgName: String): Boolean {
     }
 }
 
-fun Context.getCanAppBeUpgraded() = proPackages.contains(baseConfig.appId.removeSuffix(".debug").removePrefix("com.simplemobiletools."))
-
-fun Context.getStoreUrl() = "https://play.google.com/store/apps/details?id=${packageName.removeSuffix(".debug")}"
-
 fun Context.getTimeFormat() = if (baseConfig.use24HourFormat) TIME_FORMAT_24 else TIME_FORMAT_12
 
 fun Context.getStringsPackageName() = getString(R.string.package_name)
@@ -214,42 +188,8 @@ fun Context.getTextSize() = when (baseConfig.fontSize) {
     else -> resources.getDimension(R.dimen.extra_big_text_size)
 }
 
-val Context.telecomManager: TelecomManager get() = getSystemService(Context.TELECOM_SERVICE) as TelecomManager
 val Context.windowManager: WindowManager get() = getSystemService(Context.WINDOW_SERVICE) as WindowManager
 
-
-// we need the Default Dialer functionality only in Simple Dialer and in Simple Contacts for now
-@TargetApi(Build.VERSION_CODES.M)
-fun Context.isDefaultDialer(): Boolean {
-    return if (!packageName.startsWith("com.simplemobiletools.contacts") && !packageName.startsWith("com.simplemobiletools.dialer")) {
-        true
-    } else if ((packageName.startsWith("com.simplemobiletools.contacts") || packageName.startsWith("com.simplemobiletools.dialer")) && isQPlus()) {
-        val roleManager = getSystemService(RoleManager::class.java)
-        roleManager!!.isRoleAvailable(RoleManager.ROLE_DIALER) && roleManager.isRoleHeld(RoleManager.ROLE_DIALER)
-    } else {
-        isMarshmallowPlus() && telecomManager.defaultDialerPackage == packageName
-    }
-}
-
-@TargetApi(Build.VERSION_CODES.N)
-fun Context.addBlockedNumber(number: String) {
-    ContentValues().apply {
-        put(BlockedNumbers.COLUMN_ORIGINAL_NUMBER, number)
-        put(BlockedNumbers.COLUMN_E164_NUMBER, PhoneNumberUtils.normalizeNumber(number))
-        try {
-            contentResolver.insert(BlockedNumbers.CONTENT_URI, this)
-        } catch (e: Exception) {
-            showErrorToast(e)
-        }
-    }
-}
-
-@TargetApi(Build.VERSION_CODES.N)
-fun Context.deleteBlockedNumber(number: String) {
-    val selection = "${BlockedNumbers.COLUMN_ORIGINAL_NUMBER} = ?"
-    val selectionArgs = arrayOf(number)
-    contentResolver.delete(BlockedNumbers.CONTENT_URI, selection, selectionArgs)
-}
 
 fun Context.copyToClipboard(text: String) {
     val clip = ClipData.newPlainText(getString(R.string.simple_commons), text)

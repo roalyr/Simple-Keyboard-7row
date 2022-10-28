@@ -150,10 +150,6 @@ open class BaseConfig(val context: Context) {
 
     fun getFolderProtectionType(path: String) = prefs.getInt("$PROTECTED_FOLDER_TYPE$path", PROTECTION_NONE)
 
-    var keepLastModified: Boolean
-        get() = prefs.getBoolean(KEEP_LAST_MODIFIED, true)
-        set(keepLastModified) = prefs.edit().putBoolean(KEEP_LAST_MODIFIED, keepLastModified).apply()
-
     var useEnglish: Boolean
         get() = prefs.getBoolean(USE_ENGLISH, false)
         set(useEnglish) {
@@ -189,14 +185,6 @@ open class BaseConfig(val context: Context) {
     var wasSharedThemeForced: Boolean
         get() = prefs.getBoolean(WAS_SHARED_THEME_FORCED, false)
         set(wasSharedThemeForced) = prefs.edit().putBoolean(WAS_SHARED_THEME_FORCED, wasSharedThemeForced).apply()
-
-    var lastConflictApplyToAll: Boolean
-        get() = prefs.getBoolean(LAST_CONFLICT_APPLY_TO_ALL, true)
-        set(lastConflictApplyToAll) = prefs.edit().putBoolean(LAST_CONFLICT_APPLY_TO_ALL, lastConflictApplyToAll).apply()
-
-    var lastConflictResolution: Int
-        get() = prefs.getInt(LAST_CONFLICT_RESOLUTION, CONFLICT_SKIP)
-        set(lastConflictResolution) = prefs.edit().putInt(LAST_CONFLICT_RESOLUTION, lastConflictResolution).apply()
 
     var hadThankYouInstalled: Boolean
         get() = prefs.getBoolean(HAD_THANK_YOU_INSTALLED, false)
@@ -241,18 +229,6 @@ open class BaseConfig(val context: Context) {
             else -> DATE_FORMAT_ONE
         }
     }
-
-    var wasAppRated: Boolean
-        get() = prefs.getBoolean(WAS_APP_RATED, false)
-        set(wasAppRated) = prefs.edit().putBoolean(WAS_APP_RATED, wasAppRated).apply()
-
-    var lastExportedSettingsFolder: String
-        get() = prefs.getString(LAST_EXPORTED_SETTINGS_FOLDER, "")!!
-        set(lastExportedSettingsFolder) = prefs.edit().putString(LAST_EXPORTED_SETTINGS_FOLDER, lastExportedSettingsFolder).apply()
-
-    var lastBlockedNumbersExportPath: String
-        get() = prefs.getString(LAST_BLOCKED_NUMBERS_EXPORT_PATH, "")!!
-        set(lastBlockedNumbersExportPath) = prefs.edit().putString(LAST_BLOCKED_NUMBERS_EXPORT_PATH, lastBlockedNumbersExportPath).apply()
 
     var fontSize: Int
         get() = prefs.getInt(FONT_SIZE, context.resources.getInteger(R.integer.default_font_size))

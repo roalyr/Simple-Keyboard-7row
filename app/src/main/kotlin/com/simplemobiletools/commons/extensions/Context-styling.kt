@@ -1,6 +1,5 @@
 package com.simplemobiletools.commons.extensions
 
-import android.annotation.SuppressLint
 import android.content.ComponentName
 import android.content.Context
 import android.content.pm.PackageManager
@@ -8,10 +7,10 @@ import android.content.res.Configuration
 import android.graphics.Color
 import android.view.ViewGroup
 import androidx.loader.content.CursorLoader
-import com.simplemobiletools.keyboard.R
 import com.simplemobiletools.commons.helpers.*
 import com.simplemobiletools.commons.models.SharedTheme
 import com.simplemobiletools.commons.views.*
+import com.simplemobiletools.keyboard.R
 
 // handle system default theme (Material You) specially as the color is taken from the system, not hardcoded by us
 fun Context.getProperTextColor() = if (baseConfig.isUsingSystemTheme) {
@@ -81,16 +80,6 @@ fun Context.isBlackAndWhiteTheme() = baseConfig.textColor == Color.WHITE && base
 fun Context.isWhiteTheme() = baseConfig.textColor == DARK_GREY && baseConfig.primaryColor == Color.WHITE && baseConfig.backgroundColor == Color.WHITE
 
 fun Context.isUsingSystemDarkTheme() = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_YES != 0
-
-fun Context.getPopupMenuTheme(): Int {
-    return if (isSPlus() && baseConfig.isUsingSystemTheme) {
-        R.style.AppTheme_YouPopupMenuStyle
-    } else if (isWhiteTheme()) {
-        R.style.AppTheme_PopupMenuLightStyle
-    } else {
-        R.style.AppTheme_PopupMenuDarkStyle
-    }
-}
 
 fun Context.getSharedTheme(callback: (sharedTheme: SharedTheme?) -> Unit) {
     if (!isThankYouInstalled()) {
