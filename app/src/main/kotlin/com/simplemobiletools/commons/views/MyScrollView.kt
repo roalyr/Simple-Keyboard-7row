@@ -6,7 +6,7 @@ import android.view.MotionEvent
 import android.widget.ScrollView
 
 class MyScrollView : ScrollView {
-    var isScrollable: Boolean = true
+    private var isScrollable: Boolean = true
 
     constructor(context: Context) : super(context)
 

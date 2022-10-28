@@ -26,7 +26,7 @@ import kotlinx.android.synthetic.main.item_clip_in_activity.view.*
 import java.util.*
 
 class ClipsActivityAdapter(
-    activity: BaseSimpleActivity, var items: ArrayList<Clip>, recyclerView: MyRecyclerView, val listener: RefreshRecyclerViewListener, itemClick: (Any) -> Unit
+    activity: BaseSimpleActivity, var items: ArrayList<Clip>, recyclerView: MyRecyclerView, private val listener: RefreshRecyclerViewListener, itemClick: (Any) -> Unit
 ) : MyRecyclerViewAdapter(activity, recyclerView, itemClick), ItemTouchHelperContract {
 
     private var touchHelper: ItemTouchHelper? = null

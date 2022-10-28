@@ -54,16 +54,6 @@ abstract class BaseSimpleActivity : AppCompatActivity() {
         }
 
         super.onCreate(savedInstanceState)
-        /**
-        if (!packageName.startsWith("com.simplemobiletools.", true)) {
-        if ((0..50).random() == 10 || baseConfig.appRunCount % 100 == 0) {
-        val label = "You are using a fake version of the app. For your own safety download the original one from www.simplemobiletools.com. Thanks"
-        ConfirmationDialog(this, label, positive = R.string.ok, negative = 0) {
-        launchViewIntent("https://play.google.com/store/apps/dev?id=9070296388022589266")
-        }
-        }
-        }
-         */
     }
 
     @SuppressLint("NewApi")
@@ -71,30 +61,11 @@ abstract class BaseSimpleActivity : AppCompatActivity() {
         super.onResume()
         if (useDynamicTheme) {
             setTheme(getThemeId(showTransparentTop = showTransparentTop))
-
-            val backgroundColor = if (baseConfig.isUsingSystemTheme) {
-                resources.getColor(R.color.you_background_color, theme)
-            } else {
-                baseConfig.backgroundColor
-            }
-
-            updateBackgroundColor(backgroundColor)
         }
 
         if (showTransparentTop) {
             window.statusBarColor = Color.TRANSPARENT
-        } else {
-            val color = if (baseConfig.isUsingSystemTheme) {
-                resources.getColor(R.color.you_status_bar_color)
-            } else {
-                getProperStatusBarColor()
-            }
-
-            updateActionbarColor(color)
         }
-
-        updateRecentsAppIcon()
-        updateNavigationBarColor()
     }
 
     override fun onDestroy() {
@@ -120,141 +91,6 @@ abstract class BaseSimpleActivity : AppCompatActivity() {
         } else {
             super.attachBaseContext(newBase)
         }
-    }
-
-    fun updateBackgroundColor(color: Int = baseConfig.backgroundColor) {
-        //window.decorView.setBackgroundColor(color)
-        return
-    }
-
-    fun updateActionbarColor(color: Int = getProperStatusBarColor()) {
-        /**
-        updateStatusbarColor(color)
-        setTaskDescription(ActivityManager.TaskDescription(null, null, color))
-         */
-        return
-    }
-
-    fun updateNavigationBarColor(color: Int = baseConfig.navigationBarColor, isColorPreview: Boolean = false) {
-        /**
-        if (showTransparentNavigation) {
-        return
-        }
-
-        if (baseConfig.isUsingSystemTheme && !isColorPreview) {
-        val navBarColor = getBottomNavigationBackgroundColor()
-        window.navigationBarColor = navBarColor
-        if (navBarColor.getContrastColor() == 0xFF333333.toInt()) {
-        window.decorView.systemUiVisibility = window.decorView.systemUiVisibility.addBit(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR)
-        } else {
-        window.decorView.systemUiVisibility = window.decorView.systemUiVisibility.removeBit(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR)
-        }
-        } else if (baseConfig.navigationBarColor != INVALID_NAVIGATION_BAR_COLOR) {
-        try {
-        val colorToUse = if (color == -2) -1 else color
-        window.navigationBarColor = colorToUse
-
-        if (isOreoPlus()) {
-        if (colorToUse.getContrastColor() == 0xFF333333.toInt()) {
-        window.decorView.systemUiVisibility = window.decorView.systemUiVisibility.addBit(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR)
-        } else {
-        window.decorView.systemUiVisibility = window.decorView.systemUiVisibility.removeBit(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR)
-        }
-        }
-        } catch (ignored: Exception) {
-        }
-        }
-         */
-        return
-    }
-
-    private fun updateRecentsAppIcon() {
-        /**
-        if (baseConfig.isUsingModifiedAppIcon) {
-        val appIconIDs = getAppIconIDs()
-        val currentkeyColorIndex = getCurrentkeyColorIndex()
-        if (appIconIDs.size - 1 < currentkeyColorIndex) {
-        return
-        }
-
-        val recentsIcon = BitmapFactory.decodeResource(resources, appIconIDs[currentkeyColorIndex])
-        val title = getAppLauncherName()
-        val color = baseConfig.primaryColor
-
-        val description = ActivityManager.TaskDescription(title, recentsIcon, color)
-        setTaskDescription(description)
-        }
-         */
-        return
-    }
-
-    fun updateMenuItemColors(menu: Menu?, useCrossAsBack: Boolean = false, baseColor: Int = getProperStatusBarColor(), forceWhiteIcons: Boolean = false) {
-        /**
-        if (menu == null) {
-        return
-        }
-
-        var color = baseColor.getContrastColor()
-        if (forceWhiteIcons) {
-        color = Color.WHITE
-        }
-
-        for (i in 0 until menu.size()) {
-        try {
-        menu.getItem(i)?.icon?.setTint(color)
-        } catch (ignored: Exception) {
-        }
-        }
-         */
-        return
-    }
-
-    fun setupToolbar(
-        toolbar: MaterialToolbar,
-        toolbarNavigationIcon: NavigationIcon = NavigationIcon.None,
-        statusBarColor: Int = getProperStatusBarColor(),
-        searchMenuItem: MenuItem? = null
-    ) {
-        /**
-        val contrastColor = statusBarColor.getContrastColor()
-        toolbar.setBackgroundColor(statusBarColor)
-        toolbar.setTitleTextColor(contrastColor)
-        toolbar.overflowIcon = resources.getColoredDrawableWithColor(R.drawable.ic_three_dots_vector, contrastColor)
-
-        if (toolbarNavigationIcon != NavigationIcon.None) {
-        val drawableId = if (toolbarNavigationIcon == NavigationIcon.Cross) R.drawable.ic_cross_vector else R.drawable.ic_arrow_left_vector
-        toolbar.navigationIcon = resources.getColoredDrawableWithColor(drawableId, contrastColor)
-        }
-
-        updateMenuItemColors(toolbar.menu, toolbarNavigationIcon == NavigationIcon.Cross, statusBarColor)
-        toolbar.setNavigationOnClickListener {
-        hideKeyboard()
-        finish()
-        }
-
-        // this icon is used at closing search
-        toolbar.collapseIcon = resources.getColoredDrawableWithColor(R.drawable.ic_arrow_left_vector, contrastColor)
-
-        searchMenuItem?.actionView?.findViewById<ImageView>(androidx.appcompat.R.id.search_close_btn)?.apply {
-        applyColorFilter(contrastColor)
-        }
-
-        searchMenuItem?.actionView?.findViewById<EditText>(androidx.appcompat.R.id.search_src_text)?.apply {
-        setTextColor(contrastColor)
-        setHintTextColor(contrastColor.adjustAlpha(MEDIUM_ALPHA))
-        hint = "${getString(R.string.search)}…"
-
-        if (isQPlus()) {
-        textCursorDrawable = null
-        }
-        }
-
-        // search underline
-        searchMenuItem?.actionView?.findViewById<View>(androidx.appcompat.R.id.search_plate)?.apply {
-        background.setColorFilter(contrastColor, PorterDuff.Mode.MULTIPLY)
-        }
-         */
-        return
     }
 
     private fun getCurrentkeyColorIndex(): Int {
@@ -286,18 +122,6 @@ abstract class BaseSimpleActivity : AppCompatActivity() {
     }
 
     private fun startCustomizationActivity() {
-        /** This is a custom fork of an app anyways.
-        if (!packageName.contains("slootelibomelpmis".reversed(), true)) {
-        if (baseConfig.appRunCount > 100) {
-        val label = "You are using a fake version of the app. For your own safety download the original one from www.simplemobiletools.com. Thanks"
-        ConfirmationDialog(this, label, positive = R.string.ok, negative = 0) {
-        launchViewIntent("https://play.google.com/store/apps/dev?id=9070296388022589266")
-        }
-        return
-        }
-        }
-         */
-
         Intent(applicationContext, CustomizationActivity::class.java).apply {
             putExtra(APP_ICON_IDS, getAppIconIDs())
             putExtra(APP_LAUNCHER_NAME, getAppLauncherName())

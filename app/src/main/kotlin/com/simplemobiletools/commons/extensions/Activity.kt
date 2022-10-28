@@ -400,65 +400,7 @@ private fun createCasualFileOutputStream(activity: BaseSimpleActivity, targetFil
     }
 }
 
-fun Activity.showBiometricPrompt(
-    successCallback: ((String, Int) -> Unit)? = null,
-    failureCallback: (() -> Unit)? = null
-) {
-    Class2BiometricAuthPrompt.Builder(getText(R.string.authenticate), getText(R.string.cancel))
-        .build()
-        .startAuthentication(
-            AuthPromptHost(this as FragmentActivity),
-            object : AuthPromptCallback() {
-                override fun onAuthenticationSucceeded(activity: FragmentActivity?, result: BiometricPrompt.AuthenticationResult) {
-                    successCallback?.invoke("", PROTECTION_FINGERPRINT)
-                }
 
-                override fun onAuthenticationError(activity: FragmentActivity?, errorCode: Int, errString: CharSequence) {
-                    val isCanceledByUser = errorCode == BiometricPrompt.ERROR_NEGATIVE_BUTTON || errorCode == BiometricPrompt.ERROR_USER_CANCELED
-                    if (!isCanceledByUser) {
-                        toast(errString.toString())
-                    }
-                    failureCallback?.invoke()
-                }
-
-                override fun onAuthenticationFailed(activity: FragmentActivity?) {
-                    toast(R.string.authentication_failed)
-                    failureCallback?.invoke()
-                }
-            }
-        )
-}
-
-fun Activity.handleHiddenFolderPasswordProtection(callback: () -> Unit) {
-    if (baseConfig.isHiddenPasswordProtectionOn) {
-        SecurityDialog(this, baseConfig.hiddenPasswordHash, baseConfig.hiddenProtectionType) { _, _, success ->
-            if (success) {
-                callback()
-            }
-        }
-    } else {
-        callback()
-    }
-}
-
-fun Activity.handleLockedFolderOpening(path: String, callback: (success: Boolean) -> Unit) {
-    if (baseConfig.isFolderProtected(path)) {
-        SecurityDialog(this, baseConfig.getFolderProtectionHash(path), baseConfig.getFolderProtectionType(path)) { _, _, success ->
-            callback(success)
-        }
-    } else {
-        callback(true)
-    }
-}
-
-fun Activity.updateSharedTheme(sharedTheme: SharedTheme) {
-    try {
-        val contentValues = MyContentProvider.fillThemeContentValues(sharedTheme)
-        MyContentProvider.MY_CONTENT_URI?.let { applicationContext.contentResolver.update(it, contentValues, null, null) }
-    } catch (e: Exception) {
-        showErrorToast(e)
-    }
-}
 
 fun Activity.setupDialogStuff(
     view: View,
@@ -475,11 +417,6 @@ fun Activity.setupDialogStuff(
     val textColor = getProperTextColor()
     val backgroundColor = getProperBackgroundColor()
     val primaryColor = getProperPrimaryColor()
-    if (view is ViewGroup) {
-        updateTextColors(view)
-    } else if (view is MyTextView) {
-        view.setColors(textColor, primaryColor, backgroundColor)
-    }
 
     if (dialog is MaterialAlertDialogBuilder) {
         dialog.create().apply {
@@ -525,11 +462,8 @@ fun Activity.setupDialogStuff(
             getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(dialogButtonColor)
             getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(dialogButtonColor)
 
-            val bgDrawable = when {
-                isBlackAndWhiteTheme() -> resources.getDrawable(R.drawable.black_dialog_background, theme)
-                baseConfig.isUsingSystemTheme -> resources.getDrawable(R.drawable.dialog_you_background, theme)
-                else -> resources.getColoredDrawableWithColor(R.drawable.dialog_bg, baseConfig.backgroundColor)
-            }
+            val bgDrawable = resources.getColoredDrawableWithColor(R.drawable.dialog_bg, baseConfig.backgroundColor)
+
 
             window?.setBackgroundDrawable(bgDrawable)
             callback?.invoke(this)

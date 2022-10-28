@@ -82,13 +82,7 @@ class LineColorPickerDialog(
     private fun colorUpdated(color: Int) {
         view.hex_code.text = color.toHex()
         if (isPrimaryColorPicker) {
-            activity.updateActionbarColor(color)
             activity.setTheme(activity.getThemeId(color))
-
-            if (toolbar != null) {
-                activity.updateMenuItemColors(toolbar.menu, true, color)
-                activity.setupToolbar(toolbar, NavigationIcon.Cross, color)
-            }
 
             if (!wasDimmedBackgroundRemoved) {
                 dialog?.window?.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)

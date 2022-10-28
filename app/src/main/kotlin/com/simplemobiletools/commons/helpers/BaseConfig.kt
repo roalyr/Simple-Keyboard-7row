@@ -85,7 +85,7 @@ open class BaseConfig(val context: Context) {
         get() = prefs!!.getInt(PRIMARY_COLOR, context.resources.getColor(R.color.color_primary))
         set(primaryColor) = prefs!!.edit().putInt(PRIMARY_COLOR, primaryColor).apply()
 
-    var accentColor: Int
+    var smallLabelColor: Int
         get() = prefs!!.getInt(ACCENT_COLOR, context.resources.getColor(R.color.color_primary))
         set(accentColor) = prefs!!.edit().putInt(ACCENT_COLOR, accentColor).apply()
 
@@ -120,8 +120,8 @@ open class BaseConfig(val context: Context) {
         get() = prefs!!.getInt(CUSTOM_PRIMARY_COLOR, primaryColor)
         set(customPrimaryColor) = prefs!!.edit().putInt(CUSTOM_PRIMARY_COLOR, customPrimaryColor).apply()
 
-    var customAccentColor: Int
-        get() = prefs!!.getInt(CUSTOM_ACCENT_COLOR, accentColor)
+    var customSmallLabelColor: Int
+        get() = prefs!!.getInt(CUSTOM_ACCENT_COLOR, smallLabelColor)
         set(customAccentColor) = prefs!!.edit().putInt(CUSTOM_ACCENT_COLOR, customAccentColor).apply()
 
     var customKeyColor: Int
@@ -158,7 +158,7 @@ open class BaseConfig(val context: Context) {
             prefs!!.edit().putBoolean(USE_ENGLISH, useEnglish).commit()
         }
 
-    var wasUseEnglishToggled: Boolean
+    private var wasUseEnglishToggled: Boolean
         get() = prefs!!.getBoolean(WAS_USE_ENGLISH_TOGGLED, false)
         set(wasUseEnglishToggled) = prefs!!.edit().putBoolean(WAS_USE_ENGLISH_TOGGLED, wasUseEnglishToggled).apply()
 
@@ -175,21 +175,9 @@ open class BaseConfig(val context: Context) {
         get() = prefs!!.getBoolean(SHOULD_USE_SHARED_THEME, false)
         set(shouldUseSharedTheme) = prefs!!.edit().putBoolean(SHOULD_USE_SHARED_THEME, shouldUseSharedTheme).apply()
 
-    var isUsingAutoTheme: Boolean
-        get() = prefs!!.getBoolean(IS_USING_AUTO_THEME, false)
-        set(isUsingAutoTheme) = prefs!!.edit().putBoolean(IS_USING_AUTO_THEME, isUsingAutoTheme).apply()
-
     var isUsingSystemTheme: Boolean
         get() = prefs!!.getBoolean(IS_USING_SYSTEM_THEME, false)
         set(isUsingSystemTheme) = prefs!!.edit().putBoolean(IS_USING_SYSTEM_THEME, isUsingSystemTheme).apply()
-
-    var wasSharedThemeForced: Boolean
-        get() = prefs!!.getBoolean(WAS_SHARED_THEME_FORCED, false)
-        set(wasSharedThemeForced) = prefs!!.edit().putBoolean(WAS_SHARED_THEME_FORCED, wasSharedThemeForced).apply()
-
-    var hadThankYouInstalled: Boolean
-        get() = prefs!!.getBoolean(HAD_THANK_YOU_INSTALLED, false)
-        set(hadThankYouInstalled) = prefs!!.edit().putBoolean(HAD_THANK_YOU_INSTALLED, hadThankYouInstalled).apply()
 
     var use24HourFormat: Boolean
         get() = prefs!!.getBoolean(USE_24_HOUR_FORMAT, DateFormat.is24HourFormat(context))

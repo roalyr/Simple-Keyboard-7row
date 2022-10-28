@@ -27,7 +27,6 @@ class MainActivity : SimpleActivity() {
 
     override fun onResume() {
         super.onResume()
-        setupToolbar(main_toolbar)
         if (!isKeyboardEnabled()) {
             ConfirmationAdvancedDialog(this, messageId = R.string.redirection_note, positive = R.string.ok, negative = 0) { success ->
                 if (success) {
@@ -41,7 +40,6 @@ class MainActivity : SimpleActivity() {
             }
         }
 
-        updateTextColors(main_nested_scrollview)
         updateChangeKeyboardColor()
     }
 

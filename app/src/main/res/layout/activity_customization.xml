@@ -32,7 +32,6 @@
                 android:id="@+id/customization_text_color_holder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/customization_theme_holder"
                 android:layout_marginTop="@dimen/medium_margin"
                 android:background="?attr/selectableItemBackground"
                 android:padding="@dimen/activity_margin">
@@ -113,7 +112,7 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/customization_accent_color_holder"
+                android:id="@+id/customization_color_small_label_holder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/customization_primary_color_holder"
@@ -123,16 +122,16 @@
                 >
 
                 <com.simplemobiletools.commons.views.MyTextView
-                    android:id="@+id/customization_accent_color_label"
+                    android:id="@+id/customization_color_small_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:paddingLeft="@dimen/medium_margin"
                     android:paddingRight="@dimen/medium_margin"
-                    android:text="Accent color" />
+                    android:text="Small label color" />
 
                 <ImageView
-                    android:id="@+id/customization_accent_color"
+                    android:id="@+id/customization_small_label_color"
                     android:layout_width="@dimen/color_sample_size"
                     android:layout_height="@dimen/color_sample_size"
                     android:layout_alignParentEnd="true"
@@ -145,7 +144,7 @@
                 android:id="@+id/customization_key_color_holder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/customization_accent_color_holder"
+                android:layout_below="@+id/customization_color_small_label_holder"
                 android:layout_marginTop="@dimen/medium_margin"
                 android:background="?attr/selectableItemBackground"
                 android:padding="@dimen/activity_margin">
@@ -185,7 +184,7 @@
                     android:layout_centerVertical="true"
                     android:paddingLeft="@dimen/medium_margin"
                     android:paddingRight="@dimen/medium_margin"
-                    android:text="@string/bottom_navigation_bar_color" />
+                    android:text="Placeholder" />
 
                 <ImageView
                     android:id="@+id/customization_navigation_bar_color"
@@ -194,23 +193,6 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginEnd="@dimen/medium_margin"
                     android:clickable="false" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/apply_to_all_holder"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/customization_navigation_bar_color_holder"
-                android:layout_centerHorizontal="true"
-                android:layout_margin="@dimen/big_margin">
-
-                <android.widget.TextView
-                    android:id="@+id/apply_to_all"
-                    style="@style/ColoredButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/apply_to_all_apps" />
 
             </RelativeLayout>
         </RelativeLayout>

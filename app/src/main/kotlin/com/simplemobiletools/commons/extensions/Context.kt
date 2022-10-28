@@ -145,27 +145,9 @@ fun Context.updateSDCardPath() {
     }
 }
 
-fun Context.isThankYouInstalled(): Boolean = isPackageInstalled("com.simplemobiletools.thankyou")
-
-fun Context.isOrWasThankYouInstalled(): Boolean {
-    return when {
-        resources.getBoolean(R.bool.pretend_thank_you_installed) -> true
-        baseConfig.hadThankYouInstalled -> true
-        isThankYouInstalled() -> {
-            baseConfig.hadThankYouInstalled = true
-            true
-        }
-        else -> false
-    }
-}
 
 fun Context.getCustomizeColorsString(): String {
-    val textId = if (isOrWasThankYouInstalled()) {
-        R.string.customize_colors
-    } else {
-        R.string.customize_colors_locked
-    }
-
+    val textId = R.string.customize_colors
     return getString(textId)
 }
 

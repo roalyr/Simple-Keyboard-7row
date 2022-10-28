@@ -108,6 +108,7 @@ class MyKeyboardView @JvmOverloads constructor(
     private var mKeyLabelTextSize = 0
 
     private var mTextColor = 0
+    private var mSmallLabelColor = 0
     private var mBackgroundColor = 0
     private var mPrimaryColor = 0
     private var mKeyColor = 0
@@ -231,6 +232,7 @@ class MyKeyboardView @JvmOverloads constructor(
         mPreviewHeight = resources.getDimension(R.dimen.key_height).toInt()
         mSpaceMoveThreshold = resources.getDimension(R.dimen.medium_margin).toInt()
         mTextColor = context.getProperTextColor()
+        mSmallLabelColor = context.getProperSmalllabelColor()
         mBackgroundColor = context.getProperBackgroundColor()
         mPrimaryColor = context.getProperPrimaryColor()
         mKeyColor = context.getProperKeyColor()
@@ -294,6 +296,7 @@ class MyKeyboardView @JvmOverloads constructor(
 
         if (visibility == VISIBLE) {
             mTextColor = context.getProperTextColor()
+            mSmallLabelColor = context.getProperSmalllabelColor()
             mBackgroundColor = context.getProperBackgroundColor()
             mPrimaryColor = context.getProperPrimaryColor()
             mKeyColor = context.getProperKeyColor()
@@ -584,11 +587,11 @@ class MyKeyboardView @JvmOverloads constructor(
         val canvas = mCanvas
         (canvas ?: return).clipRect(mDirtyRect)
         val paint = mPaint
-        val keys = mKeys
         paint.color = mTextColor
+        val keys = mKeys
         val smallLetterPaint = Paint().apply {
             set(paint)
-            color = paint.color.adjustAlpha(0.8f)
+            color = mSmallLabelColor
             textSize = mkeyLabelSmallSize
             typeface = Typeface.DEFAULT
         }
@@ -668,13 +671,6 @@ class MyKeyboardView @JvmOverloads constructor(
                 } else {
                     paint.textSize = mKeyLabelTextSize.toFloat()
                     paint.typeface = Typeface.DEFAULT
-                }
-
-                // Paint key? Or key background?
-                paint.color = if (key.focused) {
-                    mPrimaryColor.getContrastColor()
-                } else {
-                    mTextColor
                 }
 
                 // Draw main label. centered if no small label

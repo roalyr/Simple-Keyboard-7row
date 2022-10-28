@@ -11,13 +11,13 @@ class MyContentProvider {
         const val SHARED_THEME_UPDATED: String = "com.simplemobiletools.commons.SHARED_THEME_UPDATED"
         val MY_CONTENT_URI: Uri? = Uri.parse("content://$AUTHORITY/themes")
 
-        const val COL_TEXT_COLOR: String = "text_color"
-        const val COL_BACKGROUND_COLOR: String = "background_color"
-        const val COL_PRIMARY_COLOR: String = "primary_color"
-        const val COL_ACCENT_COLOR: String = "accent_color"
-        const val COL_APP_ICON_COLOR: String = "app_icon_color"
-        const val COL_NAVIGATION_BAR_COLOR: String = "navigation_bar_color"
-        const val COL_LAST_UPDATED_TS: String = "last_updated_ts"
+        private const val COL_TEXT_COLOR: String = "text_color"
+        private const val COL_BACKGROUND_COLOR: String = "background_color"
+        private const val COL_PRIMARY_COLOR: String = "primary_color"
+        private const val COL_ACCENT_COLOR: String = "accent_color"
+        private const val COL_APP_ICON_COLOR: String = "app_icon_color"
+        private const val COL_NAVIGATION_BAR_COLOR: String = "navigation_bar_color"
+        private const val COL_LAST_UPDATED_TS: String = "last_updated_ts"
 
         fun fillThemeContentValues(sharedTheme: SharedTheme): ContentValues = ContentValues().apply {
             put(COL_TEXT_COLOR, sharedTheme.textColor)

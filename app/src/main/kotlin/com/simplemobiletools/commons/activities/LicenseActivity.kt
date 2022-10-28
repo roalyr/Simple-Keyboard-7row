@@ -23,9 +23,6 @@ class LicenseActivity : BaseSimpleActivity() {
         val textColor = getProperTextColor()
         val backgroundColor = getProperBackgroundColor()
         val primaryColor = getProperPrimaryColor()
-
-        updateTextColors(licenses_holder)
-
         val inflater = LayoutInflater.from(this)
         val licenses = initLicenses()
         val licenseMask = intent.getLongExtra(APP_LICENSES, 0) or LICENSE_KOTLIN
@@ -54,7 +51,6 @@ class LicenseActivity : BaseSimpleActivity() {
 
     override fun onResume() {
         super.onResume()
-        setupToolbar(license_toolbar, NavigationIcon.Arrow)
     }
 
     private fun initLicenses() = arrayOf(

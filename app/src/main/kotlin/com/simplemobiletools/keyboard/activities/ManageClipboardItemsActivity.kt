@@ -32,7 +32,6 @@ class ManageClipboardItemsActivity : SimpleActivity(), RefreshRecyclerViewListen
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_manage_clipboard_items)
         setupOptionsMenu()
-        updateTextColors(clipboard_items_wrapper)
         updateClips()
 
         clipboard_items_placeholder.text = "${getText(R.string.manage_clipboard_empty)}\n\n${getText(R.string.manage_clips)}"
@@ -45,10 +44,6 @@ class ManageClipboardItemsActivity : SimpleActivity(), RefreshRecyclerViewListen
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        setupToolbar(clipboard_toolbar, NavigationIcon.Arrow)
-    }
 
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {

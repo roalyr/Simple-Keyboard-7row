@@ -109,16 +109,7 @@ class FilePickerDialog(
 
         mDialogView.filepicker_placeholder.setTextColor(activity.getProperTextColor())
         mDialogView.filepicker_fastscroller.updateColors(activity.getProperPrimaryColor())
-        mDialogView.filepicker_fab_show_hidden.apply {
-            beVisibleIf(!showHidden && canAddShowHiddenButton)
-            setOnClickListener {
-                activity.handleHiddenFolderPasswordProtection {
-                    beGone()
-                    showHidden = true
-                    tryUpdateItems()
-                }
-            }
-        }
+
 
         mDialogView.filepicker_favorites_label.text = "${activity.getString(R.string.favorites)}:"
         mDialogView.filepicker_fab_show_favorites.apply {
@@ -173,16 +164,11 @@ class FilePickerDialog(
 
         val sortedItems = items.sortedWith(compareBy({ !it.isDirectory }, { it.name.lowercase(Locale.getDefault()) }))
         val adapter = FilepickerItemsAdapter(activity, sortedItems, mDialogView.filepicker_list) {
-            if ((it as FileDirItem).isDirectory) {
-                activity.handleLockedFolderOpening(it.path) { success ->
-                    if (success) {
-                        currPath = it.path
-                        tryUpdateItems()
-                    }
+            if (!(it as FileDirItem).isDirectory) {
+                if (pickFile) {
+                    currPath = it.path
+                    verifyPath()
                 }
-            } else if (pickFile) {
-                currPath = it.path
-                verifyPath()
             }
         }
 

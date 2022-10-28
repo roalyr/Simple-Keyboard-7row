@@ -44,10 +44,6 @@ class AboutActivity : BaseSimpleActivity() {
 
     override fun onResume() {
         super.onResume()
-        updateTextColors(about_nested_scrollview)
-        setupToolbar(about_toolbar, NavigationIcon.Arrow)
-
-
         setupPrivacyPolicy()
         setupLicense()
         setupVersion()
