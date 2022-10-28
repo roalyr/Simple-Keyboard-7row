@@ -75,11 +75,14 @@ fun Context.updateTextColors(viewGroup: ViewGroup) {
     }
 }
 
-fun Context.isBlackAndWhiteTheme(): Boolean = baseConfig.textColor == Color.WHITE && baseConfig.primaryColor == Color.BLACK && baseConfig.backgroundColor == Color.BLACK
+fun Context.isBlackAndWhiteTheme(): Boolean =
+    baseConfig.textColor == Color.WHITE && baseConfig.primaryColor == Color.BLACK && baseConfig.backgroundColor == Color.BLACK
 
-fun Context.isWhiteTheme(): Boolean = baseConfig.textColor == DARK_GREY && baseConfig.primaryColor == Color.WHITE && baseConfig.backgroundColor == Color.WHITE
+fun Context.isWhiteTheme(): Boolean =
+    baseConfig.textColor == DARK_GREY && baseConfig.primaryColor == Color.WHITE && baseConfig.backgroundColor == Color.WHITE
 
-fun Context.isUsingSystemDarkTheme(): Boolean = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_YES != 0
+fun Context.isUsingSystemDarkTheme(): Boolean =
+    resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_YES != 0
 
 fun Context.getSharedTheme(callback: (sharedTheme: SharedTheme?) -> Unit) {
     if (!isThankYouInstalled()) {
@@ -102,10 +105,20 @@ fun getSharedThemeSync(cursorLoader: CursorLoader): SharedTheme? {
                 val primaryColor = cursor.getIntValue(MyContentProvider.COL_PRIMARY_COLOR)
                 val accentColor = cursor.getIntValue(MyContentProvider.COL_ACCENT_COLOR)
                 val keyColor = cursor.getIntValue(MyContentProvider.COL_APP_ICON_COLOR)
-                val navigationBarColor = cursor.getIntValueOrNull(MyContentProvider.COL_NAVIGATION_BAR_COLOR) ?: INVALID_NAVIGATION_BAR_COLOR
+                val navigationBarColor =
+                    cursor.getIntValueOrNull(MyContentProvider.COL_NAVIGATION_BAR_COLOR)
+                        ?: INVALID_NAVIGATION_BAR_COLOR
                 val lastUpdatedTS = cursor.getIntValue(MyContentProvider.COL_LAST_UPDATED_TS)
-                return SharedTheme(textColor, backgroundColor, primaryColor, keyColor, navigationBarColor, lastUpdatedTS, accentColor)
-            } catch (e: Exception) {
+                return SharedTheme(
+                    textColor,
+                    backgroundColor,
+                    primaryColor,
+                    keyColor,
+                    navigationBarColor,
+                    lastUpdatedTS,
+                    accentColor
+                )
+            } catch (_: Exception) {
             }
         }
     }
@@ -128,16 +141,23 @@ fun Context.checkkeyColor() {
 }
 
 fun Context.togglekeyColor(appId: String, colorIndex: Int, color: Int, enable: Boolean) {
-    val className = "${appId.removeSuffix(".debug")}.activities.SplashActivity${keyColorStrings[colorIndex]}"
-    val state = if (enable) PackageManager.COMPONENT_ENABLED_STATE_ENABLED else PackageManager.COMPONENT_ENABLED_STATE_DISABLED
+    val className =
+        "${appId.removeSuffix(".debug")}.activities.SplashActivity${keyColorStrings[colorIndex]}"
+    val state =
+        if (enable) PackageManager.COMPONENT_ENABLED_STATE_ENABLED else PackageManager.COMPONENT_ENABLED_STATE_DISABLED
     try {
-        packageManager.setComponentEnabledSetting(ComponentName(appId, className), state, PackageManager.DONT_KILL_APP)
+        packageManager.setComponentEnabledSetting(
+            ComponentName(appId, className),
+            state,
+            PackageManager.DONT_KILL_APP
+        )
         if (enable) {
             baseConfig.lastIconColor = color
         }
-    } catch (e: Exception) {
+    } catch (_: Exception) {
     }
 }
 
-fun Context.getkeyColors(): ArrayList<Int> = resources.getIntArray(R.array.md_app_icon_colors).toCollection(ArrayList())
+fun Context.getkeyColors(): ArrayList<Int> =
+    resources.getIntArray(R.array.md_app_icon_colors).toCollection(ArrayList())
 

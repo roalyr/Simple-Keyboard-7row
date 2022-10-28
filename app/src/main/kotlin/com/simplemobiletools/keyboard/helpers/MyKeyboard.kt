@@ -111,7 +111,7 @@ class MyKeyboard {
         /** Default horizontal gap between keys in this row.  */
         var defaultHorizontalGap: Int = 0
 
-        var mKeys: ArrayList<Key> = ArrayList<Key>()
+        var mKeys: ArrayList<Key> = ArrayList()
 
         var parent: MyKeyboard
 
@@ -443,7 +443,7 @@ class MyKeyboard {
                     }
                 }
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
         }
         mHeight = y
     }

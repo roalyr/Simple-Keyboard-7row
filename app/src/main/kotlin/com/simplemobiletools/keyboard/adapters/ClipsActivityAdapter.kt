@@ -131,11 +131,11 @@ class ClipsActivityAdapter(
             deleteClips.add(it)
         }
 
-        items.removeAll(deleteClips)
+        items.removeAll(deleteClips.toSet())
         removeSelectedItems(positions)
 
         ensureBackgroundThread {
-            deleteClips.forEach { (id) ->
+            deleteClips.forEach { (id, value) ->
                 activity.clipsDB.delete((id ?: return@forEach).toLong())
             }
 

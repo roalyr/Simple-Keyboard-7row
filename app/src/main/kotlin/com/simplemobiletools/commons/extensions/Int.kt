@@ -3,7 +3,6 @@ package com.simplemobiletools.commons.extensions
 import android.graphics.Color
 import com.simplemobiletools.commons.helpers.DARK_GREY
 import java.util.*
-import kotlin.math.roundToLong
 
 fun Int.getContrastColor(): Int {
     val y = (299 * Color.red(this) + 587 * Color.green(this) + 114 * Color.blue(this)) / 1000

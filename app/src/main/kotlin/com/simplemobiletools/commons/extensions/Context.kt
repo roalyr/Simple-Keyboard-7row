@@ -43,7 +43,7 @@ fun Context.toast(msg: String, length: Int = Toast.LENGTH_SHORT) {
                 doToast(this, msg, length)
             }
         }
-    } catch (e: Exception) {
+    } catch (_: Exception) {
     }
 }
 

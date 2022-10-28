@@ -2,10 +2,8 @@ package com.simplemobiletools.commons.extensions
 
 import android.content.ContentUris
 import android.content.Context
-import android.content.Intent
 import android.hardware.usb.UsbConstants
 import android.hardware.usb.UsbManager
-import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
@@ -60,7 +58,7 @@ fun Context.getSDCardPath(): String {
                     sdCardPath = "/storage/${it.name}"
                 }
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
         }
     }
 
@@ -621,12 +619,12 @@ fun Context.getFolderLastModifieds(folder: String): HashMap<String, Long> {
                             val name = cursor.getStringValue(Images.Media.DISPLAY_NAME)
                             lastModifieds["$folder/$name"] = lastModified
                         }
-                    } catch (e: Exception) {
+                    } catch (_: Exception) {
                     }
                 } while (cursor.moveToNext())
             }
         }
-    } catch (e: Exception) {
+    } catch (_: Exception) {
     }
 
     return lastModifieds
@@ -687,12 +685,12 @@ fun getMediaStoreIds(context: Context): HashMap<String, Long> {
                 val id = cursor.getLongValue(Images.Media._ID)
                 if (id != 0L) {
                     val path = cursor.getStringValue(Images.Media.DATA)
-                    ids.put(path.toString(), id)
+                    ids[path.toString()] = id
                 }
-            } catch (e: Exception) {
+            } catch (_: Exception) {
             }
         }
-    } catch (e: Exception) {
+    } catch (_: Exception) {
     }
 
     return ids

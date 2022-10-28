@@ -30,7 +30,7 @@ abstract class BaseSimpleActivity : AppCompatActivity() {
     private var showTransparentTop = false
     var showTransparentNavigation: Boolean = false
     var checkedDocumentPath: String = ""
-    var configItemsToExport: LinkedHashMap<String, Any> = LinkedHashMap<String, Any>()
+    var configItemsToExport: LinkedHashMap<String, Any> = LinkedHashMap()
 
     private val GENERIC_PERM_HANDLER = 100
     private val DELETE_FILE_SDK_30_HANDLER = 300
