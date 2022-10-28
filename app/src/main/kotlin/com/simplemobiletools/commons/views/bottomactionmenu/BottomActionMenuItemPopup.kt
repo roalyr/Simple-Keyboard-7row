@@ -140,7 +140,7 @@ class BottomActionMenuItemPopup(
             0
         }
 
-        val maxHeight = popup.getMaxAvailableHeight(anchorView!!, 0)
+        val maxHeight = popup.getMaxAvailableHeight(anchorView ?: return, 0)
         val listContent = measureHeightOfChildrenCompat(maxHeight - otherHeights)
         if (listContent > 0) {
             val listPadding = dropDownList.paddingTop + dropDownList.paddingBottom

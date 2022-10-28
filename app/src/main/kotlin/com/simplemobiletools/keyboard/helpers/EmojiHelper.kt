@@ -46,7 +46,7 @@ fun parseRawEmojiSpecsFile(context: Context, path: String): MutableList<String> 
                 if (data.size == 3) {
                     val emoji = data[0].trim()
                     if (emojiEditorList != null) {
-                        emojiEditorList!!.add(emoji)
+                        (emojiEditorList ?: return@useLines).add(emoji)
                     } else {
                         emojiEditorList = mutableListOf(emoji)
                     }

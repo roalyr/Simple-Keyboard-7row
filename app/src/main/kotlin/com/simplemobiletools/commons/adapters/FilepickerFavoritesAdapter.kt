@@ -11,7 +11,7 @@ import com.simplemobiletools.commons.views.MyRecyclerView
 import kotlinx.android.synthetic.main.filepicker_favorite.view.*
 
 class FilepickerFavoritesAdapter(
-    activity: BaseSimpleActivity, val paths: List<String>, recyclerView: MyRecyclerView,
+    activity: BaseSimpleActivity, private val paths: List<String>, recyclerView: MyRecyclerView,
     itemClick: (Any) -> Unit
 ) : MyRecyclerViewAdapter(activity, recyclerView, itemClick) {
 

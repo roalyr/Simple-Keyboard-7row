@@ -162,7 +162,7 @@ class Breadcrumbs(context: Context, attrs: AttributeSet) : HorizontalScrollView(
         for (i in dirs.indices) {
             val dir = dirs[i]
             if (i > 0) {
-                currPath += dir + "/"
+                currPath += "$dir/"
             }
 
             if (dir.isEmpty()) {

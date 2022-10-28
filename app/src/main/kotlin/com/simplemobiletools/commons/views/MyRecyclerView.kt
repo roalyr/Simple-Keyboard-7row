@@ -45,14 +45,14 @@ open class MyRecyclerView : RecyclerView {
 
     // things related to parallax scrolling (for now only in the music player)
     // cut from https://github.com/ksoichiro/Android-ObservableScrollView
-    var recyclerScrollCallback: RecyclerScrollCallback? = null
+    private var recyclerScrollCallback: RecyclerScrollCallback? = null
     private var mPrevFirstVisiblePosition = 0
     private var mPrevScrolledChildrenHeight = 0
     private var mPrevFirstVisibleChildHeight = -1
     private var mScrollY = 0
 
     // variables used for fetching additional items at scrolling to the bottom/top
-    var endlessScrollListener: EndlessScrollListener? = null
+    private var endlessScrollListener: EndlessScrollListener? = null
     private var totalItemCount = 0
     private var lastMaxItemIndex = 0
     private var linearLayoutManager: LinearLayoutManager? = null
@@ -227,19 +227,19 @@ open class MyRecyclerView : RecyclerView {
         super.onScrollStateChanged(state)
         if (endlessScrollListener != null) {
             if (totalItemCount == 0) {
-                totalItemCount = adapter!!.itemCount
+                totalItemCount = (adapter ?: return).itemCount
             }
 
             if (state == SCROLL_STATE_IDLE) {
                 val lastVisiblePosition = linearLayoutManager?.findLastVisibleItemPosition() ?: 0
                 if (lastVisiblePosition != lastMaxItemIndex && lastVisiblePosition == totalItemCount - 1) {
                     lastMaxItemIndex = lastVisiblePosition
-                    endlessScrollListener!!.updateBottom()
+                    (endlessScrollListener ?: return).updateBottom()
                 }
 
                 val firstVisiblePosition = linearLayoutManager?.findFirstVisibleItemPosition() ?: -1
                 if (firstVisiblePosition == 0) {
-                    endlessScrollListener!!.updateTop()
+                    (endlessScrollListener ?: return).updateTop()
                 }
             }
         }
@@ -272,7 +272,7 @@ open class MyRecyclerView : RecyclerView {
         }
     }
 
-    class GestureListener(val gestureListener: MyGestureListener) : ScaleGestureDetector.SimpleOnScaleGestureListener() {
+    class GestureListener(private val gestureListener: MyGestureListener) : ScaleGestureDetector.SimpleOnScaleGestureListener() {
         private val ZOOM_IN_THRESHOLD = -0.4f
         private val ZOOM_OUT_THRESHOLD = 0.15f
 

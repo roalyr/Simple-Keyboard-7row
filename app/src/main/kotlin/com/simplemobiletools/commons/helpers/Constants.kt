@@ -22,7 +22,7 @@ const val INVALID_NAVIGATION_BAR_COLOR = -1
 const val SAVE_DISCARD_PROMPT_INTERVAL = 1000L
 const val SD_OTG_PATTERN = "^/storage/[A-Za-z0-9]{4}-[A-Za-z0-9]{4}$"
 const val SD_OTG_SHORT = "^[A-Za-z0-9]{4}-[A-Za-z0-9]{4}$"
-val DARK_GREY = 0xFF333333.toInt()
+const val DARK_GREY = 0xFF333333.toInt()
 
 const val MEDIUM_ALPHA = 0.5f
 const val HIGHER_ALPHA = 0.75f

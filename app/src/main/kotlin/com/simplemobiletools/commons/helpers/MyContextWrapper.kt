@@ -13,9 +13,8 @@ class MyContextWrapper(context: Context) : ContextWrapper(context) {
     fun wrap(context: Context, language: String): ContextWrapper {
         var newContext = context
         val config = newContext.resources.configuration
-        val sysLocale: Locale?
 
-        sysLocale = if (isNougatPlus()) {
+        val sysLocale: Locale? = if (isNougatPlus()) {
             getSystemLocale(config)
         } else {
             getSystemLocaleLegacy(config)

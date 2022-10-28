@@ -14,8 +14,8 @@ import com.simplemobiletools.commons.models.RadioItem
 import kotlinx.android.synthetic.main.dialog_radio_group.view.*
 
 class RadioGroupDialog(
-    val activity: Activity, val items: ArrayList<RadioItem>, val checkedItemId: Int = -1, val titleId: Int = 0,
-    showOKButton: Boolean = false, val cancelCallback: (() -> Unit)? = null, val callback: (newValue: Any) -> Unit
+    val activity: Activity, val items: ArrayList<RadioItem>, private val checkedItemId: Int = -1, private val titleId: Int = 0,
+    showOKButton: Boolean = false, private val cancelCallback: (() -> Unit)? = null, val callback: (newValue: Any) -> Unit
 ) {
     private var dialog: AlertDialog? = null
     private var wasInit = false

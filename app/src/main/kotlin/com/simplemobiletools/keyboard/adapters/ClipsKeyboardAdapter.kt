@@ -26,7 +26,7 @@ import kotlinx.android.synthetic.main.item_clip_on_keyboard.view.*
 import kotlinx.android.synthetic.main.item_section_label.view.*
 
 class ClipsKeyboardAdapter(
-    val context: Context, var items: ArrayList<ListItem>, val refreshClipsListener: RefreshClipsListener,
+    val context: Context, var items: ArrayList<ListItem>, private val refreshClipsListener: RefreshClipsListener,
     val itemClick: (clip: Clip) -> Unit
 ) : RecyclerView.Adapter<ClipsKeyboardAdapter.ViewHolder>() {
 

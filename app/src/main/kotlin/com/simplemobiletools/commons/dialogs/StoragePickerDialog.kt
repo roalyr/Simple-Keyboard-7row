@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.dialog_radio_group.view.*
  *
  */
 class StoragePickerDialog(
-    val activity: BaseSimpleActivity, val currPath: String, val showRoot: Boolean, pickSingleOption: Boolean,
+    val activity: BaseSimpleActivity, private val currPath: String, private val showRoot: Boolean, pickSingleOption: Boolean,
     val callback: (pickedPath: String) -> Unit
 ) {
     private val ID_INTERNAL = 1

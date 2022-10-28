@@ -154,25 +154,25 @@ class CustomizationActivity : BaseSimpleActivity() {
 
         /**
         customization_theme_holder.setOnClickListener {
-            if (baseConfig.wasAppIconCustomizationWarningShown) {
-                themePickerClicked()
-            } else {
-                ConfirmationDialog(this, "", R.string.app_icon_color_warning, R.string.ok, 0) {
-                    baseConfig.wasAppIconCustomizationWarningShown = true
-                    themePickerClicked()
-                }
-            }
+        if (baseConfig.wasAppIconCustomizationWarningShown) {
+        themePickerClicked()
+        } else {
+        ConfirmationDialog(this, "", R.string.app_icon_color_warning, R.string.ok, 0) {
+        baseConfig.wasAppIconCustomizationWarningShown = true
+        themePickerClicked()
         }
-        */
+        }
+        }
+         */
 
-       // if (customization_theme.value == getString(R.string.system_default)) {
-       //     apply_to_all_holder.beGone()
-       // }
+        // if (customization_theme.value == getString(R.string.system_default)) {
+        //     apply_to_all_holder.beGone()
+        // }
     }
 
     private fun updateColorTheme(themeId: Int, useStored: Boolean = false) {
         curSelectedThemeId = themeId
-       // customization_theme.text = getThemeText()
+        // customization_theme.text = getThemeText()
 
         resources.apply {
             if (curSelectedThemeId == THEME_CUSTOM) {
@@ -282,9 +282,9 @@ class CustomizationActivity : BaseSimpleActivity() {
         /** Reused for key color
         val didkeyColorChange = curKeyColor != originalkeyColor
         if (didkeyColorChange) {
-            checkkeyColor()
+        checkkeyColor()
         }
-        */
+         */
 
         if (curSelectedThemeId == THEME_SHARED) {
             val newSharedTheme = SharedTheme(curTextColor, curBackgroundColor, curPrimaryColor, curKeyColor, curNavigationBarColor, 0, curAccentColor)
@@ -356,16 +356,16 @@ class CustomizationActivity : BaseSimpleActivity() {
 
         /** Reuse for key color picker
         customization_key_color_holder.setOnClickListener {
-            if (baseConfig.wasAppIconCustomizationWarningShown) {
-                pickKeyColor()
-            } else {
-                ConfirmationDialog(this, "", R.string.app_icon_color_warning, R.string.ok, 0) {
-                    baseConfig.wasAppIconCustomizationWarningShown = true
-                    pickKeyColor()
-                }
-            }
+        if (baseConfig.wasAppIconCustomizationWarningShown) {
+        pickKeyColor()
+        } else {
+        ConfirmationDialog(this, "", R.string.app_icon_color_warning, R.string.ok, 0) {
+        baseConfig.wasAppIconCustomizationWarningShown = true
+        pickKeyColor()
         }
-        */
+        }
+        }
+         */
 
     }
 
@@ -434,7 +434,7 @@ class CustomizationActivity : BaseSimpleActivity() {
     }
 
     // Use this color picker instead.
-    private fun pickPrimaryColor()  {
+    private fun pickPrimaryColor() {
         ColorPickerDialog(this, curPrimaryColor) { wasPositivePressed, color ->
             if (wasPositivePressed) {
                 if (hasColorChanged(curPrimaryColor, color)) {
@@ -447,7 +447,7 @@ class CustomizationActivity : BaseSimpleActivity() {
     }
 
     // Reuse for main key color instead.
-    private fun pickKeyColor()  {
+    private fun pickKeyColor() {
         ColorPickerDialog(this, curKeyColor) { wasPositivePressed, color ->
             if (wasPositivePressed) {
                 if (hasColorChanged(curKeyColor, color)) {
@@ -461,45 +461,45 @@ class CustomizationActivity : BaseSimpleActivity() {
 
     /**
     private fun pickKeyColor() {
-        LineColorPickerDialog(this, curKeyColor, false, R.array.md_app_icon_colors, getAppIconIDs()) { wasPositivePressed, color ->
-            if (wasPositivePressed) {
-                if (hasColorChanged(curKeyColor, color)) {
-                    curKeyColor = color
-                    colorChanged()
-                    updateColorTheme(getUpdatedTheme())
-                }
-            }
-        }
+    LineColorPickerDialog(this, curKeyColor, false, R.array.md_app_icon_colors, getAppIconIDs()) { wasPositivePressed, color ->
+    if (wasPositivePressed) {
+    if (hasColorChanged(curKeyColor, color)) {
+    curKeyColor = color
+    colorChanged()
+    updateColorTheme(getUpdatedTheme())
     }
-    */
+    }
+    }
+    }
+     */
 
     /**
     private fun pickPrimaryColor() {
-        if (!packageName.startsWith("com.simplemobiletools.", true) && baseConfig.appRunCount > 50) {
-            finish()
-            return
-        }
-
-        curPrimaryLineColorPicker = LineColorPickerDialog(this, curPrimaryColor, true, toolbar = customization_toolbar) { wasPositivePressed, color ->
-            curPrimaryLineColorPicker = null
-            if (wasPositivePressed) {
-                if (hasColorChanged(curPrimaryColor, color)) {
-                    setCurrentPrimaryColor(color)
-                    colorChanged()
-                    updateColorTheme(getUpdatedTheme())
-                    setTheme(getThemeId(color))
-                }
-                updateMenuItemColors(customization_toolbar.menu, true, color)
-                setupToolbar(customization_toolbar, NavigationIcon.Cross, color)
-            } else {
-                updateActionbarColor(curPrimaryColor)
-                setTheme(getThemeId(curPrimaryColor))
-                updateMenuItemColors(customization_toolbar.menu, true, curPrimaryColor)
-                setupToolbar(customization_toolbar, NavigationIcon.Cross, curPrimaryColor)
-            }
-        }
+    if (!packageName.startsWith("com.simplemobiletools.", true) && baseConfig.appRunCount > 50) {
+    finish()
+    return
     }
-    */
+
+    curPrimaryLineColorPicker = LineColorPickerDialog(this, curPrimaryColor, true, toolbar = customization_toolbar) { wasPositivePressed, color ->
+    curPrimaryLineColorPicker = null
+    if (wasPositivePressed) {
+    if (hasColorChanged(curPrimaryColor, color)) {
+    setCurrentPrimaryColor(color)
+    colorChanged()
+    updateColorTheme(getUpdatedTheme())
+    setTheme(getThemeId(color))
+    }
+    updateMenuItemColors(customization_toolbar.menu, true, color)
+    setupToolbar(customization_toolbar, NavigationIcon.Cross, color)
+    } else {
+    updateActionbarColor(curPrimaryColor)
+    setTheme(getThemeId(curPrimaryColor))
+    updateMenuItemColors(customization_toolbar.menu, true, curPrimaryColor)
+    setupToolbar(customization_toolbar, NavigationIcon.Cross, curPrimaryColor)
+    }
+    }
+    }
+     */
 
     private fun pickAccentColor() {
         ColorPickerDialog(this, curAccentColor) { wasPositivePressed, color ->
@@ -526,7 +526,6 @@ class CustomizationActivity : BaseSimpleActivity() {
             }
         })
     }
-
 
 
     private fun getUpdatedTheme() = if (curSelectedThemeId == THEME_SHARED) THEME_SHARED else getCurrentThemeId()
@@ -578,7 +577,7 @@ class CustomizationActivity : BaseSimpleActivity() {
     }
 
     private fun getCurrentPrimaryColor(): Int {
-       return  curPrimaryColor
+        return curPrimaryColor
     }
 
     private fun getCurrentStatusBarColor(): Int {

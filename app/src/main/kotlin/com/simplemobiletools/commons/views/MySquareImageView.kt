@@ -5,7 +5,7 @@ import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageView
 
 class MySquareImageView : AppCompatImageView {
-    var isHorizontalScrolling = false
+    private var isHorizontalScrolling = false
 
     constructor(context: Context) : super(context)
 

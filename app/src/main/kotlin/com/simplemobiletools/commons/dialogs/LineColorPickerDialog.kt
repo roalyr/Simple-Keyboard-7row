@@ -12,8 +12,8 @@ import com.simplemobiletools.commons.interfaces.LineColorPickerListener
 import kotlinx.android.synthetic.main.dialog_line_color_picker.view.*
 
 class LineColorPickerDialog(
-    val activity: BaseSimpleActivity, val color: Int, val isPrimaryColorPicker: Boolean, val primaryColors: Int = R.array.md_primary_colors,
-    val appIconIDs: ArrayList<Int>? = null, val toolbar: MaterialToolbar? = null, val callback: (wasPositivePressed: Boolean, color: Int) -> Unit
+    val activity: BaseSimpleActivity, val color: Int, val isPrimaryColorPicker: Boolean, private val primaryColors: Int = R.array.md_primary_colors,
+    private val appIconIDs: ArrayList<Int>? = null, private val toolbar: MaterialToolbar? = null, val callback: (wasPositivePressed: Boolean, color: Int) -> Unit
 ) {
     private val PRIMARY_COLORS_COUNT = 19
     private val DEFAULT_PRIMARY_COLOR_INDEX = 14

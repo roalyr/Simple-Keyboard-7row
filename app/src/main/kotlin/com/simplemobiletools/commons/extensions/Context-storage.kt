@@ -32,7 +32,7 @@ val Context.recycleBinPath: String get() = filesDir.absolutePath
 // http://stackoverflow.com/a/40582634/1967672
 fun Context.getSDCardPath(): String {
     val directories = getStorageDirectories().filter {
-        !it.equals(getInternalStoragePath()) && !it.equals(
+        it != getInternalStoragePath() && !it.equals(
             "/storage/emulated/0",
             true
         ) && (baseConfig.OTGPartition.isEmpty() || !it.endsWith(baseConfig.OTGPartition))
@@ -136,8 +136,7 @@ fun Context.getHumanReadablePath(path: String): String {
 
 fun Context.humanizePath(path: String): String {
     val trimmedPath = path.trimEnd('/')
-    val basePath = path.getBasePath(this)
-    return when (basePath) {
+    return when (val basePath = path.getBasePath(this)) {
         "/" -> "${getHumanReadablePath(basePath)}$trimmedPath"
         else -> trimmedPath.replaceFirst(basePath, getHumanReadablePath(basePath))
     }
@@ -377,13 +376,13 @@ fun Context.getOTGItems(path: String, shouldShowHidden: Boolean, getProperFileSi
             continue
         }
 
-        val file = rootUri!!.findFile(part)
+        val file = (rootUri ?: return).findFile(part)
         if (file != null) {
             rootUri = file
         }
     }
 
-    val files = rootUri!!.listFiles().filter { it.exists() }
+    val files = (rootUri ?: return).listFiles().filter { it.exists() }
 
     val basePath = "${baseConfig.OTGTreeUri}/document/${baseConfig.OTGPartition}%3A"
     for (file in files) {
@@ -436,7 +435,7 @@ fun Context.getAndroidSAFFileItems(path: String, shouldShowHidden: Boolean, getP
 
     val projection = arrayOf(Document.COLUMN_DOCUMENT_ID, Document.COLUMN_DISPLAY_NAME, Document.COLUMN_MIME_TYPE, Document.COLUMN_LAST_MODIFIED)
     try {
-        val rawCursor = contentResolver.query(childrenUri, projection, null, null)!!
+        val rawCursor = contentResolver.query(childrenUri, projection, null, null) ?: return
         val cursor = ExternalStorageProviderHack.transformQueryResult(rootDocId, childrenUri, rawCursor)
         cursor.use {
             if (cursor.moveToFirst()) {

@@ -23,18 +23,18 @@ private const val RECENT_COLORS_NUMBER = 5
 class ColorPickerDialog(
     val activity: Activity,
     color: Int,
-    val removeDimmedBackground: Boolean = false,
+    private val removeDimmedBackground: Boolean = false,
     showUseDefaultButton: Boolean = false,
     val currentColorCallback: ((color: Int) -> Unit)? = null,
     val callback: (wasPositivePressed: Boolean, color: Int) -> Unit
 ) {
-    var viewHue: View
-    var viewSatVal: ColorPickerSquare
-    var viewCursor: ImageView
-    var viewNewColor: ImageView
-    var viewTarget: ImageView
-    var newHexField: EditText
-    var viewContainer: ViewGroup
+    private var viewHue: View
+    private var viewSatVal: ColorPickerSquare
+    private var viewCursor: ImageView
+    private var viewNewColor: ImageView
+    private var viewTarget: ImageView
+    private var newHexField: EditText
+    private var viewContainer: ViewGroup
     private val baseConfig = activity.baseConfig
     private val currentColorHsv = FloatArray(3)
     private val backgroundColor = baseConfig.backgroundColor

@@ -34,13 +34,13 @@ import kotlin.collections.HashMap
  */
 class FilePickerDialog(
     val activity: BaseSimpleActivity,
-    var currPath: String = Environment.getExternalStorageDirectory().toString(),
-    val pickFile: Boolean = true,
-    var showHidden: Boolean = false,
+    private var currPath: String = Environment.getExternalStorageDirectory().toString(),
+    private val pickFile: Boolean = true,
+    private var showHidden: Boolean = false,
     val showFAB: Boolean = false,
-    val canAddShowHiddenButton: Boolean = false,
-    val forceShowRoot: Boolean = false,
-    val showFavoritesButton: Boolean = false,
+    private val canAddShowHiddenButton: Boolean = false,
+    private val forceShowRoot: Boolean = false,
+    private val showFavoritesButton: Boolean = false,
     private val enforceStorageRestrictions: Boolean = true,
     val callback: (pickedPath: String) -> Unit
 ) : Breadcrumbs.BreadcrumbsListener {
@@ -187,7 +187,7 @@ class FilePickerDialog(
         }
 
         val layoutManager = mDialogView.filepicker_list.layoutManager as LinearLayoutManager
-        mScrollStates[mPrevPath.trimEnd('/')] = layoutManager.onSaveInstanceState()!!
+        mScrollStates[mPrevPath.trimEnd('/')] = (layoutManager.onSaveInstanceState() ?: return)
 
         mDialogView.apply {
             filepicker_list.adapter = adapter

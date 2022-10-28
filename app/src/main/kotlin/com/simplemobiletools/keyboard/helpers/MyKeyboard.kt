@@ -84,7 +84,14 @@ class MyKeyboard {
             val value = a.peekValue(index) ?: return defValue
             return when (value.type) {
                 TypedValue.TYPE_DIMENSION -> a.getDimensionPixelOffset(index, defValue)
-                TypedValue.TYPE_FRACTION -> Math.round(a.getFraction(index, base, base, defValue.toFloat()))
+                TypedValue.TYPE_FRACTION -> Math.round(
+                    a.getFraction(
+                        index,
+                        base,
+                        base,
+                        defValue.toFloat()
+                    )
+                )
                 else -> defValue
             }
         }
@@ -117,9 +124,20 @@ class MyKeyboard {
         constructor(res: Resources, parent: MyKeyboard, parser: XmlResourceParser?) {
             this.parent = parent
             val a = res.obtainAttributes(Xml.asAttributeSet(parser), R.styleable.MyKeyboard)
-            defaultWidth = getDimensionOrFraction(a, R.styleable.MyKeyboard_keyWidth, parent.mDisplayWidth, parent.mDefaultWidth)
-            defaultHeight = (res.getDimension(R.dimen.key_height) * this.parent.mKeyboardHeightMultiplier).roundToInt()
-            defaultHorizontalGap = getDimensionOrFraction(a, R.styleable.MyKeyboard_horizontalGap, parent.mDisplayWidth, parent.mDefaultHorizontalGap)
+            defaultWidth = getDimensionOrFraction(
+                a,
+                R.styleable.MyKeyboard_keyWidth,
+                parent.mDisplayWidth,
+                parent.mDefaultWidth
+            )
+            defaultHeight =
+                (res.getDimension(R.dimen.key_height) * this.parent.mKeyboardHeightMultiplier).roundToInt()
+            defaultHorizontalGap = getDimensionOrFraction(
+                a,
+                R.styleable.MyKeyboard_horizontalGap,
+                parent.mDisplayWidth,
+                parent.mDefaultHorizontalGap
+            )
             a.recycle()
         }
     }
@@ -202,13 +220,25 @@ class MyKeyboard {
          * @param y the y coordinate of the top-left
          * @param parser the XML parser containing the attributes for this key
          */
-        constructor(res: Resources, parent: Row, x: Int, y: Int, parser: XmlResourceParser?) : this(parent) {
+        constructor(res: Resources, parent: Row, x: Int, y: Int, parser: XmlResourceParser?) : this(
+            parent
+        ) {
             this.x = x
             this.y = y
             var a = res.obtainAttributes(Xml.asAttributeSet(parser), R.styleable.MyKeyboard)
-            width = getDimensionOrFraction(a, R.styleable.MyKeyboard_keyWidth, keyboard.mDisplayWidth, parent.defaultWidth)
+            width = getDimensionOrFraction(
+                a,
+                R.styleable.MyKeyboard_keyWidth,
+                keyboard.mDisplayWidth,
+                parent.defaultWidth
+            )
             height = parent.defaultHeight
-            gap = getDimensionOrFraction(a, R.styleable.MyKeyboard_horizontalGap, keyboard.mDisplayWidth, parent.defaultHorizontalGap)
+            gap = getDimensionOrFraction(
+                a,
+                R.styleable.MyKeyboard_horizontalGap,
+                keyboard.mDisplayWidth,
+                parent.defaultHorizontalGap
+            )
             this.x += gap
 
             a.recycle()
@@ -256,9 +286,9 @@ class MyKeyboard {
             val leftEdge = edgeFlags and EDGE_LEFT > 0
             val rightEdge = edgeFlags and EDGE_RIGHT > 0
             return ((x >= this.x || leftEdge && x <= this.x + width)
-                && (x < this.x + width || rightEdge && x >= this.x)
-                && (y >= this.y && y <= this.y + height)
-                && (y < this.y + height && y >= this.y))
+                    && (x < this.x + width || rightEdge && x >= this.x)
+                    && (y >= this.y && y <= this.y + height)
+                    && (y < this.y + height && y >= this.y))
         }
     }
 
@@ -274,7 +304,8 @@ class MyKeyboard {
         mDefaultHorizontalGap = 0
         mDefaultWidth = mDisplayWidth / 10
         mDefaultHeight = mDefaultWidth
-        mKeyboardHeightMultiplier = getKeyboardHeightMultiplier(context.config.keyboardHeightMultiplier)
+        mKeyboardHeightMultiplier =
+            getKeyboardHeightMultiplier(context.config.keyboardHeightMultiplier)
         mKeys = ArrayList()
         mEnterKeyType = enterKeyType
         loadKeyboard(context, context.resources.getXml(xmlLayoutResId))
@@ -288,8 +319,13 @@ class MyKeyboard {
      * @param characters the list of characters to display on the keyboard. One key will be created for each character.
      * @param keyWidth the width of the popup key, make sure it is the same as the key itself
      */
-    constructor(context: Context, layoutTemplateResId: Int, characters: CharSequence, keyWidth: Int) :
-        this(context, layoutTemplateResId, 0) {
+    constructor(
+        context: Context,
+        layoutTemplateResId: Int,
+        characters: CharSequence,
+        keyWidth: Int
+    ) :
+            this(context, layoutTemplateResId, 0) {
         var x = 0
         var y = 0
         var column = 0
@@ -298,7 +334,8 @@ class MyKeyboard {
         row.defaultHeight = mDefaultHeight
         row.defaultWidth = keyWidth
         row.defaultHorizontalGap = mDefaultHorizontalGap
-        mKeyboardHeightMultiplier = getKeyboardHeightMultiplier(context.config.keyboardHeightMultiplier)
+        mKeyboardHeightMultiplier =
+            getKeyboardHeightMultiplier(context.config.keyboardHeightMultiplier)
 
         characters.forEachIndexed { index, character ->
             val key = Key(row)
@@ -316,7 +353,7 @@ class MyKeyboard {
             key.code = character.code
             column++
             x += key.width + key.gap
-            mKeys!!.add(key)
+            (mKeys ?: return@forEachIndexed).add(key)
             row.mKeys.add(key)
             if (x > mMinWidth) {
                 mMinWidth = x
@@ -339,7 +376,13 @@ class MyKeyboard {
         return Row(res, this, parser)
     }
 
-    private fun createKeyFromXml(res: Resources, parent: Row, x: Int, y: Int, parser: XmlResourceParser?): Key {
+    private fun createKeyFromXml(
+        res: Resources,
+        parent: Row,
+        x: Int,
+        y: Int,
+        parser: XmlResourceParser?
+    ): Key {
         return Key(res, parent, x, y, parser)
     }
 
@@ -366,21 +409,21 @@ class MyKeyboard {
                         }
                         TAG_KEY -> {
                             inKey = true
-                            key = createKeyFromXml(res, currentRow!!, x, y, parser)
-                            mKeys!!.add(key)
+                            key = createKeyFromXml(res, currentRow ?: return, x, y, parser)
+                            (mKeys ?: return).add(key)
 
                             // Disable Enter key icon swap.
                             /**
                             if (key.code == KEYCODE_ENTER) {
-                                val enterResourceId = when (mEnterKeyType) {
-                                    EditorInfo.IME_ACTION_SEARCH -> R.drawable.ic_search_vector
-                                    EditorInfo.IME_ACTION_NEXT, EditorInfo.IME_ACTION_GO -> R.drawable.ic_arrow_right_vector
-                                    EditorInfo.IME_ACTION_SEND -> R.drawable.ic_send_vector
-                                    else -> R.drawable.ic_enter_vector
-                                }
-                                key.icon = context.resources.getDrawable(enterResourceId, context.theme)
+                            val enterResourceId = when (mEnterKeyType) {
+                            EditorInfo.IME_ACTION_SEARCH -> R.drawable.ic_search_vector
+                            EditorInfo.IME_ACTION_NEXT, EditorInfo.IME_ACTION_GO -> R.drawable.ic_arrow_right_vector
+                            EditorInfo.IME_ACTION_SEND -> R.drawable.ic_send_vector
+                            else -> R.drawable.ic_enter_vector
                             }
-                            */
+                            key.icon = context.resources.getDrawable(enterResourceId, context.theme)
+                            }
+                             */
 
                             currentRow.mKeys.add(key)
                         }
@@ -391,13 +434,13 @@ class MyKeyboard {
                 } else if (event == XmlResourceParser.END_TAG) {
                     if (inKey) {
                         inKey = false
-                        x += key!!.gap + key.width
+                        x += (key ?: return).gap + key.width
                         if (x > mMinWidth) {
                             mMinWidth = x
                         }
                     } else if (inRow) {
                         inRow = false
-                        y += currentRow!!.defaultHeight
+                        y += (currentRow ?: return).defaultHeight
                         row++
                     }
                 }
@@ -409,14 +452,20 @@ class MyKeyboard {
 
     private fun parseKeyboardAttributes(res: Resources, parser: XmlResourceParser) {
         val a = res.obtainAttributes(Xml.asAttributeSet(parser), R.styleable.MyKeyboard)
-        mDefaultWidth = getDimensionOrFraction(a, R.styleable.MyKeyboard_keyWidth, mDisplayWidth, mDisplayWidth / 10)
+        mDefaultWidth = getDimensionOrFraction(
+            a,
+            R.styleable.MyKeyboard_keyWidth,
+            mDisplayWidth,
+            mDisplayWidth / 10
+        )
         mDefaultHeight = res.getDimension(R.dimen.key_height).toInt()
-        mDefaultHorizontalGap = getDimensionOrFraction(a, R.styleable.MyKeyboard_horizontalGap, mDisplayWidth, 0)
+        mDefaultHorizontalGap =
+            getDimensionOrFraction(a, R.styleable.MyKeyboard_horizontalGap, mDisplayWidth, 0)
         a.recycle()
     }
 
     private fun getKeyboardHeightMultiplier(multiplierType: Int): Float {
-        return when(multiplierType) {
+        return when (multiplierType) {
             KEYBOARD_HEIGHT_MULTIPLIER_SMALL -> 0.7F
             KEYBOARD_HEIGHT_MULTIPLIER_MEDIUM -> 0.85F
             KEYBOARD_HEIGHT_MULTIPLIER_LARGE -> 1.0F

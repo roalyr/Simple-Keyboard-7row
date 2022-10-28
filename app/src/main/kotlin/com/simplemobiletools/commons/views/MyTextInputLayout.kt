@@ -19,10 +19,10 @@ class MyTextInputLayout : TextInputLayout {
     // we need to use reflection to make some colors work well
     fun setColors(textColor: Int, accentColor: Int, backgroundColor: Int) {
         try {
-            editText!!.setTextColor(textColor)
-            editText!!.backgroundTintList = ColorStateList.valueOf(accentColor)
+            (editText ?: return).setTextColor(textColor)
+            (editText ?: return).backgroundTintList = ColorStateList.valueOf(accentColor)
 
-            val hintColor = if (editText!!.value.isEmpty()) textColor.adjustAlpha(HIGHER_ALPHA) else textColor
+            val hintColor = if ((editText ?: return).value.isEmpty()) textColor.adjustAlpha(HIGHER_ALPHA) else textColor
             val defaultTextColor = TextInputLayout::class.java.getDeclaredField("defaultHintTextColor")
             defaultTextColor.isAccessible = true
             defaultTextColor.set(this, ColorStateList(arrayOf(intArrayOf(0)), intArrayOf(hintColor)))

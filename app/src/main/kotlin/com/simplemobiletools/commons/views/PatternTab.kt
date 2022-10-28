@@ -20,7 +20,7 @@ class PatternTab(context: Context, attrs: AttributeSet) : RelativeLayout(context
     private var hash = ""
     private var requiredHash = ""
     private var scrollView: MyScrollView? = null
-    lateinit var hashListener: HashListener
+    private lateinit var hashListener: HashListener
 
     override fun onFinishInflate() {
         super.onFinishInflate()

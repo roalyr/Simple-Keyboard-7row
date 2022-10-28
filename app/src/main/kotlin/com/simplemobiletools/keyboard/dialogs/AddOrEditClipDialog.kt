@@ -9,7 +9,7 @@ import com.simplemobiletools.keyboard.helpers.ClipsHelper
 import com.simplemobiletools.keyboard.models.Clip
 import kotlinx.android.synthetic.main.dialog_add_or_edit_clip.view.*
 
-class AddOrEditClipDialog(val activity: BaseSimpleActivity, val originalClip: Clip?, val callback: () -> Unit) {
+class AddOrEditClipDialog(val activity: BaseSimpleActivity, private val originalClip: Clip?, val callback: () -> Unit) {
     init {
         val view = activity.layoutInflater.inflate(R.layout.dialog_add_or_edit_clip, null).apply {
             if (originalClip != null) {

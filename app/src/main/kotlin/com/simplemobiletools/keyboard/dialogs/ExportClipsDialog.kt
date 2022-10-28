@@ -10,7 +10,7 @@ import com.simplemobiletools.keyboard.extensions.config
 import kotlinx.android.synthetic.main.dialog_export_clips.view.*
 
 class ExportClipsDialog(
-    val activity: BaseSimpleActivity, path: String, val hidePath: Boolean, callback: (path: String, filename: String) -> Unit
+    val activity: BaseSimpleActivity, path: String, private val hidePath: Boolean, callback: (path: String, filename: String) -> Unit
 ) {
     init {
         var folder = if (path.isNotEmpty() && activity.getDoesFilePathExist(path)) {

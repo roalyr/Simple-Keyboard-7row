@@ -54,10 +54,10 @@ class ManageClipboardItemsActivity : SimpleActivity(), RefreshRecyclerViewListen
     override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
         super.onActivityResult(requestCode, resultCode, resultData)
         if (requestCode == PICK_EXPORT_CLIPS_INTENT && resultCode == Activity.RESULT_OK && resultData != null && resultData.data != null) {
-            val outputStream = contentResolver.openOutputStream(resultData.data!!)
+            val outputStream = contentResolver.openOutputStream(resultData.data ?: return)
             exportClipsTo(outputStream)
         } else if (requestCode == PICK_IMPORT_CLIPS_SOURCE_INTENT && resultCode == Activity.RESULT_OK && resultData != null && resultData.data != null) {
-            val inputStream = contentResolver.openInputStream(resultData.data!!)
+            val inputStream = contentResolver.openInputStream(resultData.data ?: return)
             parseFile(inputStream)
         }
     }
@@ -128,7 +128,7 @@ class ManageClipboardItemsActivity : SimpleActivity(), RefreshRecyclerViewListen
                 }
             }
         } else {
-            handlePermission(PERMISSION_WRITE_STORAGE) {
+            handlePermission(PERMISSION_WRITE_STORAGE) { it ->
                 if (it) {
                     ExportClipsDialog(this, config.lastExportedClipsFolder, false) { path, filename ->
                         val file = File(path)

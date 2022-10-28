@@ -23,7 +23,7 @@ import kotlinx.android.synthetic.main.item_filepicker_list.view.*
 import java.util.*
 
 class FilepickerItemsAdapter(
-    activity: BaseSimpleActivity, val fileDirItems: List<FileDirItem>, recyclerView: MyRecyclerView,
+    activity: BaseSimpleActivity, private val fileDirItems: List<FileDirItem>, recyclerView: MyRecyclerView,
     itemClick: (Any) -> Unit
 ) : MyRecyclerViewAdapter(activity, recyclerView, itemClick), RecyclerViewFastScroller.OnPopupTextUpdate {
 
@@ -74,7 +74,7 @@ class FilepickerItemsAdapter(
     override fun onViewRecycled(holder: ViewHolder) {
         super.onViewRecycled(holder)
         if (!activity.isDestroyed && !activity.isFinishing) {
-            Glide.with(activity).clear(holder.itemView.list_item_icon!!)
+            Glide.with(activity).clear(holder.itemView.list_item_icon ?: return)
         }
     }
 
@@ -94,7 +94,8 @@ class FilepickerItemsAdapter(
                 list_item_details.text = fileDirItem.size.formatSize()
                 val path = fileDirItem.path
                 val placeholder = fileDrawables.getOrElse(fileDirItem.name.substringAfterLast(".")
-                    .lowercase(Locale.getDefault()), { fileDrawable })
+                    .lowercase(Locale.getDefault())
+                ) { fileDrawable }
                 val options = RequestOptions()
                     .signature(fileDirItem.getKey())
                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE)

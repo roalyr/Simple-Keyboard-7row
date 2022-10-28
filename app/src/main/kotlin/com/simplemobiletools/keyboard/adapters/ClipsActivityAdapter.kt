@@ -135,8 +135,8 @@ class ClipsActivityAdapter(
         removeSelectedItems(positions)
 
         ensureBackgroundThread {
-            deleteClips.forEach { clip ->
-                activity.clipsDB.delete(clip.id!!.toLong())
+            deleteClips.forEach { (id) ->
+                activity.clipsDB.delete((id ?: return@forEach).toLong())
             }
 
             if (items.isEmpty()) {
@@ -152,7 +152,7 @@ class ClipsActivityAdapter(
             return
         }
 
-        val isSelected = selectedKeys.contains(clip.id!!.toInt())
+        val isSelected = selectedKeys.contains((clip.id ?: return).toInt())
         view.apply {
             clip_value.text = clip.value
             clip_value.setTextColor(textColor)

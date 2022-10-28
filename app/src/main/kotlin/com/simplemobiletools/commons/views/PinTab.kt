@@ -18,7 +18,7 @@ class PinTab(context: Context, attrs: AttributeSet) : RelativeLayout(context, at
     private var hash = ""
     private var requiredHash = ""
     private var pin = ""
-    lateinit var hashListener: HashListener
+    private lateinit var hashListener: HashListener
 
     override fun onFinishInflate() {
         super.onFinishInflate()

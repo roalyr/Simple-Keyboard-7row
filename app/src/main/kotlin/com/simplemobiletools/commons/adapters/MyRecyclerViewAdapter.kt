@@ -19,7 +19,7 @@ abstract class MyRecyclerViewAdapter(val activity: BaseSimpleActivity, val recyc
     protected val layoutInflater = activity.layoutInflater
     protected var textColor = activity.getProperTextColor()
     protected var backgroundColor = activity.getProperBackgroundColor()
-    protected var properPrimaryColor = activity.getProperPrimaryColor()
+    private var properPrimaryColor = activity.getProperPrimaryColor()
     protected var contrastColor = properPrimaryColor.getContrastColor()
     protected var actModeCallback: MyActionModeCallback
     protected var selectedKeys = LinkedHashSet<Int>()
@@ -292,7 +292,7 @@ abstract class MyRecyclerViewAdapter(val activity: BaseSimpleActivity, val recyc
             }
         }
 
-        fun viewClicked(any: Any) {
+        private fun viewClicked(any: Any) {
             if (actModeCallback.isSelectable) {
                 val currentPosition = adapterPosition - positionOffset
                 val isSelected = selectedKeys.contains(getItemSelectionKey(currentPosition))
@@ -303,7 +303,7 @@ abstract class MyRecyclerViewAdapter(val activity: BaseSimpleActivity, val recyc
             lastLongPressedItem = -1
         }
 
-        fun viewLongClicked() {
+        private fun viewLongClicked() {
             val currentPosition = adapterPosition - positionOffset
             if (!actModeCallback.isSelectable) {
                 activity.startActionMode(actModeCallback)
