@@ -22,18 +22,6 @@ const val ITEM_SECTION_LABEL: Int = 0
 const val ITEM_CLIP: Int = 1
 
 const val LANGUAGE_ENGLISH_QWERTY: Int = 0
-const val LANGUAGE_RUSSIAN: Int = 1
-const val LANGUAGE_FRENCH: Int = 2
-const val LANGUAGE_ENGLISH_QWERTZ: Int = 3
-const val LANGUAGE_SPANISH: Int = 4
-const val LANGUAGE_GERMAN: Int = 5
-const val LANGUAGE_ENGLISH_DVORAK: Int = 6
-const val LANGUAGE_ROMANIAN: Int = 7
-const val LANGUAGE_SLOVENIAN: Int = 8
-const val LANGUAGE_BULGARIAN: Int = 9
-const val LANGUAGE_TURKISH_Q: Int = 10
-const val LANGUAGE_LITHUANIAN: Int = 11
-const val LANGUAGE_BENGALI: Int = 12
 const val LANGUAGE_UKRAINIAN: Int = 13
 
 // keyboard height multiplier options

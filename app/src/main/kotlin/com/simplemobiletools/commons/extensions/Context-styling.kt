@@ -3,13 +3,7 @@ package com.simplemobiletools.commons.extensions
 import android.content.ComponentName
 import android.content.Context
 import android.content.pm.PackageManager
-import android.content.res.Configuration
-import android.graphics.Color
-import android.view.ViewGroup
-import androidx.loader.content.CursorLoader
-import com.simplemobiletools.commons.helpers.*
-import com.simplemobiletools.commons.models.SharedTheme
-import com.simplemobiletools.commons.views.*
+import com.simplemobiletools.commons.helpers.keyColorStrings
 import com.simplemobiletools.keyboard.R
 
 fun Context.getProperTextColor(): Int  {

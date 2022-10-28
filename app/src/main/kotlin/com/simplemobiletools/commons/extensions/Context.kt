@@ -128,8 +128,6 @@ fun Context.queryCursor(
     }
 }
 
-fun Context.getMyContentProviderCursorLoader(): CursorLoader = MyContentProvider.MY_CONTENT_URI?.let { CursorLoader(this, it, null, null, null, null) }!!
-
 fun getCurrentFormattedDateTime(): String {
     val simpleDateFormat = SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.getDefault())
     return simpleDateFormat.format(Date(System.currentTimeMillis()))
@@ -149,15 +147,6 @@ fun Context.updateSDCardPath() {
 fun Context.getCustomizeColorsString(): String {
     val textId = R.string.customize_colors
     return getString(textId)
-}
-
-fun Context.isPackageInstalled(pkgName: String): Boolean {
-    return try {
-        packageManager.getPackageInfo(pkgName, 0)
-        true
-    } catch (e: Exception) {
-        false
-    }
 }
 
 fun Context.getTimeFormat(): String = if (baseConfig.use24HourFormat) TIME_FORMAT_24 else TIME_FORMAT_12

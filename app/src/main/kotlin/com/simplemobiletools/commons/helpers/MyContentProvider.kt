@@ -7,8 +7,6 @@ import com.simplemobiletools.commons.models.SharedTheme
 class MyContentProvider {
     companion object {
         private const val AUTHORITY = "com.simplemobiletools.commons.provider"
-        const val SHARED_THEME_ACTIVATED: String = "com.simplemobiletools.commons.SHARED_THEME_ACTIVATED"
-        const val SHARED_THEME_UPDATED: String = "com.simplemobiletools.commons.SHARED_THEME_UPDATED"
         val MY_CONTENT_URI: Uri? = Uri.parse("content://$AUTHORITY/themes")
 
         private const val COL_TEXT_COLOR: String = "text_color"

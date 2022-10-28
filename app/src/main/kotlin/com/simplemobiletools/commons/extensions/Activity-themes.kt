@@ -1,9 +1,7 @@
 package com.simplemobiletools.commons.extensions
 
 import android.app.Activity
-import android.graphics.Color
 import com.simplemobiletools.keyboard.R
-import com.simplemobiletools.commons.helpers.DARK_GREY
 
 fun Activity.getThemeId(color: Int = baseConfig.primaryColor, showTransparentTop: Boolean = false): Int = when {
     showTransparentTop -> {

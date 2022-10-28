@@ -4,15 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import com.simplemobiletools.commons.dialogs.RadioGroupDialog
 import com.simplemobiletools.commons.extensions.*
-import com.simplemobiletools.commons.helpers.NavigationIcon
-import com.simplemobiletools.commons.helpers.isTiramisuPlus
 import com.simplemobiletools.commons.models.RadioItem
 import com.simplemobiletools.keyboard.R
 import com.simplemobiletools.keyboard.extensions.config
 import com.simplemobiletools.keyboard.helpers.*
 import kotlinx.android.synthetic.main.activity_settings.*
-import java.util.*
-import kotlin.system.exitProcess
 
 class SettingsActivity : SimpleActivity() {
 

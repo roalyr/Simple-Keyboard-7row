@@ -162,18 +162,9 @@ open class BaseConfig(val context: Context) {
         get() = prefs!!.getBoolean(WAS_USE_ENGLISH_TOGGLED, false)
         set(wasUseEnglishToggled) = prefs!!.edit().putBoolean(WAS_USE_ENGLISH_TOGGLED, wasUseEnglishToggled).apply()
 
-    var wasSharedThemeEverActivated: Boolean
-        get() = prefs!!.getBoolean(WAS_SHARED_THEME_EVER_ACTIVATED, false)
-        set(wasSharedThemeEverActivated) = prefs!!.edit().putBoolean(WAS_SHARED_THEME_EVER_ACTIVATED, wasSharedThemeEverActivated).apply()
-
     var isUsingSharedTheme: Boolean
         get() = prefs!!.getBoolean(IS_USING_SHARED_THEME, false)
         set(isUsingSharedTheme) = prefs!!.edit().putBoolean(IS_USING_SHARED_THEME, isUsingSharedTheme).apply()
-
-    // used by Simple Thank You, stop using shared Shared Theme if it has been changed in it
-    var shouldUseSharedTheme: Boolean
-        get() = prefs!!.getBoolean(SHOULD_USE_SHARED_THEME, false)
-        set(shouldUseSharedTheme) = prefs!!.edit().putBoolean(SHOULD_USE_SHARED_THEME, shouldUseSharedTheme).apply()
 
     var isUsingSystemTheme: Boolean
         get() = prefs!!.getBoolean(IS_USING_SYSTEM_THEME, false)

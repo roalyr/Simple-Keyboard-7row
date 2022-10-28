@@ -49,10 +49,6 @@ class LicenseActivity : BaseSimpleActivity() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
-
     private fun initLicenses() = arrayOf(
         License(LICENSE_KOTLIN, R.string.kotlin_title, R.string.kotlin_text, R.string.kotlin_url),
         License(LICENSE_SUBSAMPLING, R.string.subsampling_title, R.string.subsampling_text, R.string.subsampling_url),

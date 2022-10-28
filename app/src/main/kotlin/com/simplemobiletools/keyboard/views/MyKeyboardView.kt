@@ -481,11 +481,6 @@ class MyKeyboardView @JvmOverloads constructor(
         }
     }
 
-    /**
-     * Sets the state of the shift key of the keyboard, if any.
-     * @param shifted whether or not to enable the state of the shift key
-     * @return true if the shift key state changed, false if there was no change
-     */
     private fun setShifted(shiftState: Int) {
         if (mKeyboard?.setShifted(shiftState) == true) {
             invalidateAllKeys()

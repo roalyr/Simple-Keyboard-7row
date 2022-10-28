@@ -64,11 +64,8 @@ const val USE_ENGLISH: String = "use_english"
 const val WAS_USE_ENGLISH_TOGGLED: String = "was_use_english_toggled"
 const val WAS_SHARED_THEME_EVER_ACTIVATED: String = "was_shared_theme_ever_activated"
 const val IS_USING_SHARED_THEME: String = "is_using_shared_theme"
-const val IS_USING_AUTO_THEME: String = "is_using_auto_theme"
 const val IS_USING_SYSTEM_THEME: String = "is_using_system_theme"
 const val SHOULD_USE_SHARED_THEME: String = "should_use_shared_theme"
-const val WAS_SHARED_THEME_FORCED: String = "was_shared_theme_forced"
-const val HAD_THANK_YOU_INSTALLED: String = "had_thank_you_installed"
 const val USE_24_HOUR_FORMAT: String = "use_24_hour_format"
 const val OTG_PARTITION: String = "otg_partition_2"
 const val IS_USING_MODIFIED_APP_ICON: String = "is_using_modified_app_icon"
@@ -180,13 +177,6 @@ const val DATE_FORMAT_EIGHT: String = "dd-MM-yyyy"
 
 const val TIME_FORMAT_12: String = "hh:mm a"
 const val TIME_FORMAT_24: String = "HH:mm"
-
-// possible icons at the top left corner
-enum class NavigationIcon {
-    Cross,
-    Arrow,
-    None
-}
 
 val keyColorStrings: ArrayList<String> = arrayListOf(
     ".Red",
