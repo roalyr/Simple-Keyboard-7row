@@ -4,9 +4,9 @@ import android.view.HapticFeedbackConstants
 import android.view.View
 import android.view.ViewTreeObserver
 
-fun View.beVisibleIf(beVisible: Boolean) = if (beVisible) beVisible() else beGone()
+fun View.beVisibleIf(beVisible: Boolean): Unit = if (beVisible) beVisible() else beGone()
 
-fun View.beGoneIf(beGone: Boolean) = beVisibleIf(!beGone)
+fun View.beGoneIf(beGone: Boolean): Unit = beVisibleIf(!beGone)
 
 fun View.beVisible() {
     visibility = View.VISIBLE
@@ -25,9 +25,9 @@ fun View.onGlobalLayout(callback: () -> Unit) {
     })
 }
 
-fun View.isVisible() = visibility == View.VISIBLE
+fun View.isVisible(): Boolean = visibility == View.VISIBLE
 
-fun View.isGone() = visibility == View.GONE
+fun View.isGone(): Boolean = visibility == View.GONE
 
-fun View.performHapticFeedback() = performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY, HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING)
+fun View.performHapticFeedback(): Boolean = performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY, HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING)
 

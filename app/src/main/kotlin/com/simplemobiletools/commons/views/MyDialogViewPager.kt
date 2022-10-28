@@ -6,14 +6,14 @@ import android.view.MotionEvent
 import androidx.viewpager.widget.ViewPager
 
 class MyDialogViewPager : ViewPager {
-    var allowSwiping = true
+    var allowSwiping: Boolean = true
 
     constructor(context: Context) : super(context)
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
 
     // disable manual swiping of viewpager at the dialog by swiping over the pattern
-    override fun onInterceptTouchEvent(ev: MotionEvent) = false
+    override fun onInterceptTouchEvent(ev: MotionEvent): Boolean = false
 
     override fun onTouchEvent(ev: MotionEvent): Boolean {
         if (!allowSwiping)

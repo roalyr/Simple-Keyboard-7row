@@ -40,9 +40,9 @@ class PasswordTypesAdapter(
         container.removeView(item as View)
     }
 
-    override fun getCount() = if (showBiometricIdTab) 3 else 2
+    override fun getCount(): Int = if (showBiometricIdTab) 3 else 2
 
-    override fun isViewFromObject(view: View, item: Any) = view == item
+    override fun isViewFromObject(view: View, item: Any): Boolean = view == item
 
     private fun layoutSelection(position: Int): Int = when (position) {
         PROTECTION_PATTERN -> R.layout.tab_pattern

@@ -10,7 +10,7 @@ import android.view.View
 class ColorPickerSquare(context: Context, attrs: AttributeSet) : View(context, attrs) {
     private var paint: Paint? = null
     private var luar: Shader = LinearGradient(0f, 0f, 0f, measuredHeight.toFloat(), Color.WHITE, Color.BLACK, TileMode.CLAMP)
-    val color = floatArrayOf(1f, 1f, 1f)
+    val color: FloatArray = floatArrayOf(1f, 1f, 1f)
 
     @SuppressLint("DrawAllocation")
     override fun onDraw(canvas: Canvas) {

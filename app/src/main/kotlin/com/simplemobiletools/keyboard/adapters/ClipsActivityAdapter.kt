@@ -46,7 +46,7 @@ class ClipsActivityAdapter(
         }
     }
 
-    override fun getActionMenuId() = R.menu.cab_clips
+    override fun getActionMenuId(): Int = R.menu.cab_clips
 
     override fun prepareActionMode(menu: Menu) {
         menu.apply {
@@ -65,13 +65,13 @@ class ClipsActivityAdapter(
         }
     }
 
-    override fun getSelectableItemCount() = items.size
+    override fun getSelectableItemCount(): Int = items.size
 
-    override fun getIsItemSelectable(position: Int) = true
+    override fun getIsItemSelectable(position: Int): Boolean = true
 
-    override fun getItemSelectionKey(position: Int) = items.getOrNull(position)?.id?.toInt()
+    override fun getItemSelectionKey(position: Int): Int? = items.getOrNull(position)?.id?.toInt()
 
-    override fun getItemKeyPosition(key: Int) = items.indexOfFirst { it.id?.toInt() == key }
+    override fun getItemKeyPosition(key: Int): Int = items.indexOfFirst { it.id?.toInt() == key }
 
     override fun onActionModeCreated() {
         notifyDataSetChanged()
@@ -97,7 +97,7 @@ class ClipsActivityAdapter(
         wasClipMoved = false
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = createViewHolder(R.layout.item_clip_in_activity, parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = createViewHolder(R.layout.item_clip_in_activity, parent)
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
@@ -107,7 +107,7 @@ class ClipsActivityAdapter(
         bindViewHolder(holder)
     }
 
-    override fun getItemCount() = items.size
+    override fun getItemCount(): Int = items.size
 
     private fun editClip() {
         val selectedClip = getSelectedItems().firstOrNull() ?: return

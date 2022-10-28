@@ -25,7 +25,7 @@ class EmojisAdapter(val context: Context, var items: List<String>, val itemClick
         }
     }
 
-    override fun getItemCount() = items.size
+    override fun getItemCount(): Int = items.size
 
     private fun setupEmoji(view: View, emoji: String) {
         val processed = EmojiCompat.get().process(emoji)

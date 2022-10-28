@@ -13,7 +13,6 @@ import androidx.annotation.XmlRes
 import com.simplemobiletools.keyboard.R
 import com.simplemobiletools.keyboard.extensions.config
 import kotlin.math.roundToInt
-import kotlin.math.roundToLong
 
 /**
  * Loads an XML description of a keyboard and stores the attributes of the keys. A keyboard consists of rows of keys.
@@ -34,16 +33,16 @@ class MyKeyboard {
     var mKeyboardHeightMultiplier: Float = 1F
 
     /** Is the keyboard in the shifted state  */
-    var mShiftState = SHIFT_OFF
+    var mShiftState: Int = SHIFT_OFF
 
     /** If the ctrl key pressed  */
-    var mControlState = CONTROL_OFF
+    var mControlState: Int = CONTROL_OFF
 
     /** Total height of the keyboard, including the padding and keys  */
-    var mHeight = 0
+    var mHeight: Int = 0
 
     /** Total width of the keyboard, including left side gaps and keys, but not any gaps on the right side. */
-    var mMinWidth = 0
+    var mMinWidth: Int = 0
 
     /** List of keys in this keyboard  */
     var mKeys: MutableList<Key?>? = null
@@ -63,23 +62,23 @@ class MyKeyboard {
         private const val TAG_KEY = "Key"
         private const val EDGE_LEFT = 0x01
         private const val EDGE_RIGHT = 0x02
-        const val EDGE_TOP = 1
+        const val EDGE_TOP: Int = 1
 
-        const val KEYCODE_SHIFT = -1
-        const val KEYCODE_MODE_CHANGE = -2
-        const val KEYCODE_TAB = -3
-        const val KEYCODE_ENTER = -4
-        const val KEYCODE_DELETE = -5
-        const val KEYCODE_SPACE = 32
-        const val KEYCODE_EMOJI = -6
-        const val KEYCODE_CONTROL = -7
-        const val KEYCODE_UNDO = -8
-        const val KEYCODE_REDO = -9
+        const val KEYCODE_SHIFT: Int = -1
+        const val KEYCODE_MODE_CHANGE: Int = -2
+        const val KEYCODE_TAB: Int = -3
+        const val KEYCODE_ENTER: Int = -4
+        const val KEYCODE_DELETE: Int = -5
+        const val KEYCODE_SPACE: Int = 32
+        const val KEYCODE_EMOJI: Int = -6
+        const val KEYCODE_CONTROL: Int = -7
+        const val KEYCODE_UNDO: Int = -8
+        const val KEYCODE_REDO: Int = -9
 
-        const val KEYCODE_UP = -10
-        const val KEYCODE_DOWN = -11
-        const val KEYCODE_LEFT = -12
-        const val KEYCODE_RIGHT = -13
+        const val KEYCODE_UP: Int = -10
+        const val KEYCODE_DOWN: Int = -11
+        const val KEYCODE_LEFT: Int = -12
+        const val KEYCODE_RIGHT: Int = -13
 
         fun getDimensionOrFraction(a: TypedArray, index: Int, base: Int, defValue: Int): Int {
             val value = a.peekValue(index) ?: return defValue
@@ -104,15 +103,15 @@ class MyKeyboard {
      */
     class Row {
         /** Default width of a key in this row.  */
-        var defaultWidth = 0
+        var defaultWidth: Int = 0
 
         /** Default height of a key in this row.  */
-        var defaultHeight = 0
+        var defaultHeight: Int = 0
 
         /** Default horizontal gap between keys in this row.  */
-        var defaultHorizontalGap = 0
+        var defaultHorizontalGap: Int = 0
 
-        var mKeys = ArrayList<Key>()
+        var mKeys: ArrayList<Key> = ArrayList<Key>()
 
         var parent: MyKeyboard
 
@@ -157,13 +156,13 @@ class MyKeyboard {
      */
     class Key(parent: Row) {
         /** Key code that this key generates.  */
-        var code = 0
+        var code: Int = 0
 
         /** Label to display  */
         var label: CharSequence = ""
 
         /** Whether key should be displayed with different color  */
-        var speckey = false
+        var speckey: Boolean = false
 
         /** First row of letters can also be used for inserting numbers by long pressing them, show those numbers  */
         var keyLabelSmall: String = ""
@@ -181,16 +180,16 @@ class MyKeyboard {
         var gap: Int
 
         /** X coordinate of the key in the keyboard layout  */
-        var x = 0
+        var x: Int = 0
 
         /** Y coordinate of the key in the keyboard layout  */
-        var y = 0
+        var y: Int = 0
 
         /** The current pressed state of this key  */
-        var pressed = false
+        var pressed: Boolean = false
 
         /** Focused state, used after long pressing a key and swiping to alternative keys  */
-        var focused = false
+        var focused: Boolean = false
 
         /** Popup characters showing after long pressing the key  */
         var popupCharacters: CharSequence? = null
@@ -201,16 +200,16 @@ class MyKeyboard {
          */
         private var edgeFlags = 0
 
-        var rowEdgeFlags = 0
+        var rowEdgeFlags: Int = 0
 
         /** The keyboard that this key belongs to  */
         private val keyboard = parent.parent
 
         /** If this key pops up a mini keyboard, this is the resource id for the XML layout for that keyboard.  */
-        var popupResId = 0
+        var popupResId: Int = 0
 
         /** Whether this key repeats itself when held down  */
-        var repeatable = false
+        var repeatable: Boolean = false
 
         /** Create a key with the given top-left coordinate and extract its attributes from the XML parser.
          * @param res resources associated with the caller's context
@@ -285,9 +284,9 @@ class MyKeyboard {
             val leftEdge = edgeFlags and EDGE_LEFT > 0
             val rightEdge = edgeFlags and EDGE_RIGHT > 0
             return ((x >= this.x || leftEdge && x <= this.x + width)
-                    && (x < this.x + width || rightEdge && x >= this.x)
-                    && (y >= this.y && y <= this.y + height)
-                    && (y < this.y + height && y >= this.y))
+                && (x < this.x + width || rightEdge && x >= this.x)
+                && (y >= this.y && y <= this.y + height)
+                && (y < this.y + height && y >= this.y))
         }
     }
 
@@ -324,7 +323,7 @@ class MyKeyboard {
         characters: CharSequence,
         keyWidth: Int
     ) :
-            this(context, layoutTemplateResId, 0) {
+        this(context, layoutTemplateResId, 0) {
         var x = 0
         var y = 0
         var column = 0

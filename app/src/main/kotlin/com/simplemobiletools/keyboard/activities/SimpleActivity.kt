@@ -4,7 +4,7 @@ import com.simplemobiletools.commons.activities.BaseSimpleActivity
 import com.simplemobiletools.keyboard.R
 
 open class SimpleActivity : BaseSimpleActivity() {
-    override fun getAppIconIDs() = arrayListOf(
+    override fun getAppIconIDs(): ArrayList<Int> = arrayListOf(
         R.mipmap.ic_launcher_red,
         R.mipmap.ic_launcher_pink,
         R.mipmap.ic_launcher_purple,
@@ -26,5 +26,5 @@ open class SimpleActivity : BaseSimpleActivity() {
         R.mipmap.ic_launcher_grey_black
     )
 
-    override fun getAppLauncherName() = getString(R.string.app_launcher_name)
+    override fun getAppLauncherName(): String = getString(R.string.app_launcher_name)
 }

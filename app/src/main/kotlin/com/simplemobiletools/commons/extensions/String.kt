@@ -9,9 +9,9 @@ import com.simplemobiletools.commons.helpers.videoExtensions
 import java.text.Normalizer
 import java.util.*
 
-fun String.getFilenameFromPath() = substring(lastIndexOf("/") + 1)
+fun String.getFilenameFromPath(): String = substring(lastIndexOf("/") + 1)
 
-fun String.getFilenameExtension() = substring(lastIndexOf(".") + 1)
+fun String.getFilenameExtension(): String = substring(lastIndexOf(".") + 1)
 
 fun String.getBasePath(context: Context): String {
     return when {
@@ -64,25 +64,25 @@ fun String.isAValidFilename(): Boolean {
     return true
 }
 
-fun String.getOTGPublicPath(context: Context) =
+fun String.getOTGPublicPath(context: Context): String =
     "${context.baseConfig.OTGTreeUri}/document/${context.baseConfig.OTGPartition}%3A${substring(context.baseConfig.OTGPath.length).replace("/", "%2F")}"
 
-fun String.isGif() = endsWith(".gif", true)
+fun String.isGif(): Boolean = endsWith(".gif", true)
 
 // fast extension checks, not guaranteed to be accurate
-fun String.isVideoFast() = videoExtensions.any { endsWith(it, true) }
+fun String.isVideoFast(): Boolean = videoExtensions.any { endsWith(it, true) }
 
-fun String.isImageFast() = photoExtensions.any { endsWith(it, true) }
-fun String.isAudioFast() = audioExtensions.any { endsWith(it, true) }
+fun String.isImageFast(): Boolean = photoExtensions.any { endsWith(it, true) }
+fun String.isAudioFast(): Boolean = audioExtensions.any { endsWith(it, true) }
 
-fun String.isImageSlow() = isImageFast() || getMimeType().startsWith("image") || startsWith(MediaStore.Images.Media.EXTERNAL_CONTENT_URI.toString())
-fun String.isVideoSlow() = isVideoFast() || getMimeType().startsWith("video") || startsWith(MediaStore.Video.Media.EXTERNAL_CONTENT_URI.toString())
-fun String.isAudioSlow() = isAudioFast() || getMimeType().startsWith("audio") || startsWith(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI.toString())
+fun String.isImageSlow(): Boolean = isImageFast() || getMimeType().startsWith("image") || startsWith(MediaStore.Images.Media.EXTERNAL_CONTENT_URI.toString())
+fun String.isVideoSlow(): Boolean = isVideoFast() || getMimeType().startsWith("video") || startsWith(MediaStore.Video.Media.EXTERNAL_CONTENT_URI.toString())
+fun String.isAudioSlow(): Boolean = isAudioFast() || getMimeType().startsWith("audio") || startsWith(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI.toString())
 
-fun String.getParentPath() = removeSuffix("/${getFilenameFromPath()}")
+fun String.getParentPath(): String = removeSuffix("/${getFilenameFromPath()}")
 
 // remove diacritics, for example č -> c
-fun String.normalizeString() = Normalizer.normalize(this, Normalizer.Form.NFD).replace(normalizeRegex, "")
+fun String.normalizeString(): String = Normalizer.normalize(this, Normalizer.Form.NFD).replace(normalizeRegex, "")
 
 fun String.getMimeType(): String {
     val typesMap = HashMap<String, String>().apply {

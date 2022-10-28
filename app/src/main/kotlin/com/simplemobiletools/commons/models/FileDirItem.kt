@@ -20,10 +20,10 @@ open class FileDirItem(
 ) :
     Comparable<FileDirItem> {
     companion object {
-        var sorting = 0
+        var sorting: Int = 0
     }
 
-    override fun toString() =
+    override fun toString(): String =
         "FileDirItem(path=$path, name=$name, isDirectory=$isDirectory, children=$children, size=$size, modified=$modified, mediaStoreId=$mediaStoreId)"
 
     override fun compareTo(other: FileDirItem): Int {
@@ -72,7 +72,7 @@ open class FileDirItem(
 
     private fun getExtension() = if (isDirectory) name else path.substringAfterLast('.', "")
 
-    fun getBubbleText(context: Context, dateFormat: String? = null, timeFormat: String? = null) =
+    fun getBubbleText(context: Context, dateFormat: String? = null, timeFormat: String? = null): String =
         when {
             sorting and SORT_BY_SIZE != 0 -> size.formatSize()
             sorting and SORT_BY_DATE_MODIFIED != 0 -> modified.formatDate(
@@ -84,7 +84,7 @@ open class FileDirItem(
             else -> name
         }
 
-    fun getParentPath() = path.getParentPath()
+    fun getParentPath(): String = path.getParentPath()
 
     private fun getSignature(): String {
         val lastModified = if (modified > 1) {
@@ -96,7 +96,7 @@ open class FileDirItem(
         return "$path-$lastModified-$size"
     }
 
-    fun getKey() = ObjectKey(getSignature())
+    fun getKey(): ObjectKey = ObjectKey(getSignature())
 
     fun assembleContentUri(): Uri {
         val uri = when {

@@ -262,7 +262,7 @@ fun Activity.launchPurchaseThankYouIntent() {
     }
 }
 
-fun Activity.launchViewIntent(id: Int) = launchViewIntent(getString(id))
+fun Activity.launchViewIntent(id: Int): Unit = launchViewIntent(getString(id))
 
 fun Activity.launchViewIntent(url: String) {
     hideKeyboard()
@@ -454,7 +454,7 @@ fun Activity.handleLockedFolderOpening(path: String, callback: (success: Boolean
 fun Activity.updateSharedTheme(sharedTheme: SharedTheme) {
     try {
         val contentValues = MyContentProvider.fillThemeContentValues(sharedTheme)
-        applicationContext.contentResolver.update(MyContentProvider.MY_CONTENT_URI, contentValues, null, null)
+        MyContentProvider.MY_CONTENT_URI?.let { applicationContext.contentResolver.update(it, contentValues, null, null) }
     } catch (e: Exception) {
         showErrorToast(e)
     }
@@ -537,7 +537,7 @@ fun Activity.setupDialogStuff(
     }
 }
 
-fun Activity.getAlertDialogBuilder() = if (baseConfig.isUsingSystemTheme) {
+fun Activity.getAlertDialogBuilder(): AlertDialog.Builder = if (baseConfig.isUsingSystemTheme) {
     MaterialAlertDialogBuilder(this)
 } else {
     AlertDialog.Builder(this)

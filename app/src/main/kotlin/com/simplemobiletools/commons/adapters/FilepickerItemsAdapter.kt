@@ -41,9 +41,9 @@ class FilepickerItemsAdapter(
         fontSize = activity.getTextSize()
     }
 
-    override fun getActionMenuId() = 0
+    override fun getActionMenuId(): Int = 0
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = createViewHolder(R.layout.item_filepicker_list, parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = createViewHolder(R.layout.item_filepicker_list, parent)
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val fileDirItem = fileDirItems[position]
@@ -53,19 +53,19 @@ class FilepickerItemsAdapter(
         bindViewHolder(holder)
     }
 
-    override fun getItemCount() = fileDirItems.size
+    override fun getItemCount(): Int = fileDirItems.size
 
     override fun prepareActionMode(menu: Menu) {}
 
     override fun actionItemPressed(id: Int) {}
 
-    override fun getSelectableItemCount() = fileDirItems.size
+    override fun getSelectableItemCount(): Int = fileDirItems.size
 
-    override fun getIsItemSelectable(position: Int) = false
+    override fun getIsItemSelectable(position: Int): Boolean = false
 
-    override fun getItemKeyPosition(key: Int) = fileDirItems.indexOfFirst { it.path.hashCode() == key }
+    override fun getItemKeyPosition(key: Int): Int = fileDirItems.indexOfFirst { it.path.hashCode() == key }
 
-    override fun getItemSelectionKey(position: Int) = fileDirItems[position].path.hashCode()
+    override fun getItemSelectionKey(position: Int): Int = fileDirItems[position].path.hashCode()
 
     override fun onActionModeCreated() {}
 
@@ -93,8 +93,9 @@ class FilepickerItemsAdapter(
             } else {
                 list_item_details.text = fileDirItem.size.formatSize()
                 val path = fileDirItem.path
-                val placeholder = fileDrawables.getOrElse(fileDirItem.name.substringAfterLast(".")
-                    .lowercase(Locale.getDefault())
+                val placeholder = fileDrawables.getOrElse(
+                    fileDirItem.name.substringAfterLast(".")
+                        .lowercase(Locale.getDefault())
                 ) { fileDrawable }
                 val options = RequestOptions()
                     .signature(fileDirItem.getKey())
@@ -150,5 +151,5 @@ class FilepickerItemsAdapter(
         fileDrawables = getFilePlaceholderDrawables(activity)
     }
 
-    override fun onChange(position: Int) = fileDirItems.getOrNull(position)?.getBubbleText(activity, dateFormat, timeFormat) ?: ""
+    override fun onChange(position: Int): String = fileDirItems.getOrNull(position)?.getBubbleText(activity, dateFormat, timeFormat) ?: ""
 }

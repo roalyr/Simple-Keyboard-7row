@@ -17,4 +17,4 @@ fun ImageView.setFillWithStroke(fillColor: Int, backgroundColor: Int, drawRectan
     }
 }
 
-fun ImageView.applyColorFilter(color: Int) = setColorFilter(color, PorterDuff.Mode.SRC_IN)
+fun ImageView.applyColorFilter(color: Int): Unit = setColorFilter(color, PorterDuff.Mode.SRC_IN)

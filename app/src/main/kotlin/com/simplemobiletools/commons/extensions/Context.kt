@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
@@ -23,7 +24,7 @@ import com.simplemobiletools.keyboard.R
 import java.text.SimpleDateFormat
 import java.util.*
 
-fun Context.getSharedPrefs() = getSharedPreferences(PREFS_KEY, Context.MODE_PRIVATE)
+fun Context.getSharedPrefs(): SharedPreferences? = getSharedPreferences(PREFS_KEY, Context.MODE_PRIVATE)
 
 val Context.isRTLLayout: Boolean get() = resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
 
@@ -69,16 +70,16 @@ val Context.sdCardPath: String get() = baseConfig.sdCardPath
 val Context.internalStoragePath: String get() = baseConfig.internalStoragePath
 val Context.otgPath: String get() = baseConfig.OTGPath
 
-fun isFingerPrintSensorAvailable() = isMarshmallowPlus() && Reprint.isHardwarePresent()
+fun isFingerPrintSensorAvailable(): Boolean = isMarshmallowPlus() && Reprint.isHardwarePresent()
 
 fun Context.isBiometricIdAvailable(): Boolean = when (BiometricManager.from(this).canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_WEAK)) {
     BiometricManager.BIOMETRIC_SUCCESS, BiometricManager.BIOMETRIC_STATUS_UNKNOWN -> true
     else -> false
 }
 
-fun Context.hasPermission(permId: Int) = ContextCompat.checkSelfPermission(this, getPermissionString(permId)) == PackageManager.PERMISSION_GRANTED
+fun Context.hasPermission(permId: Int): Boolean = ContextCompat.checkSelfPermission(this, getPermissionString(permId)) == PackageManager.PERMISSION_GRANTED
 
-fun getPermissionString(id: Int) = when (id) {
+fun getPermissionString(id: Int): String = when (id) {
     PERMISSION_READ_STORAGE -> Manifest.permission.READ_EXTERNAL_STORAGE
     PERMISSION_WRITE_STORAGE -> Manifest.permission.WRITE_EXTERNAL_STORAGE
     PERMISSION_CAMERA -> Manifest.permission.CAMERA
@@ -127,7 +128,7 @@ fun Context.queryCursor(
     }
 }
 
-fun Context.getMyContentProviderCursorLoader() = CursorLoader(this, MyContentProvider.MY_CONTENT_URI, null, null, null, null)
+fun Context.getMyContentProviderCursorLoader(): CursorLoader = MyContentProvider.MY_CONTENT_URI?.let { CursorLoader(this, it, null, null, null, null) }!!
 
 fun getCurrentFormattedDateTime(): String {
     val simpleDateFormat = SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.getDefault())
@@ -144,7 +145,7 @@ fun Context.updateSDCardPath() {
     }
 }
 
-fun Context.isThankYouInstalled() = isPackageInstalled("com.simplemobiletools.thankyou")
+fun Context.isThankYouInstalled(): Boolean = isPackageInstalled("com.simplemobiletools.thankyou")
 
 fun Context.isOrWasThankYouInstalled(): Boolean {
     return when {
@@ -177,11 +178,11 @@ fun Context.isPackageInstalled(pkgName: String): Boolean {
     }
 }
 
-fun Context.getTimeFormat() = if (baseConfig.use24HourFormat) TIME_FORMAT_24 else TIME_FORMAT_12
+fun Context.getTimeFormat(): String = if (baseConfig.use24HourFormat) TIME_FORMAT_24 else TIME_FORMAT_12
 
-fun Context.getStringsPackageName() = getString(R.string.package_name)
+fun Context.getStringsPackageName(): String = getString(R.string.package_name)
 
-fun Context.getTextSize() = when (baseConfig.fontSize) {
+fun Context.getTextSize(): Float = when (baseConfig.fontSize) {
     FONT_SIZE_SMALL -> resources.getDimension(R.dimen.smaller_text_size)
     FONT_SIZE_MEDIUM -> resources.getDimension(R.dimen.bigger_text_size)
     FONT_SIZE_LARGE -> resources.getDimension(R.dimen.big_text_size)

@@ -1,5 +1,6 @@
 package com.simplemobiletools.commons.adapters
 
+import android.content.res.Resources
 import android.graphics.Color
 import android.view.*
 import android.widget.ImageView
@@ -8,6 +9,7 @@ import androidx.appcompat.app.ActionBar
 import androidx.recyclerview.widget.RecyclerView
 import com.simplemobiletools.commons.activities.BaseSimpleActivity
 import com.simplemobiletools.commons.extensions.*
+import com.simplemobiletools.commons.helpers.BaseConfig
 import com.simplemobiletools.commons.interfaces.MyActionModeCallback
 import com.simplemobiletools.commons.views.MyRecyclerView
 import com.simplemobiletools.keyboard.R
@@ -16,16 +18,16 @@ import kotlin.math.min
 
 abstract class MyRecyclerViewAdapter(val activity: BaseSimpleActivity, val recyclerView: MyRecyclerView, val itemClick: (Any) -> Unit) :
     RecyclerView.Adapter<MyRecyclerViewAdapter.ViewHolder>() {
-    protected val baseConfig = activity.baseConfig
-    protected val resources = activity.resources!!
-    protected val layoutInflater = activity.layoutInflater
-    protected var textColor = activity.getProperTextColor()
-    protected var backgroundColor = activity.getProperBackgroundColor()
+    protected val baseConfig: BaseConfig = activity.baseConfig
+    protected val resources: Resources = activity.resources!!
+    protected val layoutInflater: LayoutInflater = activity.layoutInflater
+    protected var textColor: Int = activity.getProperTextColor()
+    protected var backgroundColor: Int = activity.getProperBackgroundColor()
     private var properPrimaryColor = activity.getProperPrimaryColor()
-    protected var contrastColor = properPrimaryColor.getContrastColor()
+    protected var contrastColor: Int = properPrimaryColor.getContrastColor()
     protected var actModeCallback: MyActionModeCallback
-    protected var selectedKeys = LinkedHashSet<Int>()
-    protected var positionOffset = 0
+    protected var selectedKeys: LinkedHashSet<Int> = LinkedHashSet<Int>()
+    protected var positionOffset: Int = 0
     protected var actMode: ActionMode? = null
 
     private var actBarTextView: TextView? = null
@@ -49,7 +51,7 @@ abstract class MyRecyclerViewAdapter(val activity: BaseSimpleActivity, val recyc
 
     abstract fun onActionModeDestroyed()
 
-    protected fun isOneItemSelected() = selectedKeys.size == 1
+    protected fun isOneItemSelected(): Boolean = selectedKeys.size == 1
 
     init {
         actModeCallback = object : MyActionModeCallback() {

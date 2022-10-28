@@ -23,5 +23,5 @@ fun File.getDirectChildrenCount(context: Context, countHiddenItems: Boolean): In
     return fileCount
 }
 
-fun File.toFileDirItem(context: Context) = FileDirItem(absolutePath, name, context.getIsPathDirectory(absolutePath), 0, length(), lastModified())
+fun File.toFileDirItem(context: Context): FileDirItem = FileDirItem(absolutePath, name, context.getIsPathDirectory(absolutePath), 0, length(), lastModified())
 

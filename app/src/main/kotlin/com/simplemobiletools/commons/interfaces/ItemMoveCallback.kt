@@ -5,9 +5,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.simplemobiletools.commons.adapters.MyRecyclerViewAdapter
 
 open class ItemMoveCallback(private val mAdapter: ItemTouchHelperContract, private val allowHorizontalDrag: Boolean = false) : ItemTouchHelper.Callback() {
-    override fun isLongPressDragEnabled() = false
+    override fun isLongPressDragEnabled(): Boolean = false
 
-    override fun isItemViewSwipeEnabled() = false
+    override fun isItemViewSwipeEnabled(): Boolean = false
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, i: Int) {}
 

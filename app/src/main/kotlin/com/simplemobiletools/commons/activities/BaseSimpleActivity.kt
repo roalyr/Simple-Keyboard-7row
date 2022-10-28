@@ -28,9 +28,9 @@ abstract class BaseSimpleActivity : AppCompatActivity() {
     private var isAskingPermissions = false
     private var useDynamicTheme = true
     private var showTransparentTop = false
-    var showTransparentNavigation = false
-    var checkedDocumentPath = ""
-    var configItemsToExport = LinkedHashMap<String, Any>()
+    var showTransparentNavigation: Boolean = false
+    var checkedDocumentPath: String = ""
+    var configItemsToExport: LinkedHashMap<String, Any> = LinkedHashMap<String, Any>()
 
     private val GENERIC_PERM_HANDLER = 100
     private val DELETE_FILE_SDK_30_HANDLER = 300

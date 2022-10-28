@@ -38,7 +38,7 @@ class Breadcrumbs(context: Context, attrs: AttributeSet) : HorizontalScrollView(
         )
 
     var listener: BreadcrumbsListener? = null
-    var isShownInDialog = false
+    var isShownInDialog: Boolean = false
 
     init {
         isHorizontalScrollBarEnabled = false
@@ -251,11 +251,11 @@ class Breadcrumbs(context: Context, attrs: AttributeSet) : HorizontalScrollView(
         itemsLayout.removeView(itemsLayout.getChildAt(itemsLayout.childCount - 1))
     }
 
-    fun getItem(index: Int) = itemsLayout.getChildAt(index).tag as FileDirItem
+    fun getItem(index: Int): FileDirItem = itemsLayout.getChildAt(index).tag as FileDirItem
 
-    fun getLastItem() = itemsLayout.getChildAt(itemsLayout.childCount - 1).tag as FileDirItem
+    fun getLastItem(): FileDirItem = itemsLayout.getChildAt(itemsLayout.childCount - 1).tag as FileDirItem
 
-    fun getItemCount() = itemsLayout.childCount
+    fun getItemCount(): Int = itemsLayout.childCount
 
     interface BreadcrumbsListener {
         fun breadcrumbClicked(id: Int)

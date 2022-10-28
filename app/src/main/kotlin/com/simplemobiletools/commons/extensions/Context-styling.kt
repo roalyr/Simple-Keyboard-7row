@@ -13,19 +13,19 @@ import com.simplemobiletools.commons.views.*
 import com.simplemobiletools.keyboard.R
 
 // handle system default theme (Material You) specially as the color is taken from the system, not hardcoded by us
-fun Context.getProperTextColor() = if (baseConfig.isUsingSystemTheme) {
+fun Context.getProperTextColor(): Int = if (baseConfig.isUsingSystemTheme) {
     resources.getColor(R.color.you_neutral_text_color, theme)
 } else {
     baseConfig.textColor
 }
 
-fun Context.getProperBackgroundColor() = if (baseConfig.isUsingSystemTheme) {
+fun Context.getProperBackgroundColor(): Int = if (baseConfig.isUsingSystemTheme) {
     resources.getColor(R.color.you_background_color, theme)
 } else {
     baseConfig.backgroundColor
 }
 
-fun Context.getProperKeyColor() = if (baseConfig.isUsingSystemTheme) {
+fun Context.getProperKeyColor(): Int = if (baseConfig.isUsingSystemTheme) {
     //resources.getColor(R.color.you_key_color, theme)
     baseConfig.keyColor
 } else {
@@ -33,13 +33,13 @@ fun Context.getProperKeyColor() = if (baseConfig.isUsingSystemTheme) {
 }
 
 
-fun Context.getProperPrimaryColor() = when {
+fun Context.getProperPrimaryColor(): Int = when {
     baseConfig.isUsingSystemTheme -> resources.getColor(R.color.you_primary_color, theme)
     isWhiteTheme() || isBlackAndWhiteTheme() -> baseConfig.accentColor
     else -> baseConfig.primaryColor
 }
 
-fun Context.getProperStatusBarColor() = when {
+fun Context.getProperStatusBarColor(): Int = when {
     baseConfig.isUsingSystemTheme -> resources.getColor(R.color.you_status_bar_color, theme)
     else -> baseConfig.primaryColor
 }
@@ -75,11 +75,11 @@ fun Context.updateTextColors(viewGroup: ViewGroup) {
     }
 }
 
-fun Context.isBlackAndWhiteTheme() = baseConfig.textColor == Color.WHITE && baseConfig.primaryColor == Color.BLACK && baseConfig.backgroundColor == Color.BLACK
+fun Context.isBlackAndWhiteTheme(): Boolean = baseConfig.textColor == Color.WHITE && baseConfig.primaryColor == Color.BLACK && baseConfig.backgroundColor == Color.BLACK
 
-fun Context.isWhiteTheme() = baseConfig.textColor == DARK_GREY && baseConfig.primaryColor == Color.WHITE && baseConfig.backgroundColor == Color.WHITE
+fun Context.isWhiteTheme(): Boolean = baseConfig.textColor == DARK_GREY && baseConfig.primaryColor == Color.WHITE && baseConfig.backgroundColor == Color.WHITE
 
-fun Context.isUsingSystemDarkTheme() = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_YES != 0
+fun Context.isUsingSystemDarkTheme(): Boolean = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_YES != 0
 
 fun Context.getSharedTheme(callback: (sharedTheme: SharedTheme?) -> Unit) {
     if (!isThankYouInstalled()) {
@@ -139,5 +139,5 @@ fun Context.togglekeyColor(appId: String, colorIndex: Int, color: Int, enable: B
     }
 }
 
-fun Context.getkeyColors() = resources.getIntArray(R.array.md_app_icon_colors).toCollection(ArrayList())
+fun Context.getkeyColors(): ArrayList<Int> = resources.getIntArray(R.array.md_app_icon_colors).toCollection(ArrayList())
 

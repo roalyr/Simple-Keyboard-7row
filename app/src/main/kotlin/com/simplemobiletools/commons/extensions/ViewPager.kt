@@ -2,7 +2,7 @@ package com.simplemobiletools.commons.extensions
 
 import androidx.viewpager.widget.ViewPager
 
-fun ViewPager.onPageChangeListener(pageChangedAction: (newPosition: Int) -> Unit) =
+fun ViewPager.onPageChangeListener(pageChangedAction: (newPosition: Int) -> Unit): Unit =
     addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
         override fun onPageScrollStateChanged(state: Int) {}
 

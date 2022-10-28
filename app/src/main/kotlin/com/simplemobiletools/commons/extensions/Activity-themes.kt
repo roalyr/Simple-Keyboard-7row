@@ -5,7 +5,7 @@ import android.graphics.Color
 import com.simplemobiletools.keyboard.R
 import com.simplemobiletools.commons.helpers.DARK_GREY
 
-fun Activity.getThemeId(color: Int = baseConfig.primaryColor, showTransparentTop: Boolean = false) = when {
+fun Activity.getThemeId(color: Int = baseConfig.primaryColor, showTransparentTop: Boolean = false): Int = when {
     baseConfig.isUsingSystemTheme -> if (isUsingSystemDarkTheme()) R.style.AppTheme_Base_System else R.style.AppTheme_Base_System_Light
     isBlackAndWhiteTheme() -> when {
         showTransparentTop -> R.style.AppTheme_BlackAndWhite_NoActionBar

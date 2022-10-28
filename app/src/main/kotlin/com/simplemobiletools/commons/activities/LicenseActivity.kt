@@ -11,9 +11,9 @@ import kotlinx.android.synthetic.main.activity_license.*
 import kotlinx.android.synthetic.main.item_license.view.*
 
 class LicenseActivity : BaseSimpleActivity() {
-    override fun getAppIconIDs() = intent.getIntegerArrayListExtra(APP_ICON_IDS) ?: ArrayList()
+    override fun getAppIconIDs(): java.util.ArrayList<Int> = intent.getIntegerArrayListExtra(APP_ICON_IDS) ?: ArrayList()
 
-    override fun getAppLauncherName() = intent.getStringExtra(APP_LAUNCHER_NAME) ?: ""
+    override fun getAppLauncherName(): String = intent.getStringExtra(APP_LAUNCHER_NAME) ?: ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

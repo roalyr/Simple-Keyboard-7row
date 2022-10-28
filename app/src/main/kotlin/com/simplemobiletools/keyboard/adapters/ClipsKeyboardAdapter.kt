@@ -56,9 +56,9 @@ class ClipsKeyboardAdapter(
         }
     }
 
-    override fun getItemCount() = items.size
+    override fun getItemCount(): Int = items.size
 
-    override fun getItemViewType(position: Int) = when {
+    override fun getItemViewType(position: Int): Int = when {
         items[position] is ClipsSectionLabel -> ITEM_SECTION_LABEL
         else -> ITEM_CLIP
     }

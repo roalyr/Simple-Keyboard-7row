@@ -797,7 +797,9 @@ class MyKeyboardView @JvmOverloads constructor(
     }
 
     private fun toggleClipboardVisibility(show: Boolean) {
-        if ((show && (mToolbarHolder?.clipboard_value_holder ?: return).alpha == 0f) || (!show && (mToolbarHolder?.clipboard_value_holder ?: return).alpha == 1f)) {
+        if ((show && (mToolbarHolder?.clipboard_value_holder ?: return).alpha == 0f) || (!show && (mToolbarHolder?.clipboard_value_holder
+                ?: return).alpha == 1f)
+        ) {
             val newAlpha = if (show) 1f else 0f
             val animations = ArrayList<ObjectAnimator>()
             val clipboardValueAnimation =

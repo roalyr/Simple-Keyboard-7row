@@ -15,5 +15,5 @@ class MyLinearLayoutManager : LinearLayoutManager {
 
     // fixes crash java.lang.IndexOutOfBoundsException: Inconsistency detected...
     // taken from https://stackoverflow.com/a/33985508/1967672
-    override fun supportsPredictiveItemAnimations() = false
+    override fun supportsPredictiveItemAnimations(): Boolean = false
 }

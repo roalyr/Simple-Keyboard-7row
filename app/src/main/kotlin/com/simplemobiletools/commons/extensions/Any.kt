@@ -1,4 +1,4 @@
 package com.simplemobiletools.commons.extensions
 
-fun Any.toInt() = Integer.parseInt(toString())
+fun Any.toInt(): Int = Integer.parseInt(toString())
 

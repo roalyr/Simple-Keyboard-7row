@@ -17,9 +17,9 @@ class AboutActivity : BaseSimpleActivity() {
     private val EASTER_EGG_TIME_LIMIT = 3000L
     private val EASTER_EGG_REQUIRED_CLICKS = 7
 
-    override fun getAppIconIDs() = intent.getIntegerArrayListExtra(APP_ICON_IDS) ?: ArrayList()
+    override fun getAppIconIDs(): java.util.ArrayList<Int> = intent.getIntegerArrayListExtra(APP_ICON_IDS) ?: ArrayList()
 
-    override fun getAppLauncherName() = intent.getStringExtra(APP_LAUNCHER_NAME) ?: ""
+    override fun getAppLauncherName(): String = intent.getStringExtra(APP_LAUNCHER_NAME) ?: ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
