@@ -54,6 +54,9 @@ import com.simplemobiletools.keyboard.models.ListItem
 import kotlinx.android.synthetic.main.keyboard_popup_keyboard.view.*
 import kotlinx.android.synthetic.main.keyboard_view_keyboard.view.*
 import java.util.*
+import kotlin.math.floor
+import kotlin.math.max
+import kotlin.math.min
 
 @SuppressLint("UseCompatLoadingForDrawables", "ClickableViewAccessibility")
 class MyKeyboardView @JvmOverloads constructor(
@@ -540,7 +543,7 @@ class MyKeyboardView @JvmOverloads constructor(
         var dimensionSum = 0
         for (i in 0 until length) {
             val key = keys[i]
-            dimensionSum += Math.min(key.width, key.height) + key.gap
+            dimensionSum += min(key.width, key.height) + key.gap
         }
 
         if (dimensionSum < 0 || length == 0) {
@@ -564,8 +567,8 @@ class MyKeyboardView @JvmOverloads constructor(
         if (mBuffer == null || mKeyboardChanged) {
             if (mBuffer == null || mKeyboardChanged && ((mBuffer ?: return).width != width || (mBuffer ?: return).height != height)) {
                 // Make sure our bitmap is at least 1x1
-                val width = Math.max(1, width)
-                val height = Math.max(1, height)
+                val width = max(1, width)
+                val height = max(1, height)
                 mBuffer = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
                 mCanvas = Canvas(mBuffer ?: return)
             }
@@ -945,7 +948,7 @@ class MyKeyboardView @JvmOverloads constructor(
             MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
             MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
         )
-        val popupWidth = Math.max((mPreviewText ?: return).measuredWidth, key.width)
+        val popupWidth = max((mPreviewText ?: return).measuredWidth, key.width)
         val popupHeight = mPreviewHeight
         val lp = (mPreviewText ?: return).layoutParams
         lp?.width = popupWidth
@@ -1141,7 +1144,7 @@ class MyKeyboardView @JvmOverloads constructor(
             mPopupY -= mMiniKeyboardContainer!!.measuredHeight
             val x = mPopupX + mCoordinates[0]
             val y = mPopupY + mCoordinates[1]
-            val xOffset = Math.max(0, x)
+            val xOffset = max(0, x)
             mMiniKeyboard!!.setPopupOffset(xOffset, y)
 
             // make sure we highlight the proper key right after long pressing it, before any ACTION_MOVE event occurs
@@ -1153,11 +1156,11 @@ class MyKeyboardView @JvmOverloads constructor(
 
             val keysCnt = mMiniKeyboard!!.mKeys.size
             var selectedKeyIndex =
-                Math.floor((me.x - miniKeyboardX) / popupKey.width.toDouble()).toInt()
+                floor((me.x - miniKeyboardX) / popupKey.width.toDouble()).toInt()
             if (keysCnt > MAX_KEYS_PER_MINI_ROW) {
                 selectedKeyIndex += MAX_KEYS_PER_MINI_ROW
             }
-            selectedKeyIndex = Math.max(0, Math.min(selectedKeyIndex, keysCnt - 1))
+            selectedKeyIndex = max(0, min(selectedKeyIndex, keysCnt - 1))
 
             for (i in 0 until keysCnt) {
                 mMiniKeyboard!!.mKeys[i].focused = i == selectedKeyIndex
@@ -1207,7 +1210,7 @@ class MyKeyboardView @JvmOverloads constructor(
                         mMiniKeyboard!!.getLocationOnScreen(coords)
                         val keysCnt = mMiniKeyboard!!.mKeys.size
                         val lastRowKeyCount = if (keysCnt > MAX_KEYS_PER_MINI_ROW) {
-                            Math.max(keysCnt % MAX_KEYS_PER_MINI_ROW, 1)
+                            max(keysCnt % MAX_KEYS_PER_MINI_ROW, 1)
                         } else {
                             keysCnt
                         }
@@ -1219,13 +1222,13 @@ class MyKeyboardView @JvmOverloads constructor(
                         }
 
                         var selectedKeyIndex =
-                            Math.floor((me.x - coords[0]) / widthPerKey.toDouble()).toInt()
+                            floor((me.x - coords[0]) / widthPerKey.toDouble()).toInt()
                         if (keysCnt > MAX_KEYS_PER_MINI_ROW) {
-                            selectedKeyIndex = Math.max(0, selectedKeyIndex)
+                            selectedKeyIndex = max(0, selectedKeyIndex)
                             selectedKeyIndex += MAX_KEYS_PER_MINI_ROW
                         }
 
-                        selectedKeyIndex = Math.max(0, Math.min(selectedKeyIndex, keysCnt - 1))
+                        selectedKeyIndex = max(0, min(selectedKeyIndex, keysCnt - 1))
                         if (selectedKeyIndex != mMiniKeyboardSelectedKeyIndex) {
                             for (i in 0 until keysCnt) {
                                 mMiniKeyboard!!.mKeys[i].focused = i == selectedKeyIndex

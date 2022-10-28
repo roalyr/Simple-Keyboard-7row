@@ -13,6 +13,7 @@ import androidx.annotation.XmlRes
 import com.simplemobiletools.keyboard.R
 import com.simplemobiletools.keyboard.extensions.config
 import kotlin.math.roundToInt
+import kotlin.math.roundToLong
 
 /**
  * Loads an XML description of a keyboard and stores the attributes of the keys. A keyboard consists of rows of keys.
@@ -84,14 +85,12 @@ class MyKeyboard {
             val value = a.peekValue(index) ?: return defValue
             return when (value.type) {
                 TypedValue.TYPE_DIMENSION -> a.getDimensionPixelOffset(index, defValue)
-                TypedValue.TYPE_FRACTION -> Math.round(
-                    a.getFraction(
-                        index,
-                        base,
-                        base,
-                        defValue.toFloat()
-                    )
-                )
+                TypedValue.TYPE_FRACTION -> a.getFraction(
+                    index,
+                    base,
+                    base,
+                    defValue.toFloat()
+                ).toInt()
                 else -> defValue
             }
         }

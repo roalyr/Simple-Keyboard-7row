@@ -10,6 +10,8 @@ import com.simplemobiletools.commons.extensions.isRTLLayout
 import com.simplemobiletools.commons.extensions.onGlobalLayout
 import com.simplemobiletools.commons.interfaces.LineColorPickerListener
 import java.util.*
+import kotlin.math.max
+import kotlin.math.min
 
 class LineColorPicker(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
     private var colorsCount = 0
@@ -86,7 +88,7 @@ class LineColorPicker(context: Context, attrs: AttributeSet) : LinearLayout(cont
         if (context.isRTLLayout) {
             colorIndex = colors.size - colorIndex - 1
         }
-        val index = Math.max(0, Math.min(colorIndex, colorsCount - 1))
+        val index = max(0, min(colorIndex, colorsCount - 1))
         if (lastColorIndex != index) {
             updateItemMargin(lastColorIndex, true)
             lastColorIndex = index

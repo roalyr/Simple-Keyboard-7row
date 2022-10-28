@@ -12,6 +12,7 @@ import com.simplemobiletools.commons.models.SharedTheme
 import com.simplemobiletools.commons.views.MyTextView
 import com.simplemobiletools.keyboard.R
 import kotlinx.android.synthetic.main.activity_customization.*
+import kotlin.math.abs
 
 class CustomizationActivity : BaseSimpleActivity() {
     private val THEME_CUSTOM = 5
@@ -369,7 +370,7 @@ class CustomizationActivity : BaseSimpleActivity() {
 
     }
 
-    private fun hasColorChanged(old: Int, new: Int) = Math.abs(old - new) > 1
+    private fun hasColorChanged(old: Int, new: Int) = abs(old - new) > 1
 
     private fun colorChanged() {
         hasUnsavedChanges = true
