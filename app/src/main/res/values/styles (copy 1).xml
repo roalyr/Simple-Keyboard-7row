@@ -30,97 +30,20 @@
         <item name="android:windowLightStatusBar">false</item>
     </style>
 
-    <style name="AppTheme.Base.System" parent="Theme.Material3.Dark.NoActionBar">
-        <item name="colorPrimary">@color/you_primary_color</item>
-        <item name="colorPrimaryDark">@color/you_primary_dark_color</item>
-        <item name="colorAccent">@color/you_primary_color</item>
-        <item name="android:windowLightStatusBar">false</item>
-        <item name="actionOverflowMenuStyle">@style/TopPopupMenuYou</item>
-        <item name="actionBarPopupTheme">@style/TopPopupMenuTextYou</item>
-        <item name="actionBarStyle">@style/AppTheme.ActionBar</item>
-        <item name="actionModeStyle">@style/AppTheme.ActionMode</item>
-        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
-        <item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
-        <item name="windowActionModeOverlay">true</item>
-        <item name="android:actionOverflowButtonStyle">@style/ActionMenuOverflowIcon</item>
-    </style>
-
-    <style name="AppTheme.Base.System.Light" parent="Theme.Material3.Light.NoActionBar">
-        <item name="colorPrimary">@color/you_primary_color</item>
-        <item name="colorPrimaryDark">@color/you_primary_dark_color</item>
-        <item name="colorAccent">@color/you_primary_color</item>
-        <item name="android:windowLightStatusBar">false</item>
-        <item name="actionOverflowMenuStyle">@style/TopPopupMenuYou</item>
-        <item name="actionBarPopupTheme">@style/TopPopupMenuTextYou</item>
-        <item name="actionBarStyle">@style/AppTheme.ActionBar</item>
-        <item name="actionModeStyle">@style/AppTheme.ActionMode</item>
-        <item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
-        <item name="windowActionModeOverlay">true</item>
-        <item name="android:actionOverflowButtonStyle">@style/ActionMenuOverflowIcon</item>
-        <item name="android:itemTextAppearance">@style/MenuTextAppearance</item>
-    </style>
-
     <!-- remove the shadow under actionBar, keep it there around Overflow menu that appears at pressing the 3 dots -->
     <style name="AppTheme.ActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
         <item name="android:outlineProvider">none</item>
     </style>
 
     <!-- material dialogs -->
-    <style name="ThemeOverlay.App.MaterialAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
-        <item name="colorPrimary">@color/you_dialog_background_color</item>
-        <item name="colorSecondary">@color/you_dialog_background_color</item>
-        <item name="colorSurface">@color/you_dialog_background_color</item>
-        <item name="colorOnSurface">@color/you_primary_color</item>
-        <item name="alertDialogStyle">@style/MaterialAlertDialog.App</item>
-        <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.App.Title.Text</item>
-        <item name="buttonBarPositiveButtonStyle">@style/Widget.App.Button</item>
-        <item name="buttonBarNegativeButtonStyle">@style/Widget.App.Button</item>
-        <item name="buttonBarNeutralButtonStyle">@style/Widget.App.Button</item>
-    </style>
-
-    <style name="MaterialAlertDialog.App" parent="MaterialAlertDialog.Material3">
-        <item name="shapeAppearance">@style/ShapeAppearance.App.MediumComponent</item>
-        <item name="shapeAppearanceOverlay">@null</item>
-    </style>
-
-    <style name="MaterialAlertDialog.App.Title.Text" parent="MaterialAlertDialog.Material3.Title.Text">
-        <item name="android:textColor">@color/you_primary_color</item>
-    </style>
-
-    <style name="Widget.App.Button" parent="Widget.Material3.Button.TextButton.Dialog">
-        <item name="android:textColor">@color/you_primary_color</item>
-    </style>
-
-    <style name="ShapeAppearance.App.MediumComponent" parent="ShapeAppearance.Material3.MediumComponent">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">@dimen/material_dialog_corner_radius</item>
-    </style>
 
     <style name="ActionMenuOverflowIcon" parent="@style/Widget.AppCompat.ActionButton.Overflow">
         <item name="android:tint">@color/md_grey_white</item>
     </style>
 
     <!-- text color of top menu items appearing after pressing 3 dots -->
-    <style name="MenuTextAppearance">
-        <item name="android:textColor">@color/dark_grey</item>
-    </style>
 
     <!-- contextual action mode -->
-    <style name="AppTheme.ActionMode" parent="@style/Widget.AppCompat.ActionMode">
-        <item name="android:outlineProvider">none</item>
-        <item name="background">@color/you_contextual_status_bar_color</item>
-        <item name="actionOverflowButtonStyle">@style/TopPopupMenuYou</item>
-    </style>
-
-    <style name="TopPopupMenuYou" parent="@style/Widget.AppCompat.ActionButton.Overflow">
-        <item name="android:popupBackground">@drawable/dialog_you_background</item>
-        <item name="android:dropDownHorizontalOffset">-10dp</item>
-        <item name="android:popupElevation">@dimen/popup_menu_elevation</item>
-    </style>
-
-    <style name="TopPopupMenuTextYou">
-        <item name="android:textColor">@color/you_neutral_text_color</item>
-    </style>
 
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@android:color/black</item>
@@ -168,13 +91,6 @@
     </style>
     -->
 
-    <style name="PinNumberStyle">
-        <item name="android:gravity">center</item>
-        <item name="android:padding">@dimen/small_margin</item>
-        <item name="android:textSize">@dimen/big_text_size</item>
-        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
-    </style>
-
     <style name="ColoredButtonStyle" parent="@android:style/Widget.TextView">
         <item name="android:textSize">@dimen/bigger_text_size</item>
         <item name="android:paddingStart">@dimen/bigger_margin</item>
@@ -202,10 +118,6 @@
     <style name="DarkActionBarItems" parent="ThemeOverlay.AppCompat.ActionBar">
         <item name="colorAccent">@color/dark_grey</item>
         <item name="android:textColorHint">@color/hint_black</item>
-    </style>
-
-    <style name="TopPopupMenu.Overflow.Light" parent="@style/Widget.MaterialComponents.PopupMenu.Overflow">
-        <item name="android:popupBackground">@drawable/top_popup_menu_bg_light</item>
     </style>
 
     <style name="TopPopupMenu.Overflow.Dark" parent="@style/Widget.MaterialComponents.PopupMenu.Overflow">
@@ -268,74 +180,6 @@
 
     <!-- App themes -->
     <!-- White -->
-    <style name="AppTheme.White" parent="AppTheme.Base">
-        <item name="colorPrimary">@color/md_grey_white</item>
-        <item name="colorPrimaryDark">@color/md_grey_white_dark</item>
-        <item name="colorAccent">@color/md_grey_white</item>
-        <item name="actionBarTheme">@style/DarkActionBarItems</item>
-        <item name="android:windowLightStatusBar">true</item>
-        <item name="android:textColorPrimary">@color/theme_dark_background_color</item>
-        <item name="actionOverflowMenuStyle">@style/TopPopupMenu.Overflow.Light</item>
-        <item name="android:itemTextAppearance">@style/AppTheme.White.TextStyle</item>
-        <item name="android:colorControlHighlight">@color/activated_item_foreground</item>
-        <item name="colorControlHighlight">@color/activated_item_foreground</item>
-        <item name="android:colorControlActivated">@color/dark_grey</item>
-        <item name="bottomSheetDialogTheme">@style/BottomSheetDialogTheme</item>
-    </style>
-
-    <style name="AppTheme.White.LightTextColor" parent="AppTheme.White">
-        <item name="android:textColorPrimary">@color/theme_light_background_color</item>
-    </style>
-
-    <style name="AppTheme.White.TextStyle">
-        <item name="android:textColor">@color/dark_grey</item>
-    </style>
-
-    <style name="AppTheme.White.NoActionBar" parent="Theme.Material3.Dark.NoActionBar">
-        <item name="colorPrimary">@color/md_grey_white</item>
-        <item name="colorPrimaryDark">@color/md_grey_white_dark</item>
-        <item name="colorAccent">@color/md_grey_white</item>
-        <item name="android:colorControlHighlight">@color/activated_item_foreground</item>
-        <item name="colorControlHighlight">@color/activated_item_foreground</item>
-        <item name="android:colorControlActivated">@color/dark_grey</item>
-        <item name="bottomSheetDialogTheme">@style/BottomSheetDialogTheme</item>
-        <item name="android:actionOverflowButtonStyle">@style/ActionMenuOverflowIcon</item>
-    </style>
-
-    <style name="AppTheme.BlackAndWhite" parent="AppTheme.Base">
-        <item name="colorPrimary">@color/md_grey_black</item>
-        <item name="colorPrimaryDark">@color/md_grey_black_dark</item>
-        <item name="colorAccent">@color/md_grey_black</item>
-        <item name="actionBarTheme">@style/LightActionBarItems</item>
-        <item name="android:windowLightStatusBar">false</item>
-        <item name="android:textColorPrimary">@color/theme_light_background_color</item>
-        <item name="actionOverflowMenuStyle">@style/TopPopupMenu.Overflow.Dark</item>
-        <item name="android:itemTextAppearance">@style/AppTheme.BlackAndWhite.TextStyle</item>
-        <item name="android:colorControlHighlight">@color/activated_item_foreground</item>
-        <item name="colorControlHighlight">@color/activated_item_foreground</item>
-        <item name="android:colorControlActivated">@color/md_grey_white</item>
-        <item name="bottomSheetDialogTheme">@style/BottomSheetDialogTheme</item>
-        <item name="android:actionOverflowButtonStyle">@style/ActionMenuOverflowIcon</item>
-    </style>
-
-    <style name="AppTheme.BlackAndWhite.DarkTextColor" parent="AppTheme.BlackAndWhite">
-        <item name="android:textColorPrimary">@color/theme_dark_background_color</item>
-    </style>
-
-    <style name="AppTheme.BlackAndWhite.TextStyle">
-        <item name="android:textColor">@color/md_grey_white</item>
-    </style>
-
-    <style name="AppTheme.BlackAndWhite.NoActionBar" parent="Theme.Material3.Dark.NoActionBar">
-        <item name="colorPrimary">@color/md_grey_black</item>
-        <item name="colorPrimaryDark">@color/md_grey_black_dark</item>
-        <item name="colorAccent">@color/md_grey_black</item>
-        <item name="android:colorControlHighlight">@color/activated_item_foreground</item>
-        <item name="colorControlHighlight">@color/activated_item_foreground</item>
-        <item name="android:colorControlActivated">@color/md_grey_white</item>
-        <item name="bottomSheetDialogTheme">@style/BottomSheetDialogTheme</item>
-        <item name="android:actionOverflowButtonStyle">@style/ActionMenuOverflowIcon</item>
-    </style>
 
     <style name="AppTheme.Red_100" parent="AppTheme.Base">
         <item name="colorPrimary">@color/md_red_100</item>

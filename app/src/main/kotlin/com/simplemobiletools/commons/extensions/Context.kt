@@ -15,10 +15,7 @@ import android.provider.Settings
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
-import androidx.biometric.BiometricManager
 import androidx.core.content.ContextCompat
-import androidx.loader.content.CursorLoader
-import com.github.ajalt.reprint.core.Reprint
 import com.simplemobiletools.commons.helpers.*
 import com.simplemobiletools.keyboard.R
 import java.text.SimpleDateFormat
@@ -69,13 +66,6 @@ val Context.baseConfig: BaseConfig get() = BaseConfig.newInstance(this)
 val Context.sdCardPath: String get() = baseConfig.sdCardPath
 val Context.internalStoragePath: String get() = baseConfig.internalStoragePath
 val Context.otgPath: String get() = baseConfig.OTGPath
-
-fun isFingerPrintSensorAvailable(): Boolean = isMarshmallowPlus() && Reprint.isHardwarePresent()
-
-fun Context.isBiometricIdAvailable(): Boolean = when (BiometricManager.from(this).canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_WEAK)) {
-    BiometricManager.BIOMETRIC_SUCCESS, BiometricManager.BIOMETRIC_STATUS_UNKNOWN -> true
-    else -> false
-}
 
 fun Context.hasPermission(permId: Int): Boolean = ContextCompat.checkSelfPermission(this, getPermissionString(permId)) == PackageManager.PERMISSION_GRANTED
 

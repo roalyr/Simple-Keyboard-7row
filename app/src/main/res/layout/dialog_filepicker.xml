@@ -98,7 +98,6 @@
             android:src="@drawable/ic_star_vector" />
 
         <com.simplemobiletools.commons.views.MyFloatingActionButton
-            android:id="@+id/filepicker_fab_show_hidden"
             android:layout_width="@dimen/fab_size"
             android:layout_height="@dimen/fab_size"
             android:layout_marginEnd="@dimen/activity_margin"

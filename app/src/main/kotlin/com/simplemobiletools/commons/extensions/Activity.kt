@@ -246,15 +246,6 @@ fun BaseSimpleActivity.showOTGPermissionDialog(path: String) {
     }
 }
 
-fun Activity.launchPurchaseThankYouIntent() {
-    hideKeyboard()
-    try {
-        launchViewIntent("market://details?id=com.simplemobiletools.thankyou")
-    } catch (ignored: Exception) {
-        launchViewIntent(getString(R.string.thank_you_url))
-    }
-}
-
 fun Activity.launchViewIntent(id: Int): Unit = launchViewIntent(getString(id))
 
 fun Activity.launchViewIntent(url: String) {
@@ -392,7 +383,6 @@ private fun createCasualFileOutputStream(activity: BaseSimpleActivity, targetFil
         null
     }
 }
-
 
 
 fun Activity.setupDialogStuff(

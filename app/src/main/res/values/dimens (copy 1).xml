@@ -8,7 +8,6 @@
     <dimen name="bigger_margin">20dp</dimen>
     <dimen name="big_margin">24dp</dimen>
 
-    <dimen name="material_dialog_corner_radius">28dp</dimen>
     <dimen name="material_button_corner_radius">24dp</dimen>
     <dimen name="color_sample_size">34dp</dimen>
     <dimen name="colorpicker_size">240dp</dimen>
@@ -40,5 +39,4 @@
 
     <dimen name="cab_popup_menu_min_width">168dp</dimen>
     <dimen name="cab_item_min_width">85dp</dimen>
-    <dimen name="popup_menu_elevation">4dp</dimen>
 </resources>

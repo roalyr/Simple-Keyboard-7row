@@ -132,25 +132,6 @@ open class BaseConfig(val context: Context) {
         get() = prefs!!.getInt(CUSTOM_NAVIGATION_BAR_COLOR, INVALID_NAVIGATION_BAR_COLOR)
         set(customNavigationBarColor) = prefs!!.edit().putInt(CUSTOM_NAVIGATION_BAR_COLOR, customNavigationBarColor).apply()
 
-    // hidden folder visibility protection
-    var isHiddenPasswordProtectionOn: Boolean
-        get() = prefs!!.getBoolean(PASSWORD_PROTECTION, false)
-        set(isHiddenPasswordProtectionOn) = prefs!!.edit().putBoolean(PASSWORD_PROTECTION, isHiddenPasswordProtectionOn).apply()
-
-    var hiddenPasswordHash: String
-        get() = prefs!!.getString(PASSWORD_HASH, "")!!
-        set(hiddenPasswordHash) = prefs!!.edit().putString(PASSWORD_HASH, hiddenPasswordHash).apply()
-
-    var hiddenProtectionType: Int
-        get() = prefs!!.getInt(PROTECTION_TYPE, PROTECTION_PATTERN)
-        set(hiddenProtectionType) = prefs!!.edit().putInt(PROTECTION_TYPE, hiddenProtectionType).apply()
-
-    fun isFolderProtected(path: String): Boolean = getFolderProtectionType(path) != PROTECTION_NONE
-
-    fun getFolderProtectionHash(path: String): String = prefs!!.getString("$PROTECTED_FOLDER_HASH$path", "") ?: ""
-
-    fun getFolderProtectionType(path: String): Int = prefs!!.getInt("$PROTECTED_FOLDER_TYPE$path", PROTECTION_NONE)
-
     var useEnglish: Boolean
         get() = prefs!!.getBoolean(USE_ENGLISH, false)
         set(useEnglish) {

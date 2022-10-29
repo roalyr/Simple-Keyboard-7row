@@ -1,18 +1,12 @@
 package com.simplemobiletools.commons.views.bottomactionmenu
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.animation.TimeInterpolator
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewPropertyAnimator
 import android.widget.ImageView
 import android.widget.LinearLayout
-import com.google.android.material.animation.AnimationUtils
 import com.simplemobiletools.commons.extensions.applyColorFilter
 import com.simplemobiletools.commons.extensions.beVisibleIf
 import com.simplemobiletools.commons.extensions.toast
@@ -21,10 +15,7 @@ import com.simplemobiletools.commons.helpers.isRPlus
 import com.simplemobiletools.keyboard.R
 
 class BottomActionMenuView : LinearLayout {
-    companion object {
-        private const val ENTER_ANIMATION_DURATION = 225
-        private const val EXIT_ANIMATION_DURATION = 175
-    }
+    companion object;
 
     constructor(context: Context) : super(context)
 
@@ -41,57 +32,12 @@ class BottomActionMenuView : LinearLayout {
             it.icon != View.NO_ID
         }).filter { it.isVisible }
 
-    private var currentAnimator: ViewPropertyAnimator? = null
     private var callback: BottomActionMenuCallback? = null
     private var itemPopup: BottomActionMenuItemPopup? = null
 
     init {
         orientation = HORIZONTAL
         elevation = 2f
-    }
-
-    fun hide() {
-        slideDownToGone()
-    }
-
-    fun show() {
-        slideUpToVisible()
-    }
-
-    @SuppressLint("RestrictedApi")
-    private fun slideUpToVisible() {
-        currentAnimator?.also {
-            it.cancel()
-            clearAnimation()
-        }
-        animateChildTo(0, ENTER_ANIMATION_DURATION.toLong(), AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR, true)
-    }
-
-    @SuppressLint("RestrictedApi")
-    private fun slideDownToGone() {
-        currentAnimator?.also {
-            currentAnimator?.cancel()
-            clearAnimation()
-        }
-        animateChildTo(
-            height + (layoutParams as MarginLayoutParams).bottomMargin,
-            EXIT_ANIMATION_DURATION.toLong(),
-            AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR
-        )
-    }
-
-    private fun animateChildTo(targetY: Int, duration: Long, interpolator: TimeInterpolator, visible: Boolean = false) {
-        currentAnimator = animate()
-            .translationY(targetY.toFloat())
-            .setInterpolator(interpolator)
-            .setDuration(duration)
-            .setListener(
-                object : AnimatorListenerAdapter() {
-                    override fun onAnimationEnd(animation: Animator) {
-                        currentAnimator = null
-                        beVisibleIf(visible)
-                    }
-                })
     }
 
     fun add(item: BottomActionMenuItem) {

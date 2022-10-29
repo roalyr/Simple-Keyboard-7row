@@ -38,7 +38,6 @@ class FilePickerDialog(
     private val pickFile: Boolean = true,
     private var showHidden: Boolean = false,
     val showFAB: Boolean = false,
-    private val canAddShowHiddenButton: Boolean = false,
     private val forceShowRoot: Boolean = false,
     private val showFavoritesButton: Boolean = false,
     private val enforceStorageRestrictions: Boolean = true,

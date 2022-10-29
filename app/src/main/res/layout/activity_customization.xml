@@ -37,7 +37,6 @@
                 android:padding="@dimen/activity_margin">
 
                 <com.simplemobiletools.commons.views.MyTextView
-                    android:id="@+id/customization_text_color_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -65,7 +64,6 @@
                 android:padding="@dimen/activity_margin">
 
                 <com.simplemobiletools.commons.views.MyTextView
-                    android:id="@+id/customization_background_color_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -93,7 +91,6 @@
                 android:padding="@dimen/activity_margin">
 
                 <com.simplemobiletools.commons.views.MyTextView
-                    android:id="@+id/customization_primary_color_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -122,7 +119,6 @@
                 >
 
                 <com.simplemobiletools.commons.views.MyTextView
-                    android:id="@+id/customization_color_small_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -150,7 +146,6 @@
                 android:padding="@dimen/activity_margin">
 
                 <com.simplemobiletools.commons.views.MyTextView
-                    android:id="@+id/customization_key_color_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -178,7 +173,6 @@
                 android:padding="@dimen/activity_margin">
 
                 <com.simplemobiletools.commons.views.MyTextView
-                    android:id="@+id/customization_navigation_bar_color_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"

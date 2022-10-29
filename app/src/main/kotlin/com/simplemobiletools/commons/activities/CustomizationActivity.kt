@@ -5,7 +5,6 @@ import com.simplemobiletools.commons.dialogs.*
 import com.simplemobiletools.commons.extensions.*
 import com.simplemobiletools.commons.helpers.*
 import com.simplemobiletools.commons.models.MyTheme
-import com.simplemobiletools.commons.models.SharedTheme
 import com.simplemobiletools.keyboard.R
 import kotlinx.android.synthetic.main.activity_customization.*
 import kotlin.math.abs

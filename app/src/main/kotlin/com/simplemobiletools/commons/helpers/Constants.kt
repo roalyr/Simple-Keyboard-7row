@@ -55,17 +55,10 @@ const val CUSTOM_PRIMARY_COLOR: String = "custom_primary_color"
 const val CUSTOM_ACCENT_COLOR: String = "custom_accent_color"
 const val CUSTOM_NAVIGATION_BAR_COLOR: String = "custom_navigation_bar_color"
 const val CUSTOM_APP_ICON_COLOR: String = "custom_app_icon_color"
-const val PASSWORD_PROTECTION: String = "password_protection"
-const val PASSWORD_HASH: String = "password_hash"
-const val PROTECTION_TYPE: String = "protection_type"
-const val PROTECTED_FOLDER_HASH: String = "protected_folder_hash_"
-const val PROTECTED_FOLDER_TYPE: String = "protected_folder_type_"
 const val USE_ENGLISH: String = "use_english"
 const val WAS_USE_ENGLISH_TOGGLED: String = "was_use_english_toggled"
-const val WAS_SHARED_THEME_EVER_ACTIVATED: String = "was_shared_theme_ever_activated"
 const val IS_USING_SHARED_THEME: String = "is_using_shared_theme"
 const val IS_USING_SYSTEM_THEME: String = "is_using_system_theme"
-const val SHOULD_USE_SHARED_THEME: String = "should_use_shared_theme"
 const val USE_24_HOUR_FORMAT: String = "use_24_hour_format"
 const val OTG_PARTITION: String = "otg_partition_2"
 const val IS_USING_MODIFIED_APP_ICON: String = "is_using_modified_app_icon"
@@ -123,13 +116,6 @@ const val SORT_BY_SIZE: Int = 4
 const val SORT_BY_EXTENSION: Int = 16
 const val SORT_DESCENDING: Int = 1024
 const val SORT_USE_NUMERIC_VALUE: Int = 32768
-
-const val PROTECTION_NONE: Int = -1
-const val PROTECTION_PATTERN: Int = 0
-const val PROTECTION_PIN: Int = 1
-const val PROTECTION_FINGERPRINT: Int = 2
-
-const val SHOW_ALL_TABS: Int = -1
 
 // permissions
 const val PERMISSION_READ_STORAGE: Int = 1

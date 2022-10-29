@@ -26,7 +26,11 @@ import kotlinx.android.synthetic.main.item_clip_in_activity.view.*
 import java.util.*
 
 class ClipsActivityAdapter(
-    activity: BaseSimpleActivity, var items: ArrayList<Clip>, recyclerView: MyRecyclerView, private val listener: RefreshRecyclerViewListener, itemClick: (Any) -> Unit
+    activity: BaseSimpleActivity,
+    var items: ArrayList<Clip>,
+    recyclerView: MyRecyclerView,
+    private val listener: RefreshRecyclerViewListener,
+    itemClick: (Any) -> Unit
 ) : MyRecyclerViewAdapter(activity, recyclerView, itemClick), ItemTouchHelperContract {
 
     private var touchHelper: ItemTouchHelper? = null
@@ -97,7 +101,8 @@ class ClipsActivityAdapter(
         wasClipMoved = false
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = createViewHolder(R.layout.item_clip_in_activity, parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
+        createViewHolder(R.layout.item_clip_in_activity, parent)
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
@@ -118,7 +123,13 @@ class ClipsActivityAdapter(
     }
 
     private fun askConfirmDelete() {
-        ConfirmationDialog(activity, "", R.string.proceed_with_deletion, R.string.yes, R.string.cancel) {
+        ConfirmationDialog(
+            activity,
+            "",
+            R.string.proceed_with_deletion,
+            R.string.yes,
+            R.string.cancel
+        ) {
             deleteSelection()
         }
     }
@@ -145,7 +156,8 @@ class ClipsActivityAdapter(
         }
     }
 
-    private fun getSelectedItems() = items.filter { selectedKeys.contains(it.id!!.toInt()) } as ArrayList<Clip>
+    private fun getSelectedItems() =
+        items.filter { selectedKeys.contains(it.id!!.toInt()) } as ArrayList<Clip>
 
     private fun setupView(view: View, clip: Clip, holder: ViewHolder) {
         if (clip.id == null) {

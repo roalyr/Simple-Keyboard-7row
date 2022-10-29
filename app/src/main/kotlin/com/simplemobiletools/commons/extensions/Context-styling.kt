@@ -6,15 +6,15 @@ import android.content.pm.PackageManager
 import com.simplemobiletools.commons.helpers.keyColorStrings
 import com.simplemobiletools.keyboard.R
 
-fun Context.getProperTextColor(): Int  {
+fun Context.getProperTextColor(): Int {
     return baseConfig.textColor
 }
 
-fun Context.getProperSmalllabelColor(): Int  {
+fun Context.getProperSmalllabelColor(): Int {
     return baseConfig.smallLabelColor
 }
 
-fun Context.getProperBackgroundColor(): Int  {
+fun Context.getProperBackgroundColor(): Int {
     return baseConfig.backgroundColor
 }
 
