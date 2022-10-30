@@ -2,7 +2,7 @@
 <resources>
     <!-- used in some apps like Calculator -->
     <!-- we cannot show Donate in the Google Play version as we aren't a charity -->
-    <bool name="hide_google_relations">false</bool>             <!-- hide everything related to Google, used in cases when our apps are preinstalled -->
+    <!-- hide everything related to Google, used in cases when our apps are preinstalled -->
     <bool name="hide_all_external_links">false</bool>           <!-- also used in cases when our apps are preinstalled on a device -->
     <!-- do not require Thank You for color customization and widgets -->
 </resources>

@@ -12,12 +12,10 @@ const val EXTRA_SHOW_ADVANCED: String = "android.content.extra.SHOW_ADVANCED"
 
 const val APP_NAME: String = "app_name"
 const val APP_LICENSES: String = "app_licenses"
-const val APP_FAQ: String = "app_faq"
 const val APP_VERSION_NAME: String = "app_version_name"
 const val APP_ICON_IDS: String = "app_icon_ids"
 const val APP_ID: String = "app_id"
 const val APP_LAUNCHER_NAME: String = "app_launcher_name"
-const val SHOW_FAQ_BEFORE_MAIL: String = "show_faq_before_mail"
 const val INVALID_NAVIGATION_BAR_COLOR: Int = -1
 const val SAVE_DISCARD_PROMPT_INTERVAL: Long = 1000L
 const val SD_OTG_PATTERN: String = "^/storage/[A-Za-z0-9]{4}-[A-Za-z0-9]{4}$"

@@ -9,7 +9,6 @@ import android.view.inputmethod.InputMethodManager
 import com.simplemobiletools.commons.dialogs.ConfirmationAdvancedDialog
 import com.simplemobiletools.commons.extensions.*
 import com.simplemobiletools.commons.helpers.LICENSE_GSON
-import com.simplemobiletools.commons.models.FAQItem
 import com.simplemobiletools.keyboard.BuildConfig
 import com.simplemobiletools.keyboard.R
 import kotlinx.android.synthetic.main.activity_main.*
@@ -61,14 +60,7 @@ class MainActivity : SimpleActivity() {
 
     private fun launchAbout() {
         val licenses = LICENSE_GSON
-
-        val faqItems = ArrayList<FAQItem>()
-        if (!resources.getBoolean(R.bool.hide_google_relations)) {
-            faqItems.add(FAQItem(R.string.faq_2_title_commons, R.string.faq_2_text_commons))
-            faqItems.add(FAQItem(R.string.faq_6_title_commons, R.string.faq_6_text_commons))
-        }
-
-        startAboutActivity(R.string.app_name, licenses, BuildConfig.VERSION_NAME, faqItems, true)
+        startAboutActivity(R.string.app_name, licenses, BuildConfig.VERSION_NAME, true)
     }
 
     private fun updateChangeKeyboardColor() {
