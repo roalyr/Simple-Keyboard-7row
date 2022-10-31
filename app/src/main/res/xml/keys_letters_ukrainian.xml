@@ -340,9 +340,9 @@
             app:code="-7"
             />
         <Key
-            app:keyLabel="Uk"
+            app:keyIcon="@drawable/ic_clipboard_vector"
             app:keyWidth="12%p"
-            app:code="-2"
+            app:code="-14"
             app:specKey="true"
             />
 
@@ -355,7 +355,10 @@
 
         <Key
             app:keyLabel="edit"
+            app:keyLabelSmall="⚙"
+            app:popupCharacters="spec[☻; -6], spec[🔧; -15] "
             app:keyWidth="12%p"
+            app:popupKeyboard="@xml/keyboard_popup_template"
             app:code="0"
             app:specKey="true"
             />
@@ -393,10 +396,10 @@
             app:specKey="true"
             />
         <Key
-            app:code="-6"
+            app:keyLabel="Uk"
             app:keyWidth="12%p"
+            app:code="-2"
             app:specKey="true"
-            app:keyIcon="@drawable/ic_emoji_emotions_outline_vector"
             />
 
         <Key

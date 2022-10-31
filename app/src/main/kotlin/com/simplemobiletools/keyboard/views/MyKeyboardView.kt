@@ -1,7 +1,5 @@
 package com.simplemobiletools.keyboard.views
 
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -21,12 +19,9 @@ import android.util.TypedValue
 import android.view.*
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityManager
-import android.view.animation.AccelerateInterpolator
 import android.view.inputmethod.EditorInfo
 import android.widget.PopupWindow
 import android.widget.TextView
-import androidx.core.animation.doOnEnd
-import androidx.core.animation.doOnStart
 import androidx.emoji2.text.EmojiCompat
 import androidx.emoji2.text.EmojiCompat.EMOJI_SUPPORTED
 import com.simplemobiletools.commons.extensions.*
@@ -34,7 +29,6 @@ import com.simplemobiletools.commons.helpers.ensureBackgroundThread
 import com.simplemobiletools.commons.helpers.isPiePlus
 import com.simplemobiletools.keyboard.R
 import com.simplemobiletools.keyboard.activities.ManageClipboardItemsActivity
-import com.simplemobiletools.keyboard.activities.SettingsActivity
 import com.simplemobiletools.keyboard.adapters.ClipsKeyboardAdapter
 import com.simplemobiletools.keyboard.adapters.EmojisAdapter
 import com.simplemobiletools.keyboard.extensions.*
@@ -164,7 +158,6 @@ class MyKeyboardView @JvmOverloads constructor(
 
     private var mKeyBackground: Drawable? = null
 
-    private var mToolbarHolder: View? = null
     private var mClipboardManagerHolder: View? = null
     private var mEmojiPaletteHolder: View? = null
     private var emojiCompatMetadataVersion = 0
@@ -344,33 +337,16 @@ class MyKeyboardView @JvmOverloads constructor(
                 .applyColorFilter(mBackgroundColor)
 
             val wasDarkened = mBackgroundColor != mBackgroundColor.darkenColor()
-            mToolbarHolder?.apply {
-                top_keyboard_divider.beGoneIf(wasDarkened)
-                top_keyboard_divider.background = ColorDrawable(strokeColor)
 
-                background = ColorDrawable(toolbarColor)
-                clipboard_value.apply {
-                    background = rippleBg
-                    setTextColor(mTextColor)
-                    setLinkTextColor(mTextColor)
-                }
-
-                settings_cog.applyColorFilter(mTextColor)
-                pinned_clipboard_items.applyColorFilter(mTextColor)
-                clipboard_clear.applyColorFilter(mTextColor)
-            }
 
             mClipboardManagerHolder?.apply {
-                top_clipboard_divider.beGoneIf(wasDarkened)
-                top_clipboard_divider.background = ColorDrawable(strokeColor)
                 clipboard_manager_holder.background = ColorDrawable(toolbarColor)
 
-                clipboard_manager_close.applyColorFilter(mTextColor)
                 clipboard_manager_manage.applyColorFilter(mTextColor)
 
-                clipboard_manager_label.setTextColor(mTextColor)
                 clipboard_content_placeholder_1.setTextColor(mTextColor)
                 clipboard_content_placeholder_2.setTextColor(mTextColor)
+                clipboard_manager_close.setTextColor(mTextColor)
             }
 
             setupEmojiPalette(
@@ -409,41 +385,13 @@ class MyKeyboardView @JvmOverloads constructor(
 
     /** Sets the top row above the keyboard containing a couple buttons and the clipboard **/
     fun setKeyboardHolder(keyboardHolder: View) {
-        mToolbarHolder = keyboardHolder.toolbar_holder
         mClipboardManagerHolder = keyboardHolder.clipboard_manager_holder
         mEmojiPaletteHolder = keyboardHolder.emoji_palette_holder
-
-        (mToolbarHolder ?: return).apply {
-            settings_cog.setOnLongClickListener { context.toast(R.string.settings); true; }
-            settings_cog.setOnClickListener {
-                vibrateIfNeeded()
-                Intent(context, SettingsActivity::class.java).apply {
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    context.startActivity(this)
-                }
-            }
-
-            pinned_clipboard_items.setOnLongClickListener { context.toast(R.string.clipboard); true; }
-            pinned_clipboard_items.setOnClickListener {
-                vibrateIfNeeded()
-                openClipboardManager()
-            }
-
-            clipboard_clear.setOnLongClickListener { context.toast(R.string.clear_clipboard_data); true; }
-            clipboard_clear.setOnClickListener {
-                vibrateIfNeeded()
-                clearClipboardContent()
-                toggleClipboardVisibility(false)
-            }
-        }
 
         val clipboardManager =
             (context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager)
         clipboardManager.addPrimaryClipChangedListener {
             val clipboardContent = clipboardManager.primaryClip?.getItemAt(0)?.text?.trim()
-            if (clipboardContent?.isNotEmpty() == true) {
-                handleClipboard()
-            }
             setupStoredClips()
         }
 
@@ -586,7 +534,6 @@ class MyKeyboardView @JvmOverloads constructor(
         val keys = mKeys
 
         canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
-        handleClipboard()
 
         val keyCount = keys.size
         for (i in 0 until keyCount) {
@@ -753,84 +700,6 @@ class MyKeyboardView @JvmOverloads constructor(
         (mCanvas ?: return).restore()
         mDrawPending = false
         mDirtyRect.setEmpty()
-    }
-
-    private fun handleClipboard() {
-        if (mToolbarHolder != null && mPopupParent.id != R.id.mini_keyboard_view) {
-            val clipboardContent = context.getCurrentClip()
-            if (clipboardContent?.isNotEmpty() == true) {
-                mToolbarHolder?.apply {
-                    clipboard_value.apply {
-                        text = clipboardContent
-                        removeUnderlines()
-                        setOnClickListener {
-                            (mOnKeyboardActionListener ?: return@setOnClickListener).onText(clipboardContent.toString())
-                            vibrateIfNeeded()
-                        }
-                    }
-
-                    toggleClipboardVisibility(true)
-                }
-            } else {
-                hideClipboardViews()
-            }
-        } else {
-            hideClipboardViews()
-        }
-    }
-
-    private fun hideClipboardViews() {
-        mToolbarHolder?.apply {
-            clipboard_value_holder?.beGone()
-            clipboard_value_holder?.alpha = 0f
-            clipboard_clear?.beGone()
-            clipboard_clear?.alpha = 0f
-        }
-    }
-
-    private fun clearClipboardContent() {
-        val clipboardManager =
-            (context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager)
-        if (isPiePlus()) {
-            clipboardManager.clearPrimaryClip()
-        } else {
-            val clip = ClipData.newPlainText("", "")
-            clipboardManager.setPrimaryClip(clip)
-        }
-    }
-
-    private fun toggleClipboardVisibility(show: Boolean) {
-        if ((show && (mToolbarHolder?.clipboard_value_holder ?: return).alpha == 0f) || (!show && (mToolbarHolder?.clipboard_value_holder
-                ?: return).alpha == 1f)
-        ) {
-            val newAlpha = if (show) 1f else 0f
-            val animations = ArrayList<ObjectAnimator>()
-            val clipboardValueAnimation =
-                ObjectAnimator.ofFloat((mToolbarHolder ?: return).clipboard_value_holder ?: return, "alpha", newAlpha)
-            animations.add(clipboardValueAnimation)
-
-            val clipboardClearAnimation =
-                ObjectAnimator.ofFloat((mToolbarHolder ?: return).clipboard_clear ?: return, "alpha", newAlpha)
-            animations.add(clipboardClearAnimation)
-
-            val animSet = AnimatorSet()
-            animSet.playTogether(*animations.toTypedArray())
-            animSet.duration = 150
-            animSet.interpolator = AccelerateInterpolator()
-            animSet.doOnStart {
-                if (show) {
-                    mToolbarHolder?.clipboard_value_holder?.beVisible()
-                    mToolbarHolder?.clipboard_clear?.beVisible()
-                }
-            }
-            animSet.doOnEnd {
-                if (!show) {
-                    mToolbarHolder?.clipboard_value_holder?.beGone()
-                    mToolbarHolder?.clipboard_clear?.beGone()
-                }
-            }
-            animSet.start()
-        }
     }
 
     private fun getPressedKeyIndex(x: Int, y: Int): Int {
@@ -1145,7 +1014,6 @@ class MyKeyboardView @JvmOverloads constructor(
 
             val widthToUse =
                 mMiniKeyboardContainer!!.measuredWidth - (popupKey.popupCharacters!!.length / 2) * popupKey.width
-            mPopupX = mPopupX
             mPopupY -= mMiniKeyboardContainer!!.measuredHeight
             val x = mPopupX
             val y = mPopupY + mCoordinates[1]
@@ -1477,12 +1345,12 @@ class MyKeyboardView @JvmOverloads constructor(
         mClipboardManagerHolder?.clipboard_manager_holder?.beGone()
     }
 
-    private fun openClipboardManager() {
+    fun openClipboardManager() {
         (mClipboardManagerHolder ?: return).clipboard_manager_holder.beVisible()
         setupStoredClips()
     }
 
-    private fun setupStoredClips() {
+    fun setupStoredClips() {
         ensureBackgroundThread {
             val clips = ArrayList<ListItem>()
             val clipboardContent = context.getCurrentClip()
@@ -1534,45 +1402,10 @@ class MyKeyboardView @JvmOverloads constructor(
 
     private fun setupEmojiPalette(toolbarColor: Int, backgroundColor: Int, textColor: Int) {
         mEmojiPaletteHolder?.apply {
-            emoji_palette_top_bar.background = ColorDrawable(toolbarColor)
             emoji_palette_holder.background = ColorDrawable(backgroundColor)
-            emoji_palette_close.applyColorFilter(textColor)
-            emoji_palette_label.setTextColor(textColor)
+            emoji_palette_close.setTextColor(textColor)
 
             emoji_palette_bottom_bar.background = ColorDrawable(backgroundColor)
-            val bottomTextColor = textColor.darkenColor()
-            emoji_palette_mode_change.apply {
-                setTextColor(bottomTextColor)
-                setOnClickListener {
-                    vibrateIfNeeded()
-                    closeEmojiPalette()
-                }
-            }
-            emoji_palette_backspace.apply {
-                applyColorFilter(bottomTextColor)
-                setOnTouchListener { _, event ->
-                    when (event.action) {
-                        MotionEvent.ACTION_DOWN -> {
-                            isPressed = true
-                            mRepeatKeyIndex = mKeys.indexOfFirst { it.code == KEYCODE_DELETE }
-                            mCurrentKey = mRepeatKeyIndex
-                            vibrateIfNeeded()
-                            mOnKeyboardActionListener!!.onKey(KEYCODE_DELETE)
-                            // setup repeating backspace
-                            val msg = mHandler!!.obtainMessage(MSG_REPEAT)
-                            mHandler!!.sendMessageDelayed(msg, REPEAT_START_DELAY.toLong())
-                            true
-                        }
-                        MotionEvent.ACTION_UP -> {
-                            mHandler!!.removeMessages(MSG_REPEAT)
-                            mRepeatKeyIndex = NOT_A_KEY
-                            isPressed = false
-                            false
-                        }
-                        else -> false
-                    }
-                }
-            }
         }
         setupEmojis()
     }
@@ -1617,11 +1450,6 @@ class MyKeyboardView @JvmOverloads constructor(
             adapter = EmojisAdapter(context = context, items = emojis) { emoji ->
                 (mOnKeyboardActionListener ?: return@EmojisAdapter).onText(emoji)
                 vibrateIfNeeded()
-            }
-
-            onScroll {
-                (mEmojiPaletteHolder ?: return@onScroll).emoji_palette_top_bar.elevation =
-                    if (it > 4) emojiTopBarElevation else 0f
             }
         }
     }

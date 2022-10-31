@@ -264,5 +264,4 @@ abstract class BaseSimpleActivity : AppCompatActivity() {
             actionOnPermission?.invoke(grantResults[0] == 0)
         }
     }
-
 }

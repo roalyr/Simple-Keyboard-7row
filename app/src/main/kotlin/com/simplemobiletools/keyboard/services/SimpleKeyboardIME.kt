@@ -1,5 +1,6 @@
 package com.simplemobiletools.keyboard.services
 
+import android.content.Intent
 import android.inputmethodservice.InputMethodService
 import android.text.InputType
 import android.text.InputType.TYPE_CLASS_DATETIME
@@ -15,6 +16,7 @@ import android.view.inputmethod.EditorInfo.IME_FLAG_NO_ENTER_ACTION
 import android.view.inputmethod.EditorInfo.IME_MASK_ACTION
 import android.view.inputmethod.ExtractedTextRequest
 import com.simplemobiletools.keyboard.R
+import com.simplemobiletools.keyboard.activities.SettingsActivity
 import com.simplemobiletools.keyboard.extensions.config
 import com.simplemobiletools.keyboard.helpers.*
 import com.simplemobiletools.keyboard.views.MyKeyboardView
@@ -276,15 +278,15 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
                 )
             }
             MyKeyboard.KEYCODE_ENTER -> {
+
                 /**
-                val imeOptionsActionId = getImeOptionsActionId()
-                if (imeOptionsActionId != IME_ACTION_NONE) {
-                inputConnection.performEditorAction(imeOptionsActionId)
-                } else {
-                inputConnection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER))
-                inputConnection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_ENTER))
+                val enterResourceId = when (getTextForImeAction()) {
+                    EditorInfo.IME_ACTION_SEARCH -> R.drawable.ic_search_vector
+                    EditorInfo.IME_ACTION_NEXT, EditorInfo.IME_ACTION_GO -> R.drawable.ic_arrow_right_vector
+                    EditorInfo.IME_ACTION_SEND -> R.drawable.ic_send_vector
+                    else -> R.drawable.ic_enter_vector
                 }
-                 */
+                */
 
                 // Use shift+Enter instead.
                 inputConnection.sendKeyEvent(
@@ -325,6 +327,15 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
             }
             MyKeyboard.KEYCODE_EMOJI -> {
                 keyboardView?.openEmojiPalette()
+            }
+            MyKeyboard.KEYCODE_CLIPBOARD -> {
+                keyboardView?.openClipboardManager()
+            }
+            MyKeyboard.KEYCODE_SETTINGS -> {
+                Intent(baseContext, SettingsActivity::class.java).apply {
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    baseContext.startActivity(this)
+                }
             }
             else -> {
                 var codeChar = code.toChar()

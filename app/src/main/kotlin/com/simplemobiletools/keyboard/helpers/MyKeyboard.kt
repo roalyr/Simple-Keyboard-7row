@@ -80,6 +80,9 @@ class MyKeyboard {
         const val KEYCODE_LEFT: Int = -12
         const val KEYCODE_RIGHT: Int = -13
 
+        const val KEYCODE_CLIPBOARD: Int = -14
+        const val KEYCODE_SETTINGS: Int = -15
+
         fun getDimensionOrFraction(a: TypedArray, index: Int, base: Int, defValue: Int): Int {
             val value = a.peekValue(index) ?: return defValue
             return when (value.type) {
@@ -344,11 +347,11 @@ class MyKeyboard {
         }
 
         // Trim or put blank key.
-        val lstValues: List<String> = values.split(",").map { it ->
+        val lstValues: List<String> = values.split(",").map {
             (if (it.isNotEmpty()) {
                 it.trim()
             } else {
-                ' '
+                ','
             }).toString()
         }
 

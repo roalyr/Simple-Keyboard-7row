@@ -150,8 +150,6 @@ fun Context.getTextSize(): Float = when (baseConfig.fontSize) {
     else -> resources.getDimension(R.dimen.extra_big_text_size)
 }
 
-val Context.windowManager: WindowManager get() = getSystemService(Context.WINDOW_SERVICE) as WindowManager
-
 
 fun Context.copyToClipboard(text: String) {
     val clip = ClipData.newPlainText(getString(R.string.simple_commons), text)
