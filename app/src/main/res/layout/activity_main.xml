@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -31,17 +32,40 @@
             android:layout_height="wrap_content">
 
             <RelativeLayout
+                android:id="@+id/change_input_method_holder"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginTop="@dimen/normal_margin"
+                tools:layout_centerHorizontal="true">
+
+                <android.widget.TextView
+                    android:id="@+id/change_input_method"
+                    style="@style/TextAppearance.MaterialComponents.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="Change input method"
+                    android:textAlignment="center"
+                    android:textColor="#FF9800" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:id="@+id/change_keyboard_holder"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/normal_margin">
+                android:layout_height="48dp"
+                android:layout_below="@id/change_input_method_holder"
+                tools:layout_centerHorizontal="true">
 
                 <android.widget.TextView
                     android:id="@+id/change_keyboard"
-                    style="@style/ColoredButtonStyle"
-                    android:layout_width="wrap_content"
+                    style="@style/TextAppearance.MaterialComponents.Button"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/change_keyboard" />
+                    android:layout_centerInParent="true"
+                    android:text="Change keyboard"
+                    android:textAlignment="center"
+                    android:textColor="#FF9800" />
 
             </RelativeLayout>
 
@@ -49,7 +73,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/change_keyboard_holder"
-                android:layout_margin="@dimen/activity_margin" />
+                android:layout_marginStart="@dimen/activity_margin"
+                android:layout_marginTop="@dimen/activity_margin"
+                android:layout_marginEnd="@dimen/activity_margin"
+                android:layout_marginBottom="@dimen/activity_margin"
+                android:minHeight="48dp"
+                tools:ignore="SpeakableTextPresentCheck" />
 
         </RelativeLayout>
     </androidx.core.widget.NestedScrollView>

@@ -479,9 +479,10 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
             candidatesStart,
             candidatesEnd
         )
-        if (newSelStart == newSelEnd) {
-            keyboardView?.closeClipboardManager()
-        }
+        // Do not close the clipboard manager.
+        //if (newSelStart == newSelEnd) {
+            //keyboardView?.closeClipboardManager()
+        //}
     }
 
     private fun moveCursor(moveRight: Boolean) {

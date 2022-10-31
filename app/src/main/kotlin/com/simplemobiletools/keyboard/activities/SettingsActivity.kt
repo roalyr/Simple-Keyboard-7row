@@ -26,13 +26,13 @@ class SettingsActivity : SimpleActivity() {
         setupKeyboardLanguage()
         setupKeyboardHeightMultiplier()
 
-        arrayOf(settings_color_customization_label, settings_general_settings_label).forEach {
-            it.setTextColor(getProperPrimaryColor())
-        }
+        //arrayOf(settings_color_customization_label, settings_general_settings_label).forEach {
+            //it.setTextColor(getProperPrimaryColor())
+        //}
 
-        arrayOf(settings_color_customization_holder, settings_general_settings_holder).forEach {
-            it.background.applyColorFilter(getProperBackgroundColor().getContrastColor())
-        }
+        //arrayOf(settings_color_customization_holder, settings_general_settings_holder).forEach {
+            //it.background.applyColorFilter(getProperBackgroundColor().getContrastColor())
+        //}
     }
 
 

@@ -22,24 +22,17 @@ class MainActivity : SimpleActivity() {
         change_keyboard_holder.setOnClickListener {
             (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager).showInputMethodPicker()
         }
+        change_input_method_holder.setOnClickListener {
+            Intent(Settings.ACTION_INPUT_METHOD_SETTINGS).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(this)
+            }
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        if (!isKeyboardEnabled()) {
-            ConfirmationAdvancedDialog(this, messageId = R.string.redirection_note, positive = R.string.ok, negative = 0) { success ->
-                if (success) {
-                    Intent(Settings.ACTION_INPUT_METHOD_SETTINGS).apply {
-                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        startActivity(this)
-                    }
-                } else {
-                    finish()
-                }
-            }
-        }
-
-        updateChangeKeyboardColor()
+        //updateChangeKeyboardColor()
     }
 
     private fun setupOptionsMenu() {
