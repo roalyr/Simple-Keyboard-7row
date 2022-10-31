@@ -300,7 +300,7 @@ class MyKeyboard {
     constructor(context: Context, @XmlRes xmlLayoutResId: Int, enterKeyType: Int) {
         mDisplayWidth = context.resources.displayMetrics.widthPixels
         mDefaultHorizontalGap = 0
-        mDefaultWidth = mDisplayWidth / 10
+        mDefaultWidth = mDisplayWidth / MAX_KEYS_PER_MINI_ROW
         mDefaultHeight = mDefaultWidth
         mKeyboardHeightMultiplier =
             getKeyboardHeightMultiplier(context.config.keyboardHeightMultiplier)
@@ -335,6 +335,67 @@ class MyKeyboard {
         mKeyboardHeightMultiplier =
             getKeyboardHeightMultiplier(context.config.keyboardHeightMultiplier)
 
+        // https://stackoverflow.com/a/54198712
+        var values = characters
+
+        // Strip an occasional whitespace or comma.
+        while ( values.endsWith(",") || values.endsWith(" ") ) {
+            values = values.substring(0, values.length - 1)
+        }
+
+        // Trim or put blank key.
+        val lstValues: List<String> = values.split(",").map { it ->
+            (if (it.isNotEmpty()) {
+                it.trim()
+            } else {
+                ' '
+            }).toString()
+        }
+
+        // Process.
+        lstValues.forEachIndexed { index, charseq ->
+            val key = Key(row)
+            key.width = mDefaultWidth
+            if (column >= MAX_KEYS_PER_MINI_ROW) {
+                column = 0
+                x = 0
+                y += mDefaultHeight
+                mRows.add(row)
+                row.mKeys.clear()
+            }
+
+            key.x = x
+            key.y = y
+
+            // spec[cfg, 0]
+            if (charseq.startsWith("spec[")){
+
+                // Apply the regular expression on the string
+                val reg = Regex("""spec\[([^{}]*)\;([^{}]*)\]""")
+                val results = reg.find(charseq)
+
+                results?.groupValues?.let { groups ->
+                    // If results and groupValues aren't null, we've got our values!
+                    key.label = groups[1].replace(" ", "")
+                    key.code = groups[2].replace(" ", "").toInt()
+                }
+            } else {
+                //if character is non-spec.
+                key.label = charseq
+                key.code = charseq[0].code
+            }
+
+            column++
+            x += key.width + key.gap
+            (mKeys ?: return@forEachIndexed).add(key)
+            row.mKeys.add(key)
+            if (x > mMinWidth) {
+                mMinWidth = x
+            }
+        }
+
+
+        /**
         characters.forEachIndexed { index, character ->
             val key = Key(row)
             if (column >= MAX_KEYS_PER_MINI_ROW) {
@@ -357,6 +418,8 @@ class MyKeyboard {
                 mMinWidth = x
             }
         }
+        */
+
         mHeight = y + mDefaultHeight
         mRows.add(row)
     }

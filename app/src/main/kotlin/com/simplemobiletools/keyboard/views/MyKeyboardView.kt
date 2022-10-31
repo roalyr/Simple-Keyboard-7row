@@ -584,12 +584,6 @@ class MyKeyboardView @JvmOverloads constructor(
         val paint = mPaint
         paint.color = mTextColor
         val keys = mKeys
-        val smallLetterPaint = Paint().apply {
-            set(paint)
-            color = mSmallLabelColor
-            textSize = mkeyLabelSmallSize
-            typeface = Typeface.DEFAULT
-        }
 
         canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
         handleClipboard()
@@ -686,6 +680,24 @@ class MyKeyboardView @JvmOverloads constructor(
                 }
 
                 // Draw top small label?
+                var smallLetterPaint = Paint()
+                // Ordinary key.
+                if (!speckey) {
+                    smallLetterPaint.apply {
+                        set(paint)
+                        color = mSmallLabelColor
+                        textSize = mkeyLabelSmallSize
+                        typeface = Typeface.DEFAULT
+                    }
+                // Otheerwise use ordinary key text color.
+                } else {
+                    smallLetterPaint.apply {
+                        set(paint)
+                        color = mTextColor
+                        textSize = mkeyLabelSmallSize
+                        typeface = Typeface.DEFAULT
+                    }
+                }
                 if (key.keyLabelSmall.isNotEmpty()) {
                     canvas.drawText(
                         key.keyLabelSmall,
@@ -1110,7 +1122,7 @@ class MyKeyboardView @JvmOverloads constructor(
                 }
 
                 val keyboard = if (popupKey.popupCharacters != null) {
-                    MyKeyboard(context, popupKeyboardId, popupKey.popupCharacters!!, popupKey.width)
+                    MyKeyboard(context, popupKeyboardId, popupKey.popupCharacters!! as String, popupKey.width)
                 } else {
                     MyKeyboard(context, popupKeyboardId, 0)
                 }
@@ -1133,12 +1145,12 @@ class MyKeyboardView @JvmOverloads constructor(
 
             val widthToUse =
                 mMiniKeyboardContainer!!.measuredWidth - (popupKey.popupCharacters!!.length / 2) * popupKey.width
-            mPopupX = mPopupX + popupKey.width - widthToUse
+            mPopupX = mPopupX
             mPopupY -= mMiniKeyboardContainer!!.measuredHeight
-            val x = mPopupX + mCoordinates[0]
+            val x = mPopupX
             val y = mPopupY + mCoordinates[1]
             val xOffset = max(0, x)
-            mMiniKeyboard!!.setPopupOffset(xOffset, y)
+            mMiniKeyboard!!.setPopupOffset(-xOffset, y)
 
             // make sure we highlight the proper key right after long pressing it, before any ACTION_MOVE event occurs
             val miniKeyboardX = if (xOffset + mMiniKeyboard!!.measuredWidth <= measuredWidth) {

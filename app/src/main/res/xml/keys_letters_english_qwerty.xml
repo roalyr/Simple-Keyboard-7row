@@ -331,7 +331,10 @@
 
         <Key
             app:keyLabel="edit"
+            app:keyLabelSmall="⚙"
+            app:popupCharacters="spec[emj; -6], spec[clip; 0], spec[cfg; 0] "
             app:keyWidth="12%p"
+            app:popupKeyboard="@xml/keyboard_popup_template"
             app:code="0"
             app:specKey="true"
             />

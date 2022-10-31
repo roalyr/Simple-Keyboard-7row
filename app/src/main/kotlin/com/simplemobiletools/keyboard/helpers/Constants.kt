@@ -8,7 +8,7 @@ const val CONTROL_OFF: Int = 0
 const val CONTROL_ON_ONE_CHAR: Int = 1
 
 // limit the count of alternative characters that show up at long pressing a key
-const val MAX_KEYS_PER_MINI_ROW: Int = 9
+const val MAX_KEYS_PER_MINI_ROW: Int = 10
 
 // shared prefs
 const val VIBRATE_ON_KEYPRESS: String = "vibrate_on_keypress"
