@@ -17,7 +17,7 @@ android {
         minSdk 23
         targetSdk 33
         versionCode 13
-        versionName "5.3.1"
+        versionName "1.0.0"
         multiDexEnabled true
         setProperty("archivesBaseName", "keyboard")
         vectorDrawables.useSupportLibrary = true
@@ -43,6 +43,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             if (keystorePropertiesFile.exists()) {
                 signingConfig signingConfigs.release
+            }
+            applicationVariants.all{
+                variant ->
+                    variant.outputs.each{ output->
+                        def name = "s7row-keyboard.apk"
+                        output.outputFileName = name
+                }
             }
         }
     }
