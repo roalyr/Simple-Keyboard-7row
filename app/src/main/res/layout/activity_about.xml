@@ -54,7 +54,7 @@
                         android:padding="@dimen/medium_margin"
                         android:src="@drawable/ic_unhide_vector" />
 
-                    <com.simplemobiletools.commons.views.MyTextView
+                    <com.roalyr.commons.views.MyTextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_alignTop="@+id/about_privacy_policy_icon"
@@ -83,7 +83,7 @@
                         android:padding="@dimen/medium_margin"
                         android:src="@drawable/ic_article_vector" />
 
-                    <com.simplemobiletools.commons.views.MyTextView
+                    <com.roalyr.commons.views.MyTextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_alignTop="@+id/about_licenses_icon"
@@ -112,7 +112,7 @@
                         android:padding="@dimen/medium_margin"
                         android:src="@drawable/ic_info_vector" />
 
-                    <com.simplemobiletools.commons.views.MyTextView
+                    <com.roalyr.commons.views.MyTextView
                         android:id="@+id/about_version"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"

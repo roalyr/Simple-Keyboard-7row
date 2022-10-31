@@ -36,7 +36,7 @@
                 android:background="?attr/selectableItemBackground"
                 android:padding="@dimen/activity_margin">
 
-                <com.simplemobiletools.commons.views.MyTextView
+                <com.roalyr.commons.views.MyTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -63,7 +63,7 @@
                 android:background="?attr/selectableItemBackground"
                 android:padding="@dimen/activity_margin">
 
-                <com.simplemobiletools.commons.views.MyTextView
+                <com.roalyr.commons.views.MyTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -90,7 +90,7 @@
                 android:background="?attr/selectableItemBackground"
                 android:padding="@dimen/activity_margin">
 
-                <com.simplemobiletools.commons.views.MyTextView
+                <com.roalyr.commons.views.MyTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -118,7 +118,7 @@
                 android:padding="@dimen/activity_margin"
                 >
 
-                <com.simplemobiletools.commons.views.MyTextView
+                <com.roalyr.commons.views.MyTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -145,7 +145,7 @@
                 android:background="?attr/selectableItemBackground"
                 android:padding="@dimen/activity_margin">
 
-                <com.simplemobiletools.commons.views.MyTextView
+                <com.roalyr.commons.views.MyTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -172,7 +172,7 @@
                 android:background="?attr/selectableItemBackground"
                 android:padding="@dimen/activity_margin">
 
-                <com.simplemobiletools.commons.views.MyTextView
+                <com.roalyr.commons.views.MyTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"

@@ -61,7 +61,7 @@ android {
         abortOnError false
         checkReleaseBuilds false
     }
-    namespace 'com.simplemobiletools.keyboard'
+    namespace 'com.roalyr.simple_7row_keyboard'
 
 }
 

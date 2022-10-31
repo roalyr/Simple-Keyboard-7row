@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:padding="@dimen/activity_margin">
 
-    <com.simplemobiletools.commons.views.MyTextView
+    <com.roalyr.commons.views.MyTextView
         android:id="@+id/write_permissions_dialog_otg_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

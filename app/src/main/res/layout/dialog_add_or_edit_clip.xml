@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:paddingTop="@dimen/activity_margin">
 
-    <com.simplemobiletools.commons.views.MyTextInputLayout
+    <com.roalyr.commons.views.MyTextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/activity_margin"
@@ -18,5 +18,5 @@
             android:inputType="textCapSentences|textMultiLine"
             android:textSize="@dimen/bigger_text_size" />
 
-    </com.simplemobiletools.commons.views.MyTextInputLayout>
+    </com.roalyr.commons.views.MyTextInputLayout>
 </RelativeLayout>

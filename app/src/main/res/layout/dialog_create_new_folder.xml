@@ -7,7 +7,7 @@
     android:paddingTop="@dimen/activity_margin"
     android:paddingRight="@dimen/activity_margin">
 
-    <com.simplemobiletools.commons.views.MyTextInputLayout
+    <com.roalyr.commons.views.MyTextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/activity_margin"
@@ -19,9 +19,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-    </com.simplemobiletools.commons.views.MyTextInputLayout>
+    </com.roalyr.commons.views.MyTextInputLayout>
 
-    <com.simplemobiletools.commons.views.MyTextInputLayout
+    <com.roalyr.commons.views.MyTextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/title">
@@ -35,5 +35,5 @@
             android:textCursorDrawable="@null"
             android:textSize="@dimen/bigger_text_size" />
 
-    </com.simplemobiletools.commons.views.MyTextInputLayout>
+    </com.roalyr.commons.views.MyTextInputLayout>
 </LinearLayout>

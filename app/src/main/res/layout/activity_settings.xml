@@ -52,7 +52,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/ripple_all_corners">
 
-                    <com.simplemobiletools.commons.views.MyTextView
+                    <com.roalyr.commons.views.MyTextView
                         android:id="@+id/settings_customize_colors_label"
                         style="@style/SettingsTextLabelStyle"
                         android:layout_width="wrap_content"
@@ -84,7 +84,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/ripple_background">
 
-                    <com.simplemobiletools.commons.views.MyTextView
+                    <com.roalyr.commons.views.MyTextView
                         style="@style/SettingsTextLabelStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -99,7 +99,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/ripple_background">
 
-                    <com.simplemobiletools.commons.views.MyAppCompatCheckbox
+                    <com.roalyr.commons.views.MyAppCompatCheckbox
                         android:id="@+id/settings_vibrate_on_keypress"
                         style="@style/SettingsCheckboxStyle"
                         android:layout_width="match_parent"
@@ -115,7 +115,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/ripple_background">
 
-                    <com.simplemobiletools.commons.views.MyAppCompatCheckbox
+                    <com.roalyr.commons.views.MyAppCompatCheckbox
                         android:id="@+id/settings_show_popup_on_keypress"
                         style="@style/SettingsCheckboxStyle"
                         android:layout_width="match_parent"
@@ -131,14 +131,14 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/ripple_background">
 
-                    <com.simplemobiletools.commons.views.MyTextView
+                    <com.roalyr.commons.views.MyTextView
                         android:id="@+id/settings_keyboard_language_label"
                         style="@style/SettingsTextLabelStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/keyboard_language" />
 
-                    <com.simplemobiletools.commons.views.MyTextView
+                    <com.roalyr.commons.views.MyTextView
                         android:id="@+id/settings_keyboard_language"
                         style="@style/SettingsTextValueStyle"
                         android:layout_width="match_parent"
@@ -155,14 +155,14 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/ripple_bottom_corners">
 
-                    <com.simplemobiletools.commons.views.MyTextView
+                    <com.roalyr.commons.views.MyTextView
                         android:id="@+id/settings_keyboard_height_multiplier_label"
                         style="@style/SettingsTextLabelStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/keyboard_height" />
 
-                    <com.simplemobiletools.commons.views.MyTextView
+                    <com.roalyr.commons.views.MyTextView
                         android:id="@+id/settings_keyboard_height_multiplier"
                         style="@style/SettingsTextValueStyle"
                         android:layout_width="match_parent"
