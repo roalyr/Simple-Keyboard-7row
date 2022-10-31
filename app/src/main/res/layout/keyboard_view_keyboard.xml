@@ -128,6 +128,18 @@
             android:layout_alignParentBottom="true"
             android:gravity="center_vertical">
 
+            <ImageView
+                android:id="@+id/clipboard_manager_delete"
+                android:layout_width="@dimen/toolbar_icon_height"
+                android:layout_height="@dimen/toolbar_icon_height"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/medium_margin"
+                android:layout_marginEnd="@dimen/medium_margin"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Delete"
+                android:padding="@dimen/small_margin"
+                android:src="@drawable/ic_delete_vector" />
+
             <TextView
                 android:id="@+id/clipboard_manager_close"
                 android:layout_width="wrap_content"

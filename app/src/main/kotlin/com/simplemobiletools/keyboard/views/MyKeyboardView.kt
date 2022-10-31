@@ -401,6 +401,11 @@ class MyKeyboardView @JvmOverloads constructor(
                 closeClipboardManager()
             }
 
+            clipboard_manager_delete.setOnClickListener {
+                vibrateIfNeeded()
+                clearClipboardContent()
+            }
+
             clipboard_manager_manage.setOnLongClickListener { context.toast(R.string.manage_clipboard_items); true; }
             clipboard_manager_manage.setOnClickListener {
                 Intent(context, ManageClipboardItemsActivity::class.java).apply {
@@ -415,6 +420,17 @@ class MyKeyboardView @JvmOverloads constructor(
                 vibrateIfNeeded()
                 closeEmojiPalette()
             }
+        }
+    }
+
+    private fun clearClipboardContent() {
+        val clipboardManager =
+            (context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager)
+        if (isPiePlus()) {
+            clipboardManager.clearPrimaryClip()
+        } else {
+            val clip = ClipData.newPlainText("", "")
+            clipboardManager.setPrimaryClip(clip)
         }
     }
 
