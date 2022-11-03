@@ -39,7 +39,6 @@
                 tools:layout_centerHorizontal="true">
 
                 <android.widget.TextView
-                    android:id="@+id/change_input_method"
                     style="@style/TextAppearance.MaterialComponents.Button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

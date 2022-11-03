@@ -63,9 +63,10 @@ class MyKeyboard {
         private const val EDGE_LEFT = 0x01
         private const val EDGE_RIGHT = 0x02
         const val EDGE_TOP: Int = 1
+        const val EDGE_BOTTOM: Int = 2
 
         const val KEYCODE_SHIFT: Int = -1
-        const val KEYCODE_MODE_CHANGE: Int = -2
+        const val KEYCODE_LAYOUT_CHANGE: Int = -2
         const val KEYCODE_TAB: Int = -3
         const val KEYCODE_ENTER: Int = -4
         const val KEYCODE_DELETE: Int = -5
@@ -82,6 +83,8 @@ class MyKeyboard {
 
         const val KEYCODE_CLIPBOARD: Int = -14
         const val KEYCODE_SETTINGS: Int = -15
+        const val KEYCODE_SEARCH = -16
+        const val KEYCODE_LAYOUT_EDIT = -17
 
         fun getDimensionOrFraction(a: TypedArray, index: Int, base: Int, defValue: Int): Int {
             val value = a.peekValue(index) ?: return defValue
@@ -108,8 +111,10 @@ class MyKeyboard {
         /** Default width of a key in this row.  */
         var defaultWidth: Int = 0
 
+        private var rowHeight: Int = 0
+
         /** Default height of a key in this row.  */
-        var defaultHeight: Int = 0
+        var defaultKeyHeight: Int = 0
 
         /** Default horizontal gap between keys in this row.  */
         var defaultHorizontalGap: Int = 0
@@ -124,22 +129,32 @@ class MyKeyboard {
 
         constructor(res: Resources, parent: MyKeyboard, parser: XmlResourceParser?) {
             this.parent = parent
-            val a = res.obtainAttributes(Xml.asAttributeSet(parser), R.styleable.MyKeyboard)
+            val keyboard_array = res.obtainAttributes(Xml.asAttributeSet(parser), R.styleable.MyKeyboard)
+            val row_array = res.obtainAttributes(Xml.asAttributeSet(parser), R.styleable.MyKeyboard_Row)
             defaultWidth = getDimensionOrFraction(
-                a,
+                keyboard_array,
                 R.styleable.MyKeyboard_keyWidth,
                 parent.mDisplayWidth,
                 parent.mDefaultWidth
             )
-            defaultHeight =
-                (res.getDimension(R.dimen.key_height) * this.parent.mKeyboardHeightMultiplier).roundToInt()
+
+            rowHeight = getDimensionOrFraction(
+                row_array,
+                R.styleable.MyKeyboard_Row_rowHeight,
+                parent.mDisplayWidth,
+                parent.mDefaultWidth
+            )
+
+            defaultKeyHeight =
+                (rowHeight * this.parent.mKeyboardHeightMultiplier).roundToInt()
+
             defaultHorizontalGap = getDimensionOrFraction(
-                a,
+                keyboard_array,
                 R.styleable.MyKeyboard_horizontalGap,
                 parent.mDisplayWidth,
                 parent.mDefaultHorizontalGap
             )
-            a.recycle()
+            keyboard_array.recycle()
         }
     }
 
@@ -166,6 +181,9 @@ class MyKeyboard {
 
         /** Whether key should be displayed with different color  */
         var speckey: Boolean = false
+
+        /** Whether key should be made on two rows  */
+        var compound: Boolean = false
 
         /** First row of letters can also be used for inserting numbers by long pressing them, show those numbers  */
         var keyLabelSmall: String = ""
@@ -233,7 +251,7 @@ class MyKeyboard {
                 keyboard.mDisplayWidth,
                 parent.defaultWidth
             )
-            height = parent.defaultHeight
+            height = parent.defaultKeyHeight
             gap = getDimensionOrFraction(
                 a,
                 R.styleable.MyKeyboard_horizontalGap,
@@ -252,6 +270,8 @@ class MyKeyboard {
 
             repeatable = a.getBoolean(R.styleable.MyKeyboard_Key_isRepeatable, false)
             speckey = a.getBoolean(R.styleable.MyKeyboard_Key_specKey, false)
+            compound = a.getBoolean(R.styleable.MyKeyboard_Key_isCompound, false)
+
 
             edgeFlags = a.getInt(R.styleable.MyKeyboard_Key_keyEdgeFlags, 0)
             rowEdgeFlags = a.getInt(R.styleable.MyKeyboard_Key_keyRowEdgeFlags, 0)
@@ -271,7 +291,7 @@ class MyKeyboard {
 
         /** Create an empty key with no attributes.  */
         init {
-            height = parent.defaultHeight
+            height = parent.defaultKeyHeight
             width = parent.defaultWidth
             gap = parent.defaultHorizontalGap
         }
@@ -332,7 +352,7 @@ class MyKeyboard {
         var column = 0
         mMinWidth = 0
         val row = Row(this)
-        row.defaultHeight = mDefaultHeight
+        row.defaultKeyHeight = mDefaultHeight
         row.defaultWidth = keyWidth
         row.defaultHorizontalGap = mDefaultHorizontalGap
         mKeyboardHeightMultiplier =
@@ -504,7 +524,7 @@ class MyKeyboard {
                         }
                     } else if (inRow) {
                         inRow = false
-                        y += (currentRow ?: return).defaultHeight
+                        y += (currentRow ?: return).defaultKeyHeight
                         row++
                     }
                 }

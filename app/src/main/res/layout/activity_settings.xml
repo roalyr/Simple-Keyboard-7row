@@ -31,14 +31,12 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/settings_color_customization_label"
                 style="@style/SettingsSectionLabelStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/color_customization" />
 
             <LinearLayout
-                android:id="@+id/settings_color_customization_holder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/medium_margin"
@@ -63,14 +61,12 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/settings_general_settings_label"
                 style="@style/SettingsSectionLabelStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/general_settings" />
 
             <LinearLayout
-                android:id="@+id/settings_general_settings_holder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/medium_margin"

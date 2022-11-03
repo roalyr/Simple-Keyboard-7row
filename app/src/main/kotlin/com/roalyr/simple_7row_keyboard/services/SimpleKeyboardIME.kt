@@ -28,6 +28,7 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
         500   // how quickly do we have to doubletap shift to enable permanent caps lock
     private val KEYBOARD_LETTERS = 0
     private val KEYBOARD_LETTERS_SECOND = 1
+    private val KEYBOARD_EDIT_MODE = 2
 
     private var keyboard: MyKeyboard? = null
     private var keyboardView: MyKeyboardView? = null
@@ -278,40 +279,51 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
                 )
             }
             MyKeyboard.KEYCODE_ENTER -> {
-
-                /**
-                val enterResourceId = when (getTextForImeAction()) {
-                    EditorInfo.IME_ACTION_SEARCH -> R.drawable.ic_search_vector
-                    EditorInfo.IME_ACTION_NEXT, EditorInfo.IME_ACTION_GO -> R.drawable.ic_arrow_right_vector
-                    EditorInfo.IME_ACTION_SEND -> R.drawable.ic_send_vector
-                    else -> R.drawable.ic_enter_vector
+                val imeOptionsActionId = getImeOptionsActionId()
+                if (imeOptionsActionId != IME_ACTION_NONE) {
+                    inputConnection.performEditorAction(imeOptionsActionId)
+                } else {
+                    // Use shift+Enter instead.
+                    inputConnection.sendKeyEvent(
+                        KeyEvent(
+                            0,
+                            0,
+                            KeyEvent.ACTION_DOWN,
+                            KeyEvent.KEYCODE_ENTER,
+                            0,
+                            KeyEvent.META_SHIFT_MASK
+                        )
+                    )
+                    inputConnection.sendKeyEvent(
+                        KeyEvent(
+                            0,
+                            0,
+                            KeyEvent.ACTION_UP,
+                            KeyEvent.KEYCODE_ENTER,
+                            0,
+                            KeyEvent.META_SHIFT_MASK
+                        )
+                    )
+                    inputConnection.clearMetaKeyStates(KeyEvent.META_SHIFT_MASK)
                 }
-                */
-
+            }
+            MyKeyboard.KEYCODE_SEARCH -> {
                 // Use shift+Enter instead.
                 inputConnection.sendKeyEvent(
                     KeyEvent(
-                        0,
-                        0,
                         KeyEvent.ACTION_DOWN,
-                        KeyEvent.KEYCODE_ENTER,
-                        0,
-                        KeyEvent.META_SHIFT_MASK
+                        KeyEvent.KEYCODE_SEARCH,
                     )
                 )
                 inputConnection.sendKeyEvent(
                     KeyEvent(
-                        0,
-                        0,
                         KeyEvent.ACTION_UP,
-                        KeyEvent.KEYCODE_ENTER,
-                        0,
-                        KeyEvent.META_SHIFT_MASK
+                        KeyEvent.KEYCODE_SEARCH,
                     )
                 )
-                inputConnection.clearMetaKeyStates(KeyEvent.META_SHIFT_MASK)
             }
-            MyKeyboard.KEYCODE_MODE_CHANGE -> {
+            MyKeyboard.KEYCODE_LAYOUT_CHANGE -> {
+                // TODO: add proper layout cycling
                 val keyboardXml = if (keyboardMode == KEYBOARD_LETTERS) {
                     keyboardMode = KEYBOARD_LETTERS_SECOND
                     baseContext.config.keyboardLanguage = LANGUAGE_UKRAINIAN
@@ -319,6 +331,22 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
 
                 } else {
                     keyboardMode = KEYBOARD_LETTERS
+                    baseContext.config.keyboardLanguage = LANGUAGE_ENGLISH_QWERTY
+                    getKeyboardLayoutXML()
+                }
+                keyboard = MyKeyboard(this, keyboardXml, enterKeyType)
+                (keyboardView ?: return).setKeyboard(keyboard ?: return)
+            }
+            MyKeyboard.KEYCODE_LAYOUT_EDIT -> {
+                // TODO: add proper layout cycling
+                val keyboardXml = if (keyboardMode == KEYBOARD_LETTERS || keyboardMode == KEYBOARD_LETTERS_SECOND) {
+                    keyboardMode = KEYBOARD_EDIT_MODE
+                    baseContext.config.keyboardLanguage = EDIT_MODE
+                    getKeyboardLayoutXML()
+
+                } else {
+                    keyboardMode = KEYBOARD_LETTERS
+                    // TODO: make return to previous layout.
                     baseContext.config.keyboardLanguage = LANGUAGE_ENGLISH_QWERTY
                     getKeyboardLayoutXML()
                 }
@@ -433,6 +461,14 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
         }
     }
 
+    private fun getImeOptionsActionId(): Int {
+        return if (currentInputEditorInfo.imeOptions and IME_FLAG_NO_ENTER_ACTION != 0) {
+            IME_ACTION_NONE
+        } else {
+            currentInputEditorInfo.imeOptions and IME_MASK_ACTION
+        }
+    }
+
     override fun onActionUp() {
         if (switchToLetters) {
             keyboardMode = KEYBOARD_LETTERS
@@ -479,10 +515,11 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
             candidatesStart,
             candidatesEnd
         )
-        // Do not close the clipboard manager.
-        //if (newSelStart == newSelEnd) {
-            //keyboardView?.closeClipboardManager()
-        //}
+
+        // Do not close the clipboard manager?
+        if (newSelStart == newSelEnd) {
+            keyboardView?.closeClipboardManager()
+        }
     }
 
     private fun moveCursor(moveRight: Boolean) {
@@ -513,6 +550,7 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
             //LANGUAGE_SLOVENIAN -> R.xml.keys_letters_slovenian
             //LANGUAGE_SPANISH -> R.xml.keys_letters_spanish_qwerty
             LANGUAGE_UKRAINIAN -> R.xml.keys_letters_ukrainian
+            EDIT_MODE -> R.xml.keys_edit
             else -> R.xml.keys_letters_english_qwerty
         }
     }

@@ -2,8 +2,6 @@
 <resources>
     <string name="app_name">Simple 7row Keyboard</string>
     <string name="app_launcher_name">S7row Keyboard</string>
-    <string name="redirection_note">Please enable Simple 7row Keyboard on the next screen, to make it an available keyboard. Press \'Back\' once enabled.</string>
-    <string name="change_keyboard">Change Keyboard</string>
     <!-- Clipboard -->
     <string name="manage_clipboard_items">Manage clipboard items</string>
     <string name="manage_clipboard_empty">Your clipboard is empty.</string>

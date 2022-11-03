@@ -21,6 +21,7 @@ const val HEIGHT_MULTIPLIER: String = "height_multiplier"
 const val ITEM_SECTION_LABEL: Int = 0
 const val ITEM_CLIP: Int = 1
 
+const val EDIT_MODE: Int = 100
 const val LANGUAGE_ENGLISH_QWERTY: Int = 0
 const val LANGUAGE_UKRAINIAN: Int = 13
 

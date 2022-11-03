@@ -29,11 +29,6 @@ class MainActivity : SimpleActivity() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        //updateChangeKeyboardColor()
-    }
-
     private fun setupOptionsMenu() {
         main_toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
@@ -55,18 +50,4 @@ class MainActivity : SimpleActivity() {
         startAboutActivity(R.string.app_name, licenses, BuildConfig.VERSION_NAME, true)
     }
 
-    private fun updateChangeKeyboardColor() {
-        val applyBackground = resources.getDrawable(R.drawable.button_background_rounded, theme) as RippleDrawable
-        (applyBackground as LayerDrawable).findDrawableByLayerId(R.id.button_background_holder).applyColorFilter(getProperPrimaryColor())
-        change_keyboard.background = applyBackground
-        change_keyboard.setTextColor(getProperPrimaryColor().getContrastColor())
-    }
-
-    private fun isKeyboardEnabled(): Boolean {
-        val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        val enabledKeyboards = inputMethodManager.enabledInputMethodList
-        return enabledKeyboards.any {
-            it.settingsActivity == SettingsActivity::class.java.canonicalName
-        }
-    }
 }

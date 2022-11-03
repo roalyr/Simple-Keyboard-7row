@@ -33,11 +33,12 @@ import com.roalyr.simple_7row_keyboard.adapters.ClipsKeyboardAdapter
 import com.roalyr.simple_7row_keyboard.adapters.EmojisAdapter
 import com.roalyr.simple_7row_keyboard.extensions.*
 import com.roalyr.simple_7row_keyboard.helpers.*
+import com.roalyr.simple_7row_keyboard.helpers.MyKeyboard.Companion.EDGE_BOTTOM
 import com.roalyr.simple_7row_keyboard.helpers.MyKeyboard.Companion.EDGE_TOP
 import com.roalyr.simple_7row_keyboard.helpers.MyKeyboard.Companion.KEYCODE_DELETE
 import com.roalyr.simple_7row_keyboard.helpers.MyKeyboard.Companion.KEYCODE_EMOJI
 import com.roalyr.simple_7row_keyboard.helpers.MyKeyboard.Companion.KEYCODE_ENTER
-import com.roalyr.simple_7row_keyboard.helpers.MyKeyboard.Companion.KEYCODE_MODE_CHANGE
+import com.roalyr.simple_7row_keyboard.helpers.MyKeyboard.Companion.KEYCODE_LAYOUT_CHANGE
 import com.roalyr.simple_7row_keyboard.helpers.MyKeyboard.Companion.KEYCODE_SHIFT
 import com.roalyr.simple_7row_keyboard.helpers.MyKeyboard.Companion.KEYCODE_CONTROL
 import com.roalyr.simple_7row_keyboard.helpers.MyKeyboard.Companion.KEYCODE_SPACE
@@ -201,23 +202,6 @@ class MyKeyboardView @JvmOverloads constructor(
     init {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
-        /**
-        val attributes = context.obtainStyledAttributes(attrs, R.styleable.MyKeyboardView, 0, defStyleRes)
-        val keyTextSize = 0
-        val indexCnt = attributes.indexCount
-        try {
-        for (i in 0 until indexCnt) {
-        val attr = attributes.getIndex(i)
-        when (attr) {
-        R.styleable.MyKeyboardView_keyTextSize -> mKeyLabelTextSize = attributes.getDimensionPixelSize(attr, 16)
-        }
-        }
-        } finally {
-        attributes.recycle()
-        }
-         */
-
-
         mPopupLayout = R.layout.keyboard_popup_keyboard
         mKeyBackground = resources.getDrawable(R.drawable.keyboard_key_selector, context.theme)
         mVerticalCorrection = resources.getDimension(R.dimen.vertical_correction).toInt()
@@ -243,9 +227,7 @@ class MyKeyboardView @JvmOverloads constructor(
         mPopupParent = this
         mPaint = Paint()
         mPaint.isAntiAlias = true
-        // Switch to hardcoded size value?
 
-        //mPaint.textSize = keyTextSize.toFloat()
         mPaint.textSize = resources.getDimension(R.dimen.key_label_text_size)
 
         mPaint.textAlign = Align.CENTER
@@ -575,14 +557,14 @@ class MyKeyboardView @JvmOverloads constructor(
                 keyBackground.applyColorFilter(mKeyColor)
             }
 
-            // If we are using compund spacebar (2 rows).
-            if (code == KEYCODE_SPACE) {
-                keyBackground = if (edgeflag == EDGE_TOP) {
-                    resources.getDrawable(R.drawable.keyboard_space_background_down, context.theme)
-                } else {
-                    resources.getDrawable(R.drawable.keyboard_space_background_up, context.theme)
+            // If we are using compund key style (2 rows).
+            if (key.compound) {
+                if (edgeflag == EDGE_TOP) {
+                    keyBackground = resources.getDrawable(R.drawable.keyboard_compound_key_background_down, context.theme)
+                } else if (edgeflag == EDGE_BOTTOM) {
+                    keyBackground = resources.getDrawable(R.drawable.keyboard_compound_key_background_up, context.theme)
                 }
-                keyBackground.applyColorFilter(mKeyColor)
+                keyBackground?.applyColorFilter(mKeyColor)
             }
 
             // Switch the character to uppercase if shift is pressed
@@ -643,7 +625,7 @@ class MyKeyboardView @JvmOverloads constructor(
                 }
 
                 // Draw top small label?
-                var smallLetterPaint = Paint()
+                val smallLetterPaint = Paint()
                 // Ordinary key.
                 if (!speckey) {
                     smallLetterPaint.apply {
@@ -899,7 +881,7 @@ class MyKeyboardView @JvmOverloads constructor(
             val text: String = when (code) {
                 KEYCODE_DELETE -> context.getString(R.string.keycode_delete)
                 KEYCODE_ENTER -> context.getString(R.string.keycode_enter)
-                KEYCODE_MODE_CHANGE -> context.getString(R.string.keycode_mode_change)
+                KEYCODE_LAYOUT_CHANGE -> context.getString(R.string.keycode_mode_change)
                 KEYCODE_SHIFT -> context.getString(R.string.keycode_shift)
                 KEYCODE_CONTROL -> context.getString(R.string.keycode_control)
                 else -> code.toChar().toString()

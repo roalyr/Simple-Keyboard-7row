@@ -3,7 +3,7 @@
 
     <!-- TOP ROWS -->
 
-    <Row>
+    <Row app:rowHeight="60dp">
         <Key
             app:keyLabel="1"
             app:keyLabelSmall="|"
@@ -78,7 +78,7 @@
             />
     </Row>
 
-    <Row>
+    <Row app:rowHeight="60dp">
         <Key
             app:keyLabel="Tab"
             app:code="-3"
@@ -153,7 +153,7 @@
     </Row>
 
     <!-- LANG ROWS -->
-    <Row>
+    <Row app:rowHeight="60dp">
         <Key
             app:keyLabel="q"
             app:keyWidth="12%p"
@@ -198,7 +198,7 @@
             />
     </Row>
 
-    <Row>
+    <Row app:rowHeight="60dp">
         <Key
             app:keyLabel="a"
             app:keyWidth="12%p"
@@ -246,7 +246,7 @@
             />
     </Row>
 
-    <Row>
+    <Row app:rowHeight="60dp">
         <Key
             app:keyLabel="z"
             app:keyWidth="12%p"
@@ -301,7 +301,7 @@
     </Row>
 
     <!-- BOTTOM ROWS -->
-    <Row>
+    <Row app:rowHeight="60dp">
         <Key
             app:code="-1"
             app:keyWidth="12%p"
@@ -327,15 +327,16 @@
             app:keyWidth="28%p"
             app:isRepeatable="true"
             app:keyRowEdgeFlags="bottom"
+            app:isCompound="true"
             />
 
         <Key
             app:keyLabel="edit"
             app:keyLabelSmall="⚙"
-            app:popupCharacters="spec[☻; -6], spec[🔧; -15] "
+            app:popupCharacters="spec[☻; -6], spec[🔍; -16], spec[🔧; -15] "
             app:keyWidth="12%p"
             app:popupKeyboard="@xml/keyboard_popup_template"
-            app:code="0"
+            app:code="-17"
             app:specKey="true"
             />
         <Key
@@ -355,7 +356,7 @@
 
 
     </Row>
-    <Row>
+    <Row app:rowHeight="60dp">
         <Key
             app:keyLabel="Un"
             app:code="-8"
@@ -383,6 +384,7 @@
             app:keyWidth="28%p"
             app:isRepeatable="true"
             app:keyRowEdgeFlags="top"
+            app:isCompound="true"
             />
 
         <Key

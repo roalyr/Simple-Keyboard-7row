@@ -13,6 +13,10 @@
         <attr name="horizontalGap" format="fraction" />
     </declare-styleable>
 
+    <declare-styleable name="MyKeyboard_Row">
+        <attr name="rowHeight" format="dimension" />
+    </declare-styleable>
+
     <declare-styleable name="MyKeyboard_Key">
         <!-- The unicode value that this key outputs. -->
         <attr name="code" format="integer" />
@@ -34,6 +38,8 @@
             <!-- Key is anchored to the bottom of the row. -->
             <flag name="bottom" value="2" />
         </attr>
+        <!-- Whether key is composed on two rows. -->
+        <attr name="isCompound" format="boolean" />
         <!-- Whether long-pressing on this key will make it repeat. -->
         <attr name="isRepeatable" format="boolean" />
         <!-- Whether the key should be drawn in different color. -->
