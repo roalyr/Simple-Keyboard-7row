@@ -102,16 +102,25 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
             lastControlPressTS = 0
         }
 
+        // Reset select key in all instances except....
+        if (code != MyKeyboard.KEYCODE_SELECT && code != MyKeyboard.KEYCODE_UP && code != MyKeyboard.KEYCODE_DOWN
+            && code != MyKeyboard.KEYCODE_LEFT && code != MyKeyboard.KEYCODE_RIGHT && code != MyKeyboard.KEYCODE_PGDN
+            && code != MyKeyboard.KEYCODE_PGUP && code != MyKeyboard.KEYCODE_HOME && code != MyKeyboard.KEYCODE_END) {
+            invalidateSelectKey()
+        }
+
+        // Reset control key.
+        if (code == MyKeyboard.KEYCODE_DELETE || code == MyKeyboard.KEYCODE_FORWARD_DELETE || code == MyKeyboard.KEYCODE_SHIFT) {
+            invalidateControlKey()
+        }
+
+        // Reset shift key.
+        if (code == MyKeyboard.KEYCODE_DELETE || code == MyKeyboard.KEYCODE_FORWARD_DELETE || code == MyKeyboard.KEYCODE_CONTROL) {
+            invalidateShiftKey()
+        }
+
         when (code) {
             MyKeyboard.KEYCODE_DELETE -> {
-                if ((keyboard ?: return).mShiftState == SHIFT_ON_ONE_CHAR) {
-                    (keyboard ?: return).mShiftState = SHIFT_OFF
-                }
-
-                if ((keyboard ?: return).mControlState == CONTROL_ON_ONE_CHAR) {
-                    (keyboard ?: return).mControlState = CONTROL_OFF
-                }
-
                 val selectedText = inputConnection.getSelectedText(0)
                 if (TextUtils.isEmpty(selectedText)) {
                     inputConnection.sendKeyEvent(
@@ -126,14 +135,22 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
                 }
                 (keyboardView ?: return).invalidateAllKeys()
             }
-            MyKeyboard.KEYCODE_SHIFT -> {
-                // Disable ctrl key if shift is pressed.
-                if ((keyboard ?: return).mControlState == CONTROL_ON_ONE_CHAR) {
-                    (keyboard ?: return).mControlState = CONTROL_OFF
-                    (keyboardView ?: return).invalidateAllKeys()
+            MyKeyboard.KEYCODE_FORWARD_DELETE -> {
+                val selectedText = inputConnection.getSelectedText(0)
+                if (TextUtils.isEmpty(selectedText)) {
+                    inputConnection.sendKeyEvent(
+                        KeyEvent(
+                            KeyEvent.ACTION_DOWN,
+                            KeyEvent.KEYCODE_FORWARD_DEL
+                        )
+                    )
+                    inputConnection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_FORWARD_DEL))
+                } else {
+                    inputConnection.commitText("", 1)
                 }
-
-                //if (keyboardMode == KEYBOARD_LETTERS) {
+                (keyboardView ?: return).invalidateAllKeys()
+            }
+            MyKeyboard.KEYCODE_SHIFT -> {
                 when {
                     (keyboard ?: return).mShiftState == SHIFT_ON_PERMANENT -> (keyboard ?: return).mShiftState =
                         SHIFT_OFF
@@ -146,35 +163,18 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
                 }
 
                 lastShiftPressTS = System.currentTimeMillis()
-                //}
-                /** else {
-                val keyboardXml = if (keyboardMode == KEYBOARD_LETTERS_SECOND) {
-                keyboardMode = KEYBOARD_LETTERS_SECOND_SHIFT
-                R.xml.keys_symbols_shift
-                } else {
-                keyboardMode = KEYBOARD_LETTERS_SECOND
-                R.xml.keys_letters_ukrainian
-                }
-                keyboard = MyKeyboard(this, keyboardXml, enterKeyType)
-                keyboardView!!.setKeyboard(keyboard!!)
-                }
-                 */
                 (keyboardView ?: return).invalidateAllKeys()
             }
             MyKeyboard.KEYCODE_CONTROL -> {
                 // Set key state and process input further below, when next character is provided.
                 when {
-                    // Need to figure out why CTRL key is reset after cut / paste.
-                    //keyboard!!.mControlState == CONTROL_ON_PERMANENT -> { keyboard!!.mControlState = CONTROL_OFF }
-                    //System.currentTimeMillis() - lastControlPressTS < CONTROL_PERM_TOGGLE_SPEED -> { keyboard!!.mControlState = CONTROL_ON_PERMANENT }
-                    (keyboard ?: return).mControlState == CONTROL_ON_ONE_CHAR -> (keyboard ?: return).mControlState =
+                    (keyboard ?: return).mControlState == CONTROL_ON -> (keyboard ?: return).mControlState =
                         CONTROL_OFF
                     (keyboard ?: return).mControlState == CONTROL_OFF -> (keyboard ?: return).mControlState =
-                        CONTROL_ON_ONE_CHAR
+                        CONTROL_ON
                 }
 
                 lastControlPressTS = System.currentTimeMillis()
-
                 (keyboardView ?: return).invalidateAllKeys()
             }
             MyKeyboard.KEYCODE_TAB -> {
@@ -227,57 +227,412 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
                 )
                 inputConnection.clearMetaKeyStates(KeyEvent.META_CTRL_MASK)
             }
+            MyKeyboard.KEYCODE_PASTE -> {
+                inputConnection.sendKeyEvent(
+                    KeyEvent(
+                        0,
+                        0,
+                        KeyEvent.ACTION_DOWN,
+                        KeyEvent.KEYCODE_V,
+                        0,
+                        KeyEvent.META_CTRL_MASK
+                    )
+                )
+                inputConnection.sendKeyEvent(
+                    KeyEvent(
+                        0,
+                        0,
+                        KeyEvent.ACTION_UP,
+                        KeyEvent.KEYCODE_V,
+                        0,
+                        KeyEvent.META_CTRL_MASK
+                    )
+                )
+                inputConnection.clearMetaKeyStates(KeyEvent.META_CTRL_MASK)
+            }
+            MyKeyboard.KEYCODE_COPY -> {
+                inputConnection.sendKeyEvent(
+                    KeyEvent(
+                        0,
+                        0,
+                        KeyEvent.ACTION_DOWN,
+                        KeyEvent.KEYCODE_C,
+                        0,
+                        KeyEvent.META_CTRL_MASK
+                    )
+                )
+                inputConnection.sendKeyEvent(
+                    KeyEvent(
+                        0,
+                        0,
+                        KeyEvent.ACTION_UP,
+                        KeyEvent.KEYCODE_C,
+                        0,
+                        KeyEvent.META_CTRL_MASK
+                    )
+                )
+                inputConnection.clearMetaKeyStates(KeyEvent.META_CTRL_MASK)
+            }
+            MyKeyboard.KEYCODE_CUT -> {
+                inputConnection.sendKeyEvent(
+                    KeyEvent(
+                        0,
+                        0,
+                        KeyEvent.ACTION_DOWN,
+                        KeyEvent.KEYCODE_X,
+                        0,
+                        KeyEvent.META_CTRL_MASK
+                    )
+                )
+                inputConnection.sendKeyEvent(
+                    KeyEvent(
+                        0,
+                        0,
+                        KeyEvent.ACTION_UP,
+                        KeyEvent.KEYCODE_X,
+                        0,
+                        KeyEvent.META_CTRL_MASK
+                    )
+                )
+                inputConnection.clearMetaKeyStates(KeyEvent.META_CTRL_MASK)
+            }
+            MyKeyboard.KEYCODE_SELECT -> {
+                // Set key state and process input further below, when next character is provided.
+                when {
+                    (keyboard ?: return).mSelectState == SELECT_ON -> (keyboard ?: return).mSelectState =
+                        SELECT_OFF
+                    (keyboard ?: return).mSelectState == SELECT_OFF -> (keyboard ?: return).mSelectState =
+                        SELECT_ON
+                }
+                (keyboardView ?: return).invalidateAllKeys()
+            }
+
+
+            /////////////////////////////////////////// NAVIGATION AND SELECT KEYS ///////////////////////////////////////
             MyKeyboard.KEYCODE_UP -> {
-                inputConnection.sendKeyEvent(
-                    KeyEvent(
-                        KeyEvent.ACTION_DOWN,
-                        KeyEvent.KEYCODE_DPAD_UP
+                // Select if select is on.
+                if ((keyboard ?: return).mSelectState > SELECT_OFF) {
+                    inputConnection.sendKeyEvent(
+                        KeyEvent(
+                            0,
+                            0,
+                            KeyEvent.ACTION_DOWN,
+                            KeyEvent.KEYCODE_DPAD_UP,
+                            0,
+                            KeyEvent.META_SHIFT_MASK
+                        )
                     )
-                )
-                inputConnection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DPAD_UP))
+                    inputConnection.sendKeyEvent(
+                        KeyEvent(
+                            0,
+                            0,
+                            KeyEvent.ACTION_UP,
+                            KeyEvent.KEYCODE_DPAD_UP,
+                            0,
+                            KeyEvent.META_SHIFT_MASK
+                        )
+                    )
+                    inputConnection.clearMetaKeyStates(KeyEvent.META_SHIFT_MASK)
+                } else {
+                    inputConnection.sendKeyEvent(
+                        KeyEvent(
+                            KeyEvent.ACTION_DOWN,
+                            KeyEvent.KEYCODE_DPAD_UP
+                        )
+                    )
+                    inputConnection.sendKeyEvent(
+                        KeyEvent(
+                            KeyEvent.ACTION_UP,
+                            KeyEvent.KEYCODE_DPAD_UP
+                        )
+                    )
+                }
             }
+
             MyKeyboard.KEYCODE_DOWN -> {
-                inputConnection.sendKeyEvent(
-                    KeyEvent(
-                        KeyEvent.ACTION_DOWN,
-                        KeyEvent.KEYCODE_DPAD_DOWN
+                // Select if select is on.
+                if ((keyboard ?: return).mSelectState > SELECT_OFF) {
+                    inputConnection.sendKeyEvent(
+                        KeyEvent(
+                            0,
+                            0,
+                            KeyEvent.ACTION_DOWN,
+                            KeyEvent.KEYCODE_DPAD_DOWN,
+                            0,
+                            KeyEvent.META_SHIFT_MASK
+                        )
                     )
-                )
-                inputConnection.sendKeyEvent(
-                    KeyEvent(
-                        KeyEvent.ACTION_UP,
-                        KeyEvent.KEYCODE_DPAD_DOWN
+                    inputConnection.sendKeyEvent(
+                        KeyEvent(
+                            0,
+                            0,
+                            KeyEvent.ACTION_UP,
+                            KeyEvent.KEYCODE_DPAD_DOWN,
+                            0,
+                            KeyEvent.META_SHIFT_MASK
+                        )
                     )
-                )
+                    inputConnection.clearMetaKeyStates(KeyEvent.META_SHIFT_MASK)
+                } else {
+                    inputConnection.sendKeyEvent(
+                        KeyEvent(
+                            KeyEvent.ACTION_DOWN,
+                            KeyEvent.KEYCODE_DPAD_DOWN
+                        )
+                    )
+                    inputConnection.sendKeyEvent(
+                        KeyEvent(
+                            KeyEvent.ACTION_UP,
+                            KeyEvent.KEYCODE_DPAD_DOWN
+                        )
+                    )
+                }
             }
+
             MyKeyboard.KEYCODE_LEFT -> {
-                inputConnection.sendKeyEvent(
-                    KeyEvent(
-                        KeyEvent.ACTION_DOWN,
-                        KeyEvent.KEYCODE_DPAD_LEFT
+                // Select if select is on.
+                if ((keyboard ?: return).mSelectState > SELECT_OFF) {
+                    inputConnection.sendKeyEvent(
+                        KeyEvent(
+                            0,
+                            0,
+                            KeyEvent.ACTION_DOWN,
+                            KeyEvent.KEYCODE_DPAD_LEFT,
+                            0,
+                            KeyEvent.META_SHIFT_MASK
+                        )
                     )
-                )
-                inputConnection.sendKeyEvent(
-                    KeyEvent(
-                        KeyEvent.ACTION_UP,
-                        KeyEvent.KEYCODE_DPAD_LEFT
+                    inputConnection.sendKeyEvent(
+                        KeyEvent(
+                            0,
+                            0,
+                            KeyEvent.ACTION_UP,
+                            KeyEvent.KEYCODE_DPAD_LEFT,
+                            0,
+                            KeyEvent.META_SHIFT_MASK
+                        )
                     )
-                )
+                    inputConnection.clearMetaKeyStates(KeyEvent.META_SHIFT_MASK)
+                } else {
+                    inputConnection.sendKeyEvent(
+                        KeyEvent(
+                            KeyEvent.ACTION_DOWN,
+                            KeyEvent.KEYCODE_DPAD_LEFT
+                        )
+                    )
+                    inputConnection.sendKeyEvent(
+                        KeyEvent(
+                            KeyEvent.ACTION_UP,
+                            KeyEvent.KEYCODE_DPAD_LEFT
+                        )
+                    )
+                }
             }
+
+
             MyKeyboard.KEYCODE_RIGHT -> {
-                inputConnection.sendKeyEvent(
-                    KeyEvent(
-                        KeyEvent.ACTION_DOWN,
-                        KeyEvent.KEYCODE_DPAD_RIGHT
+                // Select if select is on.
+                if ((keyboard ?: return).mSelectState > SELECT_OFF) {
+                    inputConnection.sendKeyEvent(
+                        KeyEvent(
+                            0,
+                            0,
+                            KeyEvent.ACTION_DOWN,
+                            KeyEvent.KEYCODE_DPAD_RIGHT,
+                            0,
+                            KeyEvent.META_SHIFT_MASK
+                        )
                     )
-                )
-                inputConnection.sendKeyEvent(
-                    KeyEvent(
-                        KeyEvent.ACTION_UP,
-                        KeyEvent.KEYCODE_DPAD_RIGHT
+                    inputConnection.sendKeyEvent(
+                        KeyEvent(
+                            0,
+                            0,
+                            KeyEvent.ACTION_UP,
+                            KeyEvent.KEYCODE_DPAD_RIGHT,
+                            0,
+                            KeyEvent.META_SHIFT_MASK
+                        )
                     )
-                )
+                    inputConnection.clearMetaKeyStates(KeyEvent.META_SHIFT_MASK)
+                } else {
+                    inputConnection.sendKeyEvent(
+                        KeyEvent(
+                            KeyEvent.ACTION_DOWN,
+                            KeyEvent.KEYCODE_DPAD_RIGHT
+                        )
+                    )
+                    inputConnection.sendKeyEvent(
+                        KeyEvent(
+                            KeyEvent.ACTION_UP,
+                            KeyEvent.KEYCODE_DPAD_RIGHT
+                        )
+                    )
+                }
             }
+
+            MyKeyboard.KEYCODE_PGUP -> {
+                // Select if select is on.
+                if ((keyboard ?: return).mSelectState > SELECT_OFF) {
+                    inputConnection.sendKeyEvent(
+                        KeyEvent(
+                            0,
+                            0,
+                            KeyEvent.ACTION_DOWN,
+                            KeyEvent.KEYCODE_PAGE_UP,
+                            0,
+                            KeyEvent.META_SHIFT_MASK
+                        )
+                    )
+                    inputConnection.sendKeyEvent(
+                        KeyEvent(
+                            0,
+                            0,
+                            KeyEvent.ACTION_UP,
+                            KeyEvent.KEYCODE_PAGE_UP,
+                            0,
+                            KeyEvent.META_SHIFT_MASK
+                        )
+                    )
+                    inputConnection.clearMetaKeyStates(KeyEvent.META_SHIFT_MASK)
+                } else {
+                    inputConnection.sendKeyEvent(
+                        KeyEvent(
+                            KeyEvent.ACTION_DOWN,
+                            KeyEvent.KEYCODE_PAGE_UP
+                        )
+                    )
+                    inputConnection.sendKeyEvent(
+                        KeyEvent(
+                            KeyEvent.ACTION_UP,
+                            KeyEvent.KEYCODE_PAGE_UP
+                        )
+                    )
+                }
+            }
+
+            MyKeyboard.KEYCODE_PGDN -> {
+                // Select if select is on.
+                if ((keyboard ?: return).mSelectState > SELECT_OFF) {
+                    inputConnection.sendKeyEvent(
+                        KeyEvent(
+                            0,
+                            0,
+                            KeyEvent.ACTION_DOWN,
+                            KeyEvent.KEYCODE_PAGE_DOWN,
+                            0,
+                            KeyEvent.META_SHIFT_MASK
+                        )
+                    )
+                    inputConnection.sendKeyEvent(
+                        KeyEvent(
+                            0,
+                            0,
+                            KeyEvent.ACTION_UP,
+                            KeyEvent.KEYCODE_PAGE_DOWN,
+                            0,
+                            KeyEvent.META_SHIFT_MASK
+                        )
+                    )
+                    inputConnection.clearMetaKeyStates(KeyEvent.META_SHIFT_MASK)
+                } else {
+                    inputConnection.sendKeyEvent(
+                        KeyEvent(
+                            KeyEvent.ACTION_DOWN,
+                            KeyEvent.KEYCODE_PAGE_DOWN
+                        )
+                    )
+                    inputConnection.sendKeyEvent(
+                        KeyEvent(
+                            KeyEvent.ACTION_UP,
+                            KeyEvent.KEYCODE_PAGE_DOWN
+                        )
+                    )
+                }
+            }
+
+            MyKeyboard.KEYCODE_HOME -> {
+                // Select if select is on.
+                if ((keyboard ?: return).mSelectState > SELECT_OFF) {
+                    inputConnection.sendKeyEvent(
+                        KeyEvent(
+                            0,
+                            0,
+                            KeyEvent.ACTION_DOWN,
+                            KeyEvent.KEYCODE_MOVE_HOME,
+                            0,
+                            KeyEvent.META_SHIFT_MASK
+                        )
+                    )
+                    inputConnection.sendKeyEvent(
+                        KeyEvent(
+                            0,
+                            0,
+                            KeyEvent.ACTION_UP,
+                            KeyEvent.KEYCODE_MOVE_HOME,
+                            0,
+                            KeyEvent.META_SHIFT_MASK
+                        )
+                    )
+                    inputConnection.clearMetaKeyStates(KeyEvent.META_SHIFT_MASK)
+                } else {
+                    inputConnection.sendKeyEvent(
+                        KeyEvent(
+                            KeyEvent.ACTION_DOWN,
+                            KeyEvent.KEYCODE_MOVE_HOME
+                        )
+                    )
+                    inputConnection.sendKeyEvent(
+                        KeyEvent(
+                            KeyEvent.ACTION_UP,
+                            KeyEvent.KEYCODE_MOVE_HOME
+                        )
+                    )
+                }
+            }
+
+            MyKeyboard.KEYCODE_END -> {
+                // Select if select is on.
+                if ((keyboard ?: return).mSelectState > SELECT_OFF) {
+                    inputConnection.sendKeyEvent(
+                        KeyEvent(
+                            0,
+                            0,
+                            KeyEvent.ACTION_DOWN,
+                            KeyEvent.KEYCODE_MOVE_END,
+                            0,
+                            KeyEvent.META_SHIFT_MASK
+                        )
+                    )
+                    inputConnection.sendKeyEvent(
+                        KeyEvent(
+                            0,
+                            0,
+                            KeyEvent.ACTION_UP,
+                            KeyEvent.KEYCODE_MOVE_END,
+                            0,
+                            KeyEvent.META_SHIFT_MASK
+                        )
+                    )
+                    inputConnection.clearMetaKeyStates(KeyEvent.META_SHIFT_MASK)
+                } else {
+                    inputConnection.sendKeyEvent(
+                        KeyEvent(
+                            KeyEvent.ACTION_DOWN,
+                            KeyEvent.KEYCODE_MOVE_END
+                        )
+                    )
+                    inputConnection.sendKeyEvent(
+                        KeyEvent(
+                            KeyEvent.ACTION_UP,
+                            KeyEvent.KEYCODE_MOVE_END
+                        )
+                    )
+                }
+            }
+
+            /////////////////////////////////////////// ///////////////////// ///////////////////////////////////////
+
+
             MyKeyboard.KEYCODE_ENTER -> {
                 val imeOptionsActionId = getImeOptionsActionId()
                 if (imeOptionsActionId != IME_ACTION_NONE) {
@@ -328,7 +683,6 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
                     keyboardMode = KEYBOARD_LETTERS_SECOND
                     baseContext.config.keyboardLanguage = LANGUAGE_UKRAINIAN
                     getKeyboardLayoutXML()
-
                 } else {
                     keyboardMode = KEYBOARD_LETTERS
                     baseContext.config.keyboardLanguage = LANGUAGE_ENGLISH_QWERTY
@@ -360,6 +714,7 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
                 keyboardView?.openClipboardManager()
             }
             MyKeyboard.KEYCODE_SETTINGS -> {
+
                 Intent(baseContext, SettingsActivity::class.java).apply {
                     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     baseContext.startActivity(this)
@@ -421,11 +776,8 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
                             KeyEvent.META_CTRL_MASK
                         )
                     )
-                    if ((keyboard ?: return).mControlState == CONTROL_ON_ONE_CHAR) {
-                        (keyboard ?: return).mControlState = CONTROL_OFF
-                    }
                     inputConnection.clearMetaKeyStates(KeyEvent.META_CTRL_MASK)
-                    (keyboardView ?: return).invalidateAllKeys()
+                    invalidateControlKey()
                     return
                 }
 
@@ -434,31 +786,30 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
                     codeChar = Character.toUpperCase(codeChar)
                 }
 
-                // If the keyboard is set to symbols and the user presses space, we usually should switch back to the letters keyboard.
-                // However, avoid doing that in cases when the EditText for example requires numbers as the input.
-                // We can detect that by the text not changing on pressing Space.
-                /**
-                if (keyboardMode != KEYBOARD_LETTERS && code == MyKeyboard.KEYCODE_SPACE) {
-                val originalText = inputConnection.getExtractedText(ExtractedTextRequest(), 0)?.text ?: return
-                inputConnection.commitText(codeChar.toString(), 1)
-                val newText = inputConnection.getExtractedText(ExtractedTextRequest(), 0).text
-                switchToLetters = originalText != newText
-                } else {
-                inputConnection.commitText(codeChar.toString(), 1)
-                }
-                 */
                 inputConnection.commitText(codeChar.toString(), 1)
 
-                if ((keyboard ?: return).mShiftState == SHIFT_ON_ONE_CHAR) {
-                    (keyboard ?: return).mShiftState = SHIFT_OFF
-                    (keyboardView ?: return).invalidateAllKeys()
-                }
-                if ((keyboard ?: return).mControlState == CONTROL_ON_ONE_CHAR) {
-                    (keyboard ?: return).mControlState = CONTROL_OFF
-                    (keyboardView ?: return).invalidateAllKeys()
-                }
+                invalidateShiftKey()
+                invalidateControlKey()
+                invalidateSelectKey()
             }
         }
+    }
+
+    private fun invalidateShiftKey() {
+        if ((keyboard ?: return).mShiftState == SHIFT_ON_ONE_CHAR) {
+            (keyboard ?: return).mShiftState = SHIFT_OFF
+        }
+        (keyboardView ?: return).invalidateAllKeys()
+    }
+
+    private fun invalidateControlKey() {
+        (keyboard ?: return).mControlState = CONTROL_OFF
+        (keyboardView ?: return).invalidateAllKeys()
+    }
+
+    private fun invalidateSelectKey() {
+        (keyboard ?: return).mSelectState = SELECT_OFF
+        (keyboardView ?: return).invalidateAllKeys()
     }
 
     private fun getImeOptionsActionId(): Int {

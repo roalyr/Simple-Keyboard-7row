@@ -18,6 +18,7 @@
     </declare-styleable>
 
     <declare-styleable name="MyKeyboard_Key">
+        <attr name="labelSize" format="float" />
         <!-- The unicode value that this key outputs. -->
         <attr name="code" format="integer" />
         <!-- The XML keyboard layout of any popup keyboard. -->

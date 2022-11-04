@@ -5,7 +5,10 @@ const val SHIFT_ON_ONE_CHAR: Int = 1
 const val SHIFT_ON_PERMANENT: Int = 2
 
 const val CONTROL_OFF: Int = 0
-const val CONTROL_ON_ONE_CHAR: Int = 1
+const val CONTROL_ON: Int = 1
+
+const val SELECT_OFF: Int = 0
+const val SELECT_ON: Int = 1
 
 // limit the count of alternative characters that show up at long pressing a key
 const val MAX_KEYS_PER_MINI_ROW: Int = 10

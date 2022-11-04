@@ -3,274 +3,129 @@
 <Keyboard xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <!-- Top row -->
-    <Row app:rowHeight="50dp">
+    <Row app:rowHeight="100dp">
         <Key
-            app:keyLabel="A"
-            app:code="0"
+            app:keyLabel="TAB"
+            app:code="-3"
             app:keyWidth="20%p"
-            app:keyRowEdgeFlags="bottom"
-            app:isCompound="true"
             app:specKey="true"
             app:keyEdgeFlags="left"
             />
         <Key
-            app:keyLabel="B"
-            app:code="0"
+            app:keyLabel="PASTE"
+            app:code="-19"
             app:keyWidth="20%p"
-            app:keyRowEdgeFlags="bottom"
-            app:isCompound="true"
             app:specKey="true"
             />
         <Key
-            app:keyLabel="C"
-            app:code="0"
+            app:keyLabel="▲"
+            app:labelSize="2.0"
+            app:code="-10"
+            app:isRepeatable="true"
             app:keyWidth="20%p"
-            app:keyRowEdgeFlags="bottom"
-            app:isCompound="true"
             app:specKey="true" />
         <Key
-            app:keyLabel="D"
-            app:code="0"
+            app:keyLabel="COPY"
+            app:code="-20"
             app:keyWidth="20%p"
-            app:keyRowEdgeFlags="bottom"
-            app:isCompound="true"
             app:specKey="true"
             />
         <Key
-            app:keyLabel="E"
-            app:code="0"
+            app:keyLabel="CUT"
+            app:code="-21"
             app:keyWidth="20%p"
-            app:keyRowEdgeFlags="bottom"
-            app:isCompound="true"
             app:specKey="true"
             app:keyEdgeFlags="right"
             />
     </Row>
 
-    <Row app:rowHeight="50dp">
-        <Key
-            app:keyLabel="A"
-            app:code="0"
-            app:keyWidth="20%p"
-            app:keyRowEdgeFlags="top"
-            app:isCompound="true"
-            app:specKey="true"
-            app:keyEdgeFlags="left"
-            />
-        <Key
-            app:keyLabel="B"
-            app:code="0"
-            app:keyWidth="20%p"
-            app:keyRowEdgeFlags="top"
-            app:isCompound="true"
-            app:specKey="true"
-            />
-        <Key
-            app:keyLabel="C"
-            app:code="0"
-            app:keyWidth="20%p"
-            app:keyRowEdgeFlags="top"
-            app:isCompound="true"
-            app:specKey="true" />
-        <Key
-            app:keyLabel="D"
-            app:code="0"
-            app:keyWidth="20%p"
-            app:keyRowEdgeFlags="top"
-            app:isCompound="true"
-            app:specKey="true"
-            />
-        <Key
-            app:keyLabel="E"
-            app:code="0"
-            app:keyWidth="20%p"
-            app:keyRowEdgeFlags="top"
-            app:isCompound="true"
-            app:specKey="true"
-            app:keyEdgeFlags="right"
-            />
-    </Row>
+   
 
     <!-- Mid row -->
-    <Row app:rowHeight="50dp">
+    <Row app:rowHeight="100dp">
         <Key
-            app:keyLabel="F"
-            app:code="0"
+            app:keyLabel="⌫"
+            app:labelSize="2.0"
+            app:code="-5"
+            app:isRepeatable="true"
             app:keyWidth="20%p"
-            app:keyRowEdgeFlags="bottom"
-            app:isCompound="true"
             app:specKey="true"
             app:keyEdgeFlags="left"
             />
         <Key
-            app:keyLabel="G"
-            app:code="0"
+            app:keyLabel="◀"
+            app:labelSize="2.0"
+            app:code="-12"
+            app:isRepeatable="true"
             app:keyWidth="20%p"
-            app:keyRowEdgeFlags="bottom"
-            app:isCompound="true"
             app:specKey="true"
             />
         <Key
-            app:keyLabel="H"
-            app:code="0"
+            app:keyLabel="○"
+            app:labelSize="3.0"
+            app:popupCharacters="spec[☻; -6], spec[🔍; -16], spec[🔧; -15] "
+            app:popupKeyboard="@xml/keyboard_popup_template"
+            app:code="-22"
             app:keyWidth="20%p"
-            app:keyRowEdgeFlags="bottom"
-            app:isCompound="true"
             app:specKey="true" />
         <Key
-            app:keyLabel="I"
-            app:code="0"
+            app:keyLabel="▶"
+            app:labelSize="2.0"
+            app:code="-13"
+            app:isRepeatable="true"
             app:keyWidth="20%p"
-            app:keyRowEdgeFlags="bottom"
-            app:isCompound="true"
             app:specKey="true"
             />
         <Key
-            app:keyLabel="J"
-            app:code="0"
+            app:keyLabel="⌦"
+            app:labelSize="2.0"
+            app:code="-18"
+            app:isRepeatable="true"
             app:keyWidth="20%p"
-            app:keyRowEdgeFlags="bottom"
-            app:isCompound="true"
             app:specKey="true"
             app:keyEdgeFlags="right"
             />
     </Row>
 
-    <Row app:rowHeight="50dp">
-        <Key
-            app:keyLabel="F"
-            app:code="0"
-            app:keyWidth="20%p"
-            app:keyRowEdgeFlags="top"
-            app:isCompound="true"
-            app:specKey="true"
-            app:keyEdgeFlags="left"
-            />
-        <Key
-            app:keyLabel="G"
-            app:code="0"
-            app:keyWidth="20%p"
-            app:keyRowEdgeFlags="top"
-            app:isCompound="true"
-            app:specKey="true"
-            />
-        <Key
-            app:keyLabel="H"
-            app:code="0"
-            app:keyWidth="20%p"
-            app:keyRowEdgeFlags="top"
-            app:isCompound="true"
-            app:specKey="true" />
-        <Key
-            app:keyLabel="I"
-            app:code="0"
-            app:keyWidth="20%p"
-            app:keyRowEdgeFlags="top"
-            app:isCompound="true"
-            app:specKey="true"
-            />
-        <Key
-            app:keyLabel="J"
-            app:code="0"
-            app:keyWidth="20%p"
-            app:keyRowEdgeFlags="top"
-            app:isCompound="true"
-            app:specKey="true"
-            app:keyEdgeFlags="right"
-            />
-    </Row>
-
+   
     <!-- Lower row -->
-    <Row app:rowHeight="50dp">
+    <Row app:rowHeight="100dp">
         <Key
-            app:keyLabel="K"
-            app:code="0"
+            app:keyLabel="PGDN"
+            app:code="-23"
+            app:isRepeatable="true"
             app:keyWidth="20%p"
-            app:keyRowEdgeFlags="bottom"
-            app:isCompound="true"
             app:specKey="true"
             app:keyEdgeFlags="left"
             />
         <Key
-            app:keyLabel="L"
-            app:code="0"
+            app:keyLabel="HOME"
+            app:code="-25"
             app:keyWidth="20%p"
-            app:keyRowEdgeFlags="bottom"
-            app:isCompound="true"
             app:specKey="true"
             />
         <Key
-            app:keyLabel="M"
-            app:code="0"
+            app:keyLabel="▼"
+            app:labelSize="2.0"
+            app:code="-11"
+            app:isRepeatable="true"
             app:keyWidth="20%p"
-            app:keyRowEdgeFlags="bottom"
-            app:isCompound="true"
             app:specKey="true" />
         <Key
-            app:keyLabel="N"
-            app:code="0"
+            app:keyLabel="END"
+            app:code="-26"
             app:keyWidth="20%p"
-            app:keyRowEdgeFlags="bottom"
-            app:isCompound="true"
             app:specKey="true"
             />
         <Key
-            app:keyLabel="O"
-            app:code="0"
+            app:keyLabel="PGUP"
+            app:code="-24"
+            app:isRepeatable="true"
             app:keyWidth="20%p"
-            app:keyRowEdgeFlags="bottom"
-            app:isCompound="true"
             app:specKey="true"
             app:keyEdgeFlags="right"
             />
     </Row>
-
-    <Row app:rowHeight="50dp">
-        <Key
-            app:keyLabel="K"
-            app:code="0"
-            app:keyWidth="20%p"
-            app:keyRowEdgeFlags="top"
-            app:isCompound="true"
-            app:specKey="true"
-            app:keyEdgeFlags="left"
-            />
-        <Key
-            app:keyLabel="L"
-            app:code="0"
-            app:keyWidth="20%p"
-            app:keyRowEdgeFlags="top"
-            app:isCompound="true"
-            app:specKey="true"
-            />
-        <Key
-            app:keyLabel="M"
-            app:code="0"
-            app:keyWidth="20%p"
-            app:keyRowEdgeFlags="top"
-            app:isCompound="true"
-            app:specKey="true" />
-        <Key
-            app:keyLabel="N"
-            app:code="0"
-            app:keyWidth="20%p"
-            app:keyRowEdgeFlags="top"
-            app:isCompound="true"
-            app:specKey="true"
-            />
-        <Key
-            app:keyLabel="O"
-            app:code="0"
-            app:keyWidth="20%p"
-            app:keyRowEdgeFlags="top"
-            app:isCompound="true"
-            app:specKey="true"
-            app:keyEdgeFlags="right"
-            />
-    </Row>
-
-    <!-- Row to compensate a gap -->
-    <Row app:rowHeight = "1.5dp"></Row>
 
     <!-- BOTTOM ROWS -->
     <Row app:rowHeight="60dp">

@@ -38,6 +38,9 @@ class MyKeyboard {
     /** If the ctrl key pressed  */
     var mControlState: Int = CONTROL_OFF
 
+    /** If the ctrl key pressed  */
+    var mSelectState: Int = SELECT_OFF
+
     /** Total height of the keyboard, including the padding and keys  */
     var mHeight: Int = 0
 
@@ -85,6 +88,17 @@ class MyKeyboard {
         const val KEYCODE_SETTINGS: Int = -15
         const val KEYCODE_SEARCH = -16
         const val KEYCODE_LAYOUT_EDIT = -17
+
+        const val KEYCODE_FORWARD_DELETE: Int = -18
+        const val KEYCODE_PASTE: Int = -19
+        const val KEYCODE_COPY: Int = -20
+        const val KEYCODE_CUT: Int = -21
+        const val KEYCODE_SELECT: Int = -22
+
+        const val KEYCODE_PGDN: Int = -23
+        const val KEYCODE_PGUP: Int = -24
+        const val KEYCODE_HOME = -25
+        const val KEYCODE_END = -26
 
         fun getDimensionOrFraction(a: TypedArray, index: Int, base: Int, defValue: Int): Int {
             val value = a.peekValue(index) ?: return defValue
@@ -176,6 +190,9 @@ class MyKeyboard {
         /** Key code that this key generates.  */
         var code: Int = 0
 
+        /** Key label size factor.  */
+        var label_size: Float = 1.0F
+
         /** Label to display  */
         var label: CharSequence = ""
 
@@ -263,7 +280,7 @@ class MyKeyboard {
             a.recycle()
             a = res.obtainAttributes(Xml.asAttributeSet(parser), R.styleable.MyKeyboard_Key)
             code = a.getInt(R.styleable.MyKeyboard_Key_code, 0)
-
+            label_size = a.getFloat(R.styleable.MyKeyboard_Key_labelSize, 1.0F)
             popupCharacters = a.getText(R.styleable.MyKeyboard_Key_popupCharacters)
 
             popupResId = a.getResourceId(R.styleable.MyKeyboard_Key_popupKeyboard, 0)
@@ -416,32 +433,6 @@ class MyKeyboard {
                 mMinWidth = x
             }
         }
-
-
-        /**
-        characters.forEachIndexed { index, character ->
-            val key = Key(row)
-            if (column >= MAX_KEYS_PER_MINI_ROW) {
-                column = 0
-                x = 0
-                y += mDefaultHeight
-                mRows.add(row)
-                row.mKeys.clear()
-            }
-
-            key.x = x
-            key.y = y
-            key.label = character.toString()
-            key.code = character.code
-            column++
-            x += key.width + key.gap
-            (mKeys ?: return@forEachIndexed).add(key)
-            row.mKeys.add(key)
-            if (x > mMinWidth) {
-                mMinWidth = x
-            }
-        }
-        */
 
         mHeight = y + mDefaultHeight
         mRows.add(row)

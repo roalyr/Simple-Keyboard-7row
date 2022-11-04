@@ -41,6 +41,7 @@ import com.roalyr.simple_7row_keyboard.helpers.MyKeyboard.Companion.KEYCODE_ENTE
 import com.roalyr.simple_7row_keyboard.helpers.MyKeyboard.Companion.KEYCODE_LAYOUT_CHANGE
 import com.roalyr.simple_7row_keyboard.helpers.MyKeyboard.Companion.KEYCODE_SHIFT
 import com.roalyr.simple_7row_keyboard.helpers.MyKeyboard.Companion.KEYCODE_CONTROL
+import com.roalyr.simple_7row_keyboard.helpers.MyKeyboard.Companion.KEYCODE_SELECT
 import com.roalyr.simple_7row_keyboard.helpers.MyKeyboard.Companion.KEYCODE_SPACE
 import com.roalyr.simple_7row_keyboard.interfaces.RefreshClipsListener
 import com.roalyr.simple_7row_keyboard.models.Clip
@@ -592,18 +593,27 @@ class MyKeyboardView @JvmOverloads constructor(
                 if (code == KEYCODE_CONTROL) {
                     val textlabel = when ((mKeyboard ?: return).mControlState) {
                         CONTROL_OFF -> "Ctrl"
-                        CONTROL_ON_ONE_CHAR -> "CTRL"
+                        CONTROL_ON -> "CTRL"
                         else -> "CTRL"
+                    }
+                    label = textlabel
+                }
+
+                // Select key icon switching.
+                if (code == KEYCODE_SELECT) {
+                    val textlabel = when ((mKeyboard ?: return).mSelectState) {
+                        SELECT_OFF -> "○"
+                        else -> "◉"
                     }
                     label = textlabel
                 }
 
                 // For characters, use large font. For labels like "Done", use small font.
                 if (label.length > 1) {
-                    paint.textSize = mSpecLabelTextSize.toFloat()
+                    paint.textSize = mSpecLabelTextSize.toFloat()*key.label_size
                     paint.typeface = Typeface.DEFAULT_BOLD
                 } else {
-                    paint.textSize = mKeyLabelTextSize.toFloat()
+                    paint.textSize = mKeyLabelTextSize.toFloat()*key.label_size
                     paint.typeface = Typeface.DEFAULT
                 }
 
