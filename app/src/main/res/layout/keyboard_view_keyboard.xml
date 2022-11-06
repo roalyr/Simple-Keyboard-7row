@@ -21,17 +21,50 @@
         android:layout_height="0dp"
         android:clickable="true"
         android:focusable="true"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/keyboard_view"
         tools:ignore="DuplicateClickableBoundsCheck">
 
+
+        <ImageView
+            android:id="@+id/emoji_palette_undo"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="@dimen/small_margin"
+            android:layout_marginTop="@dimen/small_margin"
+            android:layout_marginEnd="@dimen/small_margin"
+            android:layout_marginRight="@dimen/small_margin"
+            android:layout_marginBottom="@dimen/small_margin"
+            android:background="@drawable/button_background_rounded"
+            android:contentDescription="Undo"
+            android:padding="@dimen/small_margin"
+            android:src="@drawable/ic_left_circular_arrow_vector"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/emoji_palette_close"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_below="@id/emoji_palette_undo"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="@dimen/small_margin"
+            android:layout_marginEnd="@dimen/small_margin"
+            android:layout_marginRight="@dimen/small_margin"
+            android:layout_marginBottom="@dimen/small_margin"
+            android:background="@drawable/button_background_rounded"
+            android:contentDescription="Back to keyboard"
+            android:padding="@dimen/small_margin"
+            android:src="@drawable/ic_close_svgrepo_com"
+            android:visibility="visible" />
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@id/emoji_palette_bottom_bar">
+            android:layout_toLeftOf="@id/emoji_palette_undo">
 
             <com.roalyr.commons.views.MyRecyclerView
                 android:id="@+id/emojis_list"
@@ -43,27 +76,6 @@
 
         </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/emoji_palette_bottom_bar"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/toolbar_height"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:id="@+id/emoji_palette_close"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:ellipsize="end"
-                android:lines="1"
-                android:text="Return back to keyboard"
-                android:textAlignment="center"
-                android:textSize="20sp"
-                tools:layout_centerInParent="true" />
-
-        </RelativeLayout>
     </RelativeLayout>
 
     <RelativeLayout
@@ -71,7 +83,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:clickable="true"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -79,19 +91,72 @@
 
         <ImageView
             android:id="@+id/clipboard_manager_delete"
-            android:layout_width="@dimen/toolbar_icon_height"
-            android:layout_height="@dimen/toolbar_icon_height"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignParentEnd="true"
-            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:layout_marginStart="@dimen/small_margin"
+            android:layout_marginTop="@dimen/small_margin"
+            android:layout_marginEnd="@dimen/small_margin"
+            android:layout_marginRight="@dimen/small_margin"
+            android:layout_marginBottom="@dimen/small_margin"
+            android:background="@drawable/button_background_rounded"
             android:contentDescription="Delete"
             android:padding="@dimen/small_margin"
-            android:src="@drawable/ic_delete_vector" />
+            android:src="@drawable/ic_delete_vector"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/clipboard_manager_manage"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/clipboard_manager_delete"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="@dimen/small_margin"
+            android:layout_marginEnd="@dimen/small_margin"
+            android:layout_marginRight="@dimen/small_margin"
+            android:layout_marginBottom="@dimen/small_margin"
+            android:background="@drawable/button_background_rounded"
+            android:contentDescription="@string/manage_clipboard_items"
+            android:padding="@dimen/small_margin"
+            android:src="@drawable/ic_set_as_vector"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/clipboard_manager_undo"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@id/clipboard_manager_manage"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="@dimen/small_margin"
+            android:layout_marginEnd="@dimen/small_margin"
+            android:layout_marginRight="@dimen/small_margin"
+            android:layout_marginBottom="@dimen/small_margin"
+            android:background="@drawable/button_background_rounded"
+            android:contentDescription="Undo"
+            android:padding="@dimen/small_margin"
+            android:src="@drawable/ic_left_circular_arrow_vector"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/clipboard_manager_close"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_below="@id/clipboard_manager_undo"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="@dimen/small_margin"
+            android:layout_marginEnd="@dimen/small_margin"
+            android:layout_marginRight="@dimen/small_margin"
+            android:layout_marginBottom="@dimen/small_margin"
+            android:background="@drawable/button_background_rounded"
+            android:contentDescription="Back to keyboard"
+            android:padding="@dimen/small_margin"
+            android:src="@drawable/ic_close_svgrepo_com"
+            android:visibility="visible" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@id/clpboard_bottom_bar"
-            android:layout_below="@id/clipboard_manager_delete">
+            android:layout_toLeftOf="@id/clipboard_manager_delete">
 
             <TextView
                 android:id="@+id/clipboard_content_placeholder_1"
@@ -104,7 +169,7 @@
                 android:paddingEnd="@dimen/big_margin"
                 android:text="@string/manage_clipboard_empty"
                 android:textSize="@dimen/bigger_text_size"
-                android:visibility="gone" />
+                android:visibility="invisible" />
 
             <TextView
                 android:id="@+id/clipboard_content_placeholder_2"
@@ -118,51 +183,16 @@
                 android:paddingEnd="@dimen/big_margin"
                 android:text="@string/manage_clipboard_label"
                 android:textSize="@dimen/normal_text_size"
-                android:visibility="gone" />
+                android:visibility="invisible" />
 
             <com.roalyr.commons.views.MyRecyclerView
                 android:id="@+id/clips_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
-                android:padding="@dimen/small_margin"
+                android:padding="@dimen/tiny_margin"
                 app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
-                app:spanCount="2" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/clpboard_bottom_bar"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/toolbar_height"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:id="@+id/clipboard_manager_close"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:ellipsize="end"
-                android:lines="1"
-                android:text="Return back to keyboard"
-                android:textAlignment="center"
-                android:textSize="20sp"
-                tools:layout_centerInParent="true" />
-
-            <ImageView
-                android:id="@+id/clipboard_manager_manage"
-                android:layout_width="@dimen/toolbar_icon_height"
-                android:layout_height="@dimen/toolbar_icon_height"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/medium_margin"
-                android:layout_marginEnd="@dimen/medium_margin"
-                android:background="?android:attr/selectableItemBackgroundBorderless"
-                android:contentDescription="@string/manage_clipboard_items"
-                android:padding="@dimen/small_margin"
-                android:src="@drawable/ic_set_as_vector" />
+                app:spanCount="1" />
 
         </RelativeLayout>
 

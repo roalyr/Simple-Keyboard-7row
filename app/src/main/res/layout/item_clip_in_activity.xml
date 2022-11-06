@@ -19,7 +19,7 @@
         android:ellipsize="end"
         android:gravity="start"
         android:maxLines="10"
-        android:padding="@dimen/activity_margin"
+        android:padding="@dimen/medium_margin"
         android:textSize="@dimen/normal_text_size"
         tools:text="Hello, how are you?" />
 
@@ -31,6 +31,6 @@
         android:layout_centerVertical="true"
         android:padding="@dimen/small_margin"
         android:src="@drawable/ic_drag_handle_vector"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
 </RelativeLayout>

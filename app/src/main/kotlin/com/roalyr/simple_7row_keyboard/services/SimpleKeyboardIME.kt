@@ -15,6 +15,7 @@ import android.view.inputmethod.EditorInfo.IME_ACTION_NONE
 import android.view.inputmethod.EditorInfo.IME_FLAG_NO_ENTER_ACTION
 import android.view.inputmethod.EditorInfo.IME_MASK_ACTION
 import android.view.inputmethod.ExtractedTextRequest
+import android.view.inputmethod.InputConnection
 import com.roalyr.simple_7row_keyboard.R
 import com.roalyr.simple_7row_keyboard.activities.SettingsActivity
 import com.roalyr.simple_7row_keyboard.extensions.config
@@ -310,324 +311,35 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
 
             /////////////////////////////////////////// NAVIGATION AND SELECT KEYS ///////////////////////////////////////
             MyKeyboard.KEYCODE_UP -> {
-                // Select if select is on.
-                if ((keyboard ?: return).mSelectState > SELECT_OFF) {
-                    inputConnection.sendKeyEvent(
-                        KeyEvent(
-                            0,
-                            0,
-                            KeyEvent.ACTION_DOWN,
-                            KeyEvent.KEYCODE_DPAD_UP,
-                            0,
-                            KeyEvent.META_SHIFT_MASK
-                        )
-                    )
-                    inputConnection.sendKeyEvent(
-                        KeyEvent(
-                            0,
-                            0,
-                            KeyEvent.ACTION_UP,
-                            KeyEvent.KEYCODE_DPAD_UP,
-                            0,
-                            KeyEvent.META_SHIFT_MASK
-                        )
-                    )
-                    inputConnection.clearMetaKeyStates(KeyEvent.META_SHIFT_MASK)
-                } else {
-                    inputConnection.sendKeyEvent(
-                        KeyEvent(
-                            KeyEvent.ACTION_DOWN,
-                            KeyEvent.KEYCODE_DPAD_UP
-                        )
-                    )
-                    inputConnection.sendKeyEvent(
-                        KeyEvent(
-                            KeyEvent.ACTION_UP,
-                            KeyEvent.KEYCODE_DPAD_UP
-                        )
-                    )
-                }
+                processNavigationKey(inputConnection, KeyEvent.KEYCODE_DPAD_UP)
             }
 
             MyKeyboard.KEYCODE_DOWN -> {
-                // Select if select is on.
-                if ((keyboard ?: return).mSelectState > SELECT_OFF) {
-                    inputConnection.sendKeyEvent(
-                        KeyEvent(
-                            0,
-                            0,
-                            KeyEvent.ACTION_DOWN,
-                            KeyEvent.KEYCODE_DPAD_DOWN,
-                            0,
-                            KeyEvent.META_SHIFT_MASK
-                        )
-                    )
-                    inputConnection.sendKeyEvent(
-                        KeyEvent(
-                            0,
-                            0,
-                            KeyEvent.ACTION_UP,
-                            KeyEvent.KEYCODE_DPAD_DOWN,
-                            0,
-                            KeyEvent.META_SHIFT_MASK
-                        )
-                    )
-                    inputConnection.clearMetaKeyStates(KeyEvent.META_SHIFT_MASK)
-                } else {
-                    inputConnection.sendKeyEvent(
-                        KeyEvent(
-                            KeyEvent.ACTION_DOWN,
-                            KeyEvent.KEYCODE_DPAD_DOWN
-                        )
-                    )
-                    inputConnection.sendKeyEvent(
-                        KeyEvent(
-                            KeyEvent.ACTION_UP,
-                            KeyEvent.KEYCODE_DPAD_DOWN
-                        )
-                    )
-                }
+                processNavigationKey(inputConnection, KeyEvent.KEYCODE_DPAD_DOWN)
             }
 
             MyKeyboard.KEYCODE_LEFT -> {
-                // Select if select is on.
-                if ((keyboard ?: return).mSelectState > SELECT_OFF) {
-                    inputConnection.sendKeyEvent(
-                        KeyEvent(
-                            0,
-                            0,
-                            KeyEvent.ACTION_DOWN,
-                            KeyEvent.KEYCODE_DPAD_LEFT,
-                            0,
-                            KeyEvent.META_SHIFT_MASK
-                        )
-                    )
-                    inputConnection.sendKeyEvent(
-                        KeyEvent(
-                            0,
-                            0,
-                            KeyEvent.ACTION_UP,
-                            KeyEvent.KEYCODE_DPAD_LEFT,
-                            0,
-                            KeyEvent.META_SHIFT_MASK
-                        )
-                    )
-                    inputConnection.clearMetaKeyStates(KeyEvent.META_SHIFT_MASK)
-                } else {
-                    inputConnection.sendKeyEvent(
-                        KeyEvent(
-                            KeyEvent.ACTION_DOWN,
-                            KeyEvent.KEYCODE_DPAD_LEFT
-                        )
-                    )
-                    inputConnection.sendKeyEvent(
-                        KeyEvent(
-                            KeyEvent.ACTION_UP,
-                            KeyEvent.KEYCODE_DPAD_LEFT
-                        )
-                    )
-                }
+                processNavigationKey(inputConnection, KeyEvent.KEYCODE_DPAD_LEFT)
             }
 
-
             MyKeyboard.KEYCODE_RIGHT -> {
-                // Select if select is on.
-                if ((keyboard ?: return).mSelectState > SELECT_OFF) {
-                    inputConnection.sendKeyEvent(
-                        KeyEvent(
-                            0,
-                            0,
-                            KeyEvent.ACTION_DOWN,
-                            KeyEvent.KEYCODE_DPAD_RIGHT,
-                            0,
-                            KeyEvent.META_SHIFT_MASK
-                        )
-                    )
-                    inputConnection.sendKeyEvent(
-                        KeyEvent(
-                            0,
-                            0,
-                            KeyEvent.ACTION_UP,
-                            KeyEvent.KEYCODE_DPAD_RIGHT,
-                            0,
-                            KeyEvent.META_SHIFT_MASK
-                        )
-                    )
-                    inputConnection.clearMetaKeyStates(KeyEvent.META_SHIFT_MASK)
-                } else {
-                    inputConnection.sendKeyEvent(
-                        KeyEvent(
-                            KeyEvent.ACTION_DOWN,
-                            KeyEvent.KEYCODE_DPAD_RIGHT
-                        )
-                    )
-                    inputConnection.sendKeyEvent(
-                        KeyEvent(
-                            KeyEvent.ACTION_UP,
-                            KeyEvent.KEYCODE_DPAD_RIGHT
-                        )
-                    )
-                }
+                processNavigationKey(inputConnection, KeyEvent.KEYCODE_DPAD_RIGHT)
             }
 
             MyKeyboard.KEYCODE_PGUP -> {
-                // Select if select is on.
-                if ((keyboard ?: return).mSelectState > SELECT_OFF) {
-                    inputConnection.sendKeyEvent(
-                        KeyEvent(
-                            0,
-                            0,
-                            KeyEvent.ACTION_DOWN,
-                            KeyEvent.KEYCODE_PAGE_UP,
-                            0,
-                            KeyEvent.META_SHIFT_MASK
-                        )
-                    )
-                    inputConnection.sendKeyEvent(
-                        KeyEvent(
-                            0,
-                            0,
-                            KeyEvent.ACTION_UP,
-                            KeyEvent.KEYCODE_PAGE_UP,
-                            0,
-                            KeyEvent.META_SHIFT_MASK
-                        )
-                    )
-                    inputConnection.clearMetaKeyStates(KeyEvent.META_SHIFT_MASK)
-                } else {
-                    inputConnection.sendKeyEvent(
-                        KeyEvent(
-                            KeyEvent.ACTION_DOWN,
-                            KeyEvent.KEYCODE_PAGE_UP
-                        )
-                    )
-                    inputConnection.sendKeyEvent(
-                        KeyEvent(
-                            KeyEvent.ACTION_UP,
-                            KeyEvent.KEYCODE_PAGE_UP
-                        )
-                    )
-                }
+                processNavigationKey(inputConnection, KeyEvent.KEYCODE_PAGE_UP)
             }
 
             MyKeyboard.KEYCODE_PGDN -> {
-                // Select if select is on.
-                if ((keyboard ?: return).mSelectState > SELECT_OFF) {
-                    inputConnection.sendKeyEvent(
-                        KeyEvent(
-                            0,
-                            0,
-                            KeyEvent.ACTION_DOWN,
-                            KeyEvent.KEYCODE_PAGE_DOWN,
-                            0,
-                            KeyEvent.META_SHIFT_MASK
-                        )
-                    )
-                    inputConnection.sendKeyEvent(
-                        KeyEvent(
-                            0,
-                            0,
-                            KeyEvent.ACTION_UP,
-                            KeyEvent.KEYCODE_PAGE_DOWN,
-                            0,
-                            KeyEvent.META_SHIFT_MASK
-                        )
-                    )
-                    inputConnection.clearMetaKeyStates(KeyEvent.META_SHIFT_MASK)
-                } else {
-                    inputConnection.sendKeyEvent(
-                        KeyEvent(
-                            KeyEvent.ACTION_DOWN,
-                            KeyEvent.KEYCODE_PAGE_DOWN
-                        )
-                    )
-                    inputConnection.sendKeyEvent(
-                        KeyEvent(
-                            KeyEvent.ACTION_UP,
-                            KeyEvent.KEYCODE_PAGE_DOWN
-                        )
-                    )
-                }
+                processNavigationKey(inputConnection, KeyEvent.KEYCODE_PAGE_DOWN)
             }
 
             MyKeyboard.KEYCODE_HOME -> {
-                // Select if select is on.
-                if ((keyboard ?: return).mSelectState > SELECT_OFF) {
-                    inputConnection.sendKeyEvent(
-                        KeyEvent(
-                            0,
-                            0,
-                            KeyEvent.ACTION_DOWN,
-                            KeyEvent.KEYCODE_MOVE_HOME,
-                            0,
-                            KeyEvent.META_SHIFT_MASK
-                        )
-                    )
-                    inputConnection.sendKeyEvent(
-                        KeyEvent(
-                            0,
-                            0,
-                            KeyEvent.ACTION_UP,
-                            KeyEvent.KEYCODE_MOVE_HOME,
-                            0,
-                            KeyEvent.META_SHIFT_MASK
-                        )
-                    )
-                    inputConnection.clearMetaKeyStates(KeyEvent.META_SHIFT_MASK)
-                } else {
-                    inputConnection.sendKeyEvent(
-                        KeyEvent(
-                            KeyEvent.ACTION_DOWN,
-                            KeyEvent.KEYCODE_MOVE_HOME
-                        )
-                    )
-                    inputConnection.sendKeyEvent(
-                        KeyEvent(
-                            KeyEvent.ACTION_UP,
-                            KeyEvent.KEYCODE_MOVE_HOME
-                        )
-                    )
-                }
+                processNavigationKey(inputConnection, KeyEvent.KEYCODE_MOVE_HOME)
             }
 
             MyKeyboard.KEYCODE_END -> {
-                // Select if select is on.
-                if ((keyboard ?: return).mSelectState > SELECT_OFF) {
-                    inputConnection.sendKeyEvent(
-                        KeyEvent(
-                            0,
-                            0,
-                            KeyEvent.ACTION_DOWN,
-                            KeyEvent.KEYCODE_MOVE_END,
-                            0,
-                            KeyEvent.META_SHIFT_MASK
-                        )
-                    )
-                    inputConnection.sendKeyEvent(
-                        KeyEvent(
-                            0,
-                            0,
-                            KeyEvent.ACTION_UP,
-                            KeyEvent.KEYCODE_MOVE_END,
-                            0,
-                            KeyEvent.META_SHIFT_MASK
-                        )
-                    )
-                    inputConnection.clearMetaKeyStates(KeyEvent.META_SHIFT_MASK)
-                } else {
-                    inputConnection.sendKeyEvent(
-                        KeyEvent(
-                            KeyEvent.ACTION_DOWN,
-                            KeyEvent.KEYCODE_MOVE_END
-                        )
-                    )
-                    inputConnection.sendKeyEvent(
-                        KeyEvent(
-                            KeyEvent.ACTION_UP,
-                            KeyEvent.KEYCODE_MOVE_END
-                        )
-                    )
-                }
+                processNavigationKey(inputConnection, KeyEvent.KEYCODE_MOVE_END)
             }
 
             /////////////////////////////////////////// ///////////////////// ///////////////////////////////////////
@@ -795,6 +507,46 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
         }
     }
 
+    private fun processNavigationKey(inputConnection: InputConnection, event: Int) {
+        // Select if select is on.
+        if ((keyboard ?: return).mSelectState > SELECT_OFF) {
+            inputConnection.sendKeyEvent(
+                KeyEvent(
+                    0,
+                    0,
+                    KeyEvent.ACTION_DOWN,
+                    event,
+                    0,
+                    KeyEvent.META_SHIFT_MASK
+                )
+            )
+            inputConnection.sendKeyEvent(
+                KeyEvent(
+                    0,
+                    0,
+                    KeyEvent.ACTION_UP,
+                    event,
+                    0,
+                    KeyEvent.META_SHIFT_MASK
+                )
+            )
+            inputConnection.clearMetaKeyStates(KeyEvent.META_SHIFT_MASK)
+        } else {
+            inputConnection.sendKeyEvent(
+                KeyEvent(
+                    KeyEvent.ACTION_DOWN,
+                    event
+                )
+            )
+            inputConnection.sendKeyEvent(
+                KeyEvent(
+                    KeyEvent.ACTION_UP,
+                    event
+                )
+            )
+        }
+    }
+
     private fun invalidateShiftKey() {
         if ((keyboard ?: return).mShiftState == SHIFT_ON_ONE_CHAR) {
             (keyboard ?: return).mShiftState = SHIFT_OFF
@@ -868,9 +620,11 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
         )
 
         // Do not close the clipboard manager?
+        /**
         if (newSelStart == newSelEnd) {
             keyboardView?.closeClipboardManager()
         }
+        */
     }
 
     private fun moveCursor(moveRight: Boolean) {

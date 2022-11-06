@@ -43,6 +43,7 @@ import com.roalyr.simple_7row_keyboard.helpers.MyKeyboard.Companion.KEYCODE_SHIF
 import com.roalyr.simple_7row_keyboard.helpers.MyKeyboard.Companion.KEYCODE_CONTROL
 import com.roalyr.simple_7row_keyboard.helpers.MyKeyboard.Companion.KEYCODE_SELECT
 import com.roalyr.simple_7row_keyboard.helpers.MyKeyboard.Companion.KEYCODE_SPACE
+import com.roalyr.simple_7row_keyboard.helpers.MyKeyboard.Companion.KEYCODE_UNDO
 import com.roalyr.simple_7row_keyboard.interfaces.RefreshClipsListener
 import com.roalyr.simple_7row_keyboard.models.Clip
 import com.roalyr.simple_7row_keyboard.models.ClipsSectionLabel
@@ -197,7 +198,7 @@ class MyKeyboardView @JvmOverloads constructor(
         private const val DEBOUNCE_TIME = 70
         private const val REPEAT_INTERVAL = 50 // ~20 keys per second
         private const val REPEAT_START_DELAY = 400
-        private const val LONGPRESS_TIMEOUT = 250
+        private const val LONGPRESS_TIMEOUT = 200
     }
 
     init {
@@ -325,18 +326,35 @@ class MyKeyboardView @JvmOverloads constructor(
             mClipboardManagerHolder?.apply {
                 clipboard_manager_holder.background = ColorDrawable(toolbarColor)
 
+                clipboard_manager_delete.applyColorFilter(mTextColor)
+                clipboard_manager_delete.background = ColorDrawable(mPrimaryColor)
+
                 clipboard_manager_manage.applyColorFilter(mTextColor)
+                clipboard_manager_manage.background = ColorDrawable(mPrimaryColor)
+
+                clipboard_manager_close.applyColorFilter(mTextColor)
+                clipboard_manager_close.background = ColorDrawable(mPrimaryColor)
+
+                clipboard_manager_undo.applyColorFilter(mTextColor)
+                clipboard_manager_undo.background = ColorDrawable(mPrimaryColor)
 
                 clipboard_content_placeholder_1.setTextColor(mTextColor)
                 clipboard_content_placeholder_2.setTextColor(mTextColor)
-                clipboard_manager_close.setTextColor(mTextColor)
+
             }
 
-            setupEmojiPalette(
-                toolbarColor = toolbarColor,
-                backgroundColor = mBackgroundColor,
-                textColor = mTextColor
-            )
+            mEmojiPaletteHolder?.apply {
+                emoji_palette_holder.background = ColorDrawable(toolbarColor)
+
+                emoji_palette_undo.applyColorFilter(mTextColor)
+                emoji_palette_undo.background = ColorDrawable(mPrimaryColor)
+
+                emoji_palette_close.applyColorFilter(mTextColor)
+                emoji_palette_close.background = ColorDrawable(mPrimaryColor)
+
+            }
+
+            setupEmojis()
             setupStoredClips()
         }
     }
@@ -350,7 +368,7 @@ class MyKeyboardView @JvmOverloads constructor(
             showPreview(NOT_A_KEY)
         }
 
-        //closeClipboardManager()
+        closeClipboardManager()
         removeMessages()
         mKeyboard = keyboard
         val keys = (mKeyboard ?: return).mKeys
@@ -389,7 +407,11 @@ class MyKeyboardView @JvmOverloads constructor(
                 clearClipboardContent()
             }
 
-            clipboard_manager_manage.setOnLongClickListener { context.toast(R.string.manage_clipboard_items); true; }
+            clipboard_manager_undo.setOnClickListener {
+                vibrateIfNeeded()
+                (mOnKeyboardActionListener ?: return@setOnClickListener).onKey(KEYCODE_UNDO)
+            }
+
             clipboard_manager_manage.setOnClickListener {
                 Intent(context, ManageClipboardItemsActivity::class.java).apply {
                     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -402,6 +424,11 @@ class MyKeyboardView @JvmOverloads constructor(
             emoji_palette_close.setOnClickListener {
                 vibrateIfNeeded()
                 closeEmojiPalette()
+            }
+
+            emoji_palette_undo.setOnClickListener {
+                vibrateIfNeeded()
+                (mOnKeyboardActionListener ?: return@setOnClickListener).onKey(KEYCODE_UNDO)
             }
         }
     }
@@ -1363,7 +1390,7 @@ class MyKeyboardView @JvmOverloads constructor(
             val clips = ArrayList<ListItem>()
             val clipboardContent = context.getCurrentClip()
 
-            val pinnedClips = context.clipsDB.getClips()
+            val pinnedClips = context.clipsDB.getClips().reversed()
             val isCurrentClipPinnedToo =
                 pinnedClips.any { clipboardContent?.isNotEmpty() == true && it.value.trim() == clipboardContent }
 
@@ -1408,15 +1435,6 @@ class MyKeyboardView @JvmOverloads constructor(
         mClipboardManagerHolder?.clips_list?.adapter = adapter
     }
 
-    private fun setupEmojiPalette(toolbarColor: Int, backgroundColor: Int, textColor: Int) {
-        mEmojiPaletteHolder?.apply {
-            emoji_palette_holder.background = ColorDrawable(backgroundColor)
-            emoji_palette_close.setTextColor(textColor)
-
-            emoji_palette_bottom_bar.background = ColorDrawable(backgroundColor)
-        }
-        setupEmojis()
-    }
 
     fun openEmojiPalette() {
         (mEmojiPaletteHolder ?: return).emoji_palette_holder.beVisible()
@@ -1451,8 +1469,6 @@ class MyKeyboardView @JvmOverloads constructor(
     private fun setupEmojiAdapter(emojis: List<String>) {
         mEmojiPaletteHolder?.emojis_list?.apply {
             val emojiItemWidth = context.resources.getDimensionPixelSize(R.dimen.emoji_item_size)
-            val emojiTopBarElevation =
-                context.resources.getDimensionPixelSize(R.dimen.emoji_top_bar_elevation).toFloat()
 
             layoutManager = AutoGridLayoutManager(context, emojiItemWidth)
             adapter = EmojisAdapter(context = context, items = emojis) { emoji ->
