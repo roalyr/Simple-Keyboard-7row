@@ -37,7 +37,6 @@ class ManageClipboardItemsActivity : SimpleActivity(), RefreshRecyclerViewListen
         clipboard_items_placeholder.text = "${getText(R.string.manage_clipboard_empty)}\n\n${getText(R.string.manage_clips)}"
         clipboard_items_placeholder_2.apply {
             underlineText()
-            setTextColor(getProperPrimaryColor())
             setOnClickListener {
                 addOrEditClip()
             }
@@ -84,7 +83,8 @@ class ManageClipboardItemsActivity : SimpleActivity(), RefreshRecyclerViewListen
 
     private fun updateClips() {
         ensureBackgroundThread {
-            val clips = clipsDB.getClips().toMutableList() as ArrayList<Clip>
+            var clips = clipsDB.getClips().toMutableList() as ArrayList<Clip>
+            clips.reverse()
             runOnUiThread {
                 ClipsActivityAdapter(this, clips, clipboard_items_list, this) {
                     addOrEditClip(it as Clip)

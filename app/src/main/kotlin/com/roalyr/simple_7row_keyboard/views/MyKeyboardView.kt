@@ -36,6 +36,7 @@ import com.roalyr.simple_7row_keyboard.helpers.*
 import com.roalyr.simple_7row_keyboard.helpers.MyKeyboard.Companion.EDGE_BOTTOM
 import com.roalyr.simple_7row_keyboard.helpers.MyKeyboard.Companion.EDGE_TOP
 import com.roalyr.simple_7row_keyboard.helpers.MyKeyboard.Companion.KEYCODE_DELETE
+import com.roalyr.simple_7row_keyboard.helpers.MyKeyboard.Companion.KEYCODE_FORWARD_DELETE
 import com.roalyr.simple_7row_keyboard.helpers.MyKeyboard.Companion.KEYCODE_EMOJI
 import com.roalyr.simple_7row_keyboard.helpers.MyKeyboard.Companion.KEYCODE_ENTER
 import com.roalyr.simple_7row_keyboard.helpers.MyKeyboard.Companion.KEYCODE_LAYOUT_CHANGE
@@ -44,6 +45,7 @@ import com.roalyr.simple_7row_keyboard.helpers.MyKeyboard.Companion.KEYCODE_CONT
 import com.roalyr.simple_7row_keyboard.helpers.MyKeyboard.Companion.KEYCODE_SELECT
 import com.roalyr.simple_7row_keyboard.helpers.MyKeyboard.Companion.KEYCODE_SPACE
 import com.roalyr.simple_7row_keyboard.helpers.MyKeyboard.Companion.KEYCODE_UNDO
+import com.roalyr.simple_7row_keyboard.helpers.MyKeyboard.Companion.KEYCODE_REDO
 import com.roalyr.simple_7row_keyboard.interfaces.RefreshClipsListener
 import com.roalyr.simple_7row_keyboard.models.Clip
 import com.roalyr.simple_7row_keyboard.models.ClipsSectionLabel
@@ -188,6 +190,8 @@ class MyKeyboardView @JvmOverloads constructor(
 
     private var mHandler: Handler? = null
 
+    private var clipboard_history_list = ArrayList<ListItem>()
+
     companion object {
         private const val NOT_A_KEY = -1
         private val LONG_PRESSABLE_STATE_SET = intArrayOf(R.attr.state_long_pressable)
@@ -245,6 +249,7 @@ class MyKeyboardView @JvmOverloads constructor(
         mkeyLabelSmallSize = resources.getDimension(R.dimen.top_small_label_size)
         mkeyLabelSmallMarginWidth = resources.getDimension(R.dimen.top_small_label_margin_width)
         mkeyLabelSmallMarginHeight = resources.getDimension(R.dimen.top_small_label_margin_height)
+
     }
 
     @SuppressLint("HandlerLeak")
@@ -338,6 +343,9 @@ class MyKeyboardView @JvmOverloads constructor(
                 clipboard_manager_undo.applyColorFilter(mTextColor)
                 clipboard_manager_undo.background = ColorDrawable(mPrimaryColor)
 
+                clipboard_manager_redo.applyColorFilter(mTextColor)
+                clipboard_manager_redo.background = ColorDrawable(mPrimaryColor)
+
                 clipboard_content_placeholder_1.setTextColor(mTextColor)
                 clipboard_content_placeholder_2.setTextColor(mTextColor)
 
@@ -349,8 +357,17 @@ class MyKeyboardView @JvmOverloads constructor(
                 emoji_palette_undo.applyColorFilter(mTextColor)
                 emoji_palette_undo.background = ColorDrawable(mPrimaryColor)
 
+                emoji_palette_redo.applyColorFilter(mTextColor)
+                emoji_palette_redo.background = ColorDrawable(mPrimaryColor)
+
                 emoji_palette_close.applyColorFilter(mTextColor)
                 emoji_palette_close.background = ColorDrawable(mPrimaryColor)
+
+                emoji_palette_delete.applyColorFilter(mTextColor)
+                emoji_palette_delete.background = ColorDrawable(mPrimaryColor)
+
+                emoji_palette_delete_forward.applyColorFilter(mTextColor)
+                emoji_palette_delete_forward.background = ColorDrawable(mPrimaryColor)
 
             }
 
@@ -412,6 +429,11 @@ class MyKeyboardView @JvmOverloads constructor(
                 (mOnKeyboardActionListener ?: return@setOnClickListener).onKey(KEYCODE_UNDO)
             }
 
+            clipboard_manager_redo.setOnClickListener {
+                vibrateIfNeeded()
+                (mOnKeyboardActionListener ?: return@setOnClickListener).onKey(KEYCODE_REDO)
+            }
+
             clipboard_manager_manage.setOnClickListener {
                 Intent(context, ManageClipboardItemsActivity::class.java).apply {
                     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -430,10 +452,27 @@ class MyKeyboardView @JvmOverloads constructor(
                 vibrateIfNeeded()
                 (mOnKeyboardActionListener ?: return@setOnClickListener).onKey(KEYCODE_UNDO)
             }
+
+            emoji_palette_redo.setOnClickListener {
+                vibrateIfNeeded()
+                (mOnKeyboardActionListener ?: return@setOnClickListener).onKey(KEYCODE_REDO)
+            }
+
+            emoji_palette_delete.setOnClickListener {
+                vibrateIfNeeded()
+                (mOnKeyboardActionListener ?: return@setOnClickListener).onKey(KEYCODE_DELETE)
+            }
+
+            emoji_palette_delete_forward.setOnClickListener {
+                vibrateIfNeeded()
+                (mOnKeyboardActionListener ?: return@setOnClickListener).onKey(KEYCODE_FORWARD_DELETE)
+            }
+
         }
     }
 
     private fun clearClipboardContent() {
+        clipboard_history_list.clear()
         val clipboardManager =
             (context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager)
         if (isPiePlus()) {
@@ -1391,18 +1430,32 @@ class MyKeyboardView @JvmOverloads constructor(
             val clipboardContent = context.getCurrentClip()
 
             val pinnedClips = context.clipsDB.getClips().reversed()
-            val isCurrentClipPinnedToo =
-                pinnedClips.any { clipboardContent?.isNotEmpty() == true && it.value.trim() == clipboardContent }
 
-            if (!isCurrentClipPinnedToo && clipboardContent?.isNotEmpty() == true) {
+            if (clipboardContent?.isNotEmpty() == true) {
                 val section = ClipsSectionLabel(context.getString(R.string.clipboard_current), true)
                 clips.add(section)
 
                 val clip = Clip(-1, clipboardContent)
-                clips.add(clip)
+                //clips.add(clip)
+
+                // Add new clips to history list.
+                if (!clipboard_history_list.contains(clip)) {
+                    clipboard_history_list.add(clip)
+                }
+
+                // Display list.
+                clipboard_history_list.reversed().forEach() {
+                    clips.add(it)
+                }
+
+                // Limit the clipboard history list with N entries.
+                if (clipboard_history_list.size >= CLIPBOARD_HISTORY_LIMIT) {
+                    clipboard_history_list.removeFirst()
+                }
+
             }
 
-            if (!isCurrentClipPinnedToo && clipboardContent?.isNotEmpty() == true) {
+            if (pinnedClips.isNotEmpty() == true) {
                 val section = ClipsSectionLabel(context.getString(R.string.clipboard_pinned), false)
                 clips.add(section)
             }

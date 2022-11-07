@@ -6,7 +6,7 @@
     <string name="manage_clipboard_items">Manage clipboard items</string>
     <string name="manage_clipboard_empty">Your clipboard is empty.</string>
     <string name="manage_clipboard_label">Once you copy some text, it will show up here. You can also pin clips so they won\'t disappear later.</string>
-    <string name="clipboard_current">Current</string>
+    <string name="clipboard_current">Current (top entry can be pinned)</string>
     <string name="clipboard_pinned">Pinned</string>
     <string name="add_new_item">Add a new item</string>
     <string name="manage_clips">You can manage or add clips here for quick access.</string>

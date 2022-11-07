@@ -28,14 +28,46 @@
         app:layout_constraintTop_toTopOf="@id/keyboard_view"
         tools:ignore="DuplicateClickableBoundsCheck">
 
-
         <ImageView
-            android:id="@+id/emoji_palette_undo"
+            android:id="@+id/emoji_palette_delete"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="@dimen/small_margin"
             android:layout_marginTop="@dimen/small_margin"
+            android:layout_marginEnd="@dimen/small_margin"
+            android:layout_marginRight="@dimen/small_margin"
+            android:layout_marginBottom="@dimen/small_margin"
+            android:background="@drawable/button_background_rounded"
+            android:contentDescription="Delete"
+            android:padding="@dimen/small_margin"
+            android:src="@drawable/ic_delete_vector"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/emoji_palette_delete_forward"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/emoji_palette_delete"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="@dimen/small_margin"
+            android:layout_marginEnd="@dimen/small_margin"
+            android:layout_marginRight="@dimen/small_margin"
+            android:layout_marginBottom="@dimen/small_margin"
+            android:background="@drawable/button_background_rounded"
+            android:contentDescription="Delete forward"
+            android:padding="@dimen/small_margin"
+            android:src="@drawable/ic_delete_forward_vector"
+            android:visibility="visible" />
+
+
+        <ImageView
+            android:id="@+id/emoji_palette_undo"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/emoji_palette_delete_forward"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="@dimen/small_margin"
             android:layout_marginEnd="@dimen/small_margin"
             android:layout_marginRight="@dimen/small_margin"
             android:layout_marginBottom="@dimen/small_margin"
@@ -46,10 +78,26 @@
             android:visibility="visible" />
 
         <ImageView
+            android:id="@+id/emoji_palette_redo"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@id/emoji_palette_undo"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="@dimen/small_margin"
+            android:layout_marginEnd="@dimen/small_margin"
+            android:layout_marginRight="@dimen/small_margin"
+            android:layout_marginBottom="@dimen/small_margin"
+            android:background="@drawable/button_background_rounded"
+            android:contentDescription="Undo"
+            android:padding="@dimen/small_margin"
+            android:src="@drawable/ic_right_circular_arrow_vector"
+            android:visibility="visible" />
+
+        <ImageView
             android:id="@+id/emoji_palette_close"
             android:layout_width="40dp"
             android:layout_height="match_parent"
-            android:layout_below="@id/emoji_palette_undo"
+            android:layout_below="@id/emoji_palette_redo"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="@dimen/small_margin"
             android:layout_marginEnd="@dimen/small_margin"
@@ -102,7 +150,7 @@
             android:background="@drawable/button_background_rounded"
             android:contentDescription="Delete"
             android:padding="@dimen/small_margin"
-            android:src="@drawable/ic_delete_vector"
+            android:src="@drawable/ic_trash_vector"
             android:visibility="visible" />
 
         <ImageView
@@ -138,10 +186,26 @@
             android:visibility="visible" />
 
         <ImageView
+            android:id="@+id/clipboard_manager_redo"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@id/clipboard_manager_undo"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="@dimen/small_margin"
+            android:layout_marginEnd="@dimen/small_margin"
+            android:layout_marginRight="@dimen/small_margin"
+            android:layout_marginBottom="@dimen/small_margin"
+            android:background="@drawable/button_background_rounded"
+            android:contentDescription="Undo"
+            android:padding="@dimen/small_margin"
+            android:src="@drawable/ic_right_circular_arrow_vector"
+            android:visibility="visible" />
+
+        <ImageView
             android:id="@+id/clipboard_manager_close"
             android:layout_width="40dp"
             android:layout_height="match_parent"
-            android:layout_below="@id/clipboard_manager_undo"
+            android:layout_below="@id/clipboard_manager_redo"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="@dimen/small_margin"
             android:layout_marginEnd="@dimen/small_margin"

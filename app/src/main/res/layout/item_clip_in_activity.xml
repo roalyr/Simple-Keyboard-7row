@@ -26,7 +26,7 @@
     <ImageView
         android:id="@+id/clip_drag_handle"
         android:layout_width="@dimen/clip_drag_icon_height"
-        android:layout_height="@dimen/clip_drag_icon_height"
+        android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:padding="@dimen/small_margin"
