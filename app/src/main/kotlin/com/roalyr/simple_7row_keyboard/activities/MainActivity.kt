@@ -3,6 +3,8 @@ package com.roalyr.simple_7row_keyboard.activities
 import android.content.Intent
 import android.graphics.drawable.LayerDrawable
 import android.graphics.drawable.RippleDrawable
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.view.inputmethod.InputMethodManager
@@ -13,6 +15,8 @@ import com.roalyr.simple_7row_keyboard.R
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : SimpleActivity() {
+
+    private val OVERLAY_PERMISSION_REQUEST_CODE = 1234
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -27,6 +31,12 @@ class MainActivity : SimpleActivity() {
                 startActivity(this)
             }
         }
+        // Check if the permission is not granted
+        if (!hasOverlayPermission()) {
+            // If not granted, request the permission
+            requestOverlayPermission()
+        }
+
     }
 
     private fun setupOptionsMenu() {
@@ -48,6 +58,25 @@ class MainActivity : SimpleActivity() {
     private fun launchAbout() {
         val licenses = LICENSE_GSON
         startAboutActivity(R.string.app_name, licenses, BuildConfig.VERSION_NAME, true)
+    }
+
+    private fun hasOverlayPermission(): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Settings.canDrawOverlays(this)
+        } else {
+            // On older Android versions, this permission is not required.
+            true
+        }
+    }
+
+    private fun requestOverlayPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val intent = Intent(
+                Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                Uri.parse("package:$packageName")
+            )
+            startActivityForResult(intent, OVERLAY_PERMISSION_REQUEST_CODE)
+        }
     }
 
 }

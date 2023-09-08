@@ -1,6 +1,8 @@
 package com.roalyr.simple_7row_keyboard.services
 
+import android.content.Context
 import android.content.Intent
+import android.graphics.PixelFormat
 import android.inputmethodservice.InputMethodService
 import android.text.InputType
 import android.text.InputType.TYPE_CLASS_DATETIME
@@ -8,8 +10,7 @@ import android.text.InputType.TYPE_CLASS_NUMBER
 import android.text.InputType.TYPE_CLASS_PHONE
 import android.text.InputType.TYPE_MASK_CLASS
 import android.text.TextUtils
-import android.view.KeyEvent
-import android.view.View
+import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.EditorInfo.IME_ACTION_NONE
 import android.view.inputmethod.EditorInfo.IME_FLAG_NO_ENTER_ACTION
@@ -46,14 +47,62 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
         keyboard = MyKeyboard(this, getKeyboardLayoutXML(), enterKeyType)
     }
 
+//    override fun onCreateInputView(): View {
+//        val keyboardHolder = layoutInflater.inflate(R.layout.keyboard_view_keyboard, null)
+//        keyboardView = keyboardHolder.keyboard_view as MyKeyboardView
+//        keyboardView!!.setKeyboard(keyboard!!)
+//        keyboardView!!.setKeyboardHolder(keyboardHolder.keyboard_holder)
+//        keyboardView!!.setEditorInfo(currentInputEditorInfo)
+//        keyboardView!!.mOnKeyboardActionListener = this
+//        return keyboardHolder!!
+//    }
+
     override fun onCreateInputView(): View {
-        val keyboardHolder = layoutInflater.inflate(R.layout.keyboard_view_keyboard, null)
+        // Set fixed position at the top of the screen
+        val params = WindowManager.LayoutParams(
+            WindowManager.LayoutParams.WRAP_CONTENT,
+            WindowManager.LayoutParams.WRAP_CONTENT,
+            WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY, // This ensures it's above other apps
+            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,    // It should not receive touch events
+            PixelFormat.TRANSLUCENT
+        )
+
+        params.gravity = Gravity.TOP // This sets the view at the top of the screen
+        params.x = 0 // Adjust X position as needed
+        params.y = 0 // Adjust Y position as needed
+
+
+        val windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
+
+
+
+        val keyboardHolder = layoutInflater.inflate(R.layout.keyboard_view_keyboard, null, false)
         keyboardView = keyboardHolder.keyboard_view as MyKeyboardView
         keyboardView!!.setKeyboard(keyboard!!)
         keyboardView!!.setKeyboardHolder(keyboardHolder.keyboard_holder)
         keyboardView!!.setEditorInfo(currentInputEditorInfo)
         keyboardView!!.mOnKeyboardActionListener = this
-        return keyboardHolder!!
+
+        if (keyboardHolder.parent != null) {
+            // Remove it from the previous parent
+            val previousParent = keyboardHolder.parent as ViewGroup
+            previousParent.removeView(keyboardHolder)
+        }
+        keyboardHolder.removeSelf()
+
+        windowManager.addView(keyboardHolder, params)
+
+        // ... other initialization code for your keyboard view
+
+
+
+        return keyboardHolder
+    }
+
+    private fun View?.removeSelf() {
+        this ?: return
+        val parentView = parent as? ViewGroup ?: return
+        parentView.removeView(this)
     }
 
     override fun onPress(primaryCode: Int) {
@@ -600,31 +649,6 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
 
     override fun onText(text: String) {
         currentInputConnection?.commitText(text, 0)
-    }
-
-    override fun onUpdateSelection(
-        oldSelStart: Int,
-        oldSelEnd: Int,
-        newSelStart: Int,
-        newSelEnd: Int,
-        candidatesStart: Int,
-        candidatesEnd: Int
-    ) {
-        super.onUpdateSelection(
-            oldSelStart,
-            oldSelEnd,
-            newSelStart,
-            newSelEnd,
-            candidatesStart,
-            candidatesEnd
-        )
-
-        // Do not close the clipboard manager?
-        /**
-        if (newSelStart == newSelEnd) {
-            keyboardView?.closeClipboardManager()
-        }
-        */
     }
 
     private fun moveCursor(moveRight: Boolean) {
