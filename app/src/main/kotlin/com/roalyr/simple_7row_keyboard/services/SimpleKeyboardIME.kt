@@ -47,17 +47,33 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
         keyboard = MyKeyboard(this, getKeyboardLayoutXML(), enterKeyType)
     }
 
-//    override fun onCreateInputView(): View {
-//        val keyboardHolder = layoutInflater.inflate(R.layout.keyboard_view_keyboard, null)
-//        keyboardView = keyboardHolder.keyboard_view as MyKeyboardView
-//        keyboardView!!.setKeyboard(keyboard!!)
-//        keyboardView!!.setKeyboardHolder(keyboardHolder.keyboard_holder)
-//        keyboardView!!.setEditorInfo(currentInputEditorInfo)
-//        keyboardView!!.mOnKeyboardActionListener = this
-//        return keyboardHolder!!
-//    }
-
     override fun onCreateInputView(): View {
+        val keyboardHolder = layoutInflater.inflate(R.layout.keyboard_view_keyboard, null)
+        keyboardView = keyboardHolder.keyboard_view as MyKeyboardView
+        keyboardView!!.setKeyboard(keyboard!!)
+        keyboardView!!.setKeyboardHolder(keyboardHolder.keyboard_holder)
+        keyboardView!!.setEditorInfo(currentInputEditorInfo)
+        keyboardView!!.mOnKeyboardActionListener = this
+
+/*        val params = WindowManager.LayoutParams(
+            WindowManager.LayoutParams.WRAP_CONTENT,
+            WindowManager.LayoutParams.WRAP_CONTENT,
+            WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY, // This ensures it's above other apps
+            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,    // It should not receive touch events
+            PixelFormat.TRANSLUCENT
+        )
+
+        params.gravity = Gravity.TOP // This sets the view at the top of the screen
+        params.x = 0 // Adjust X position as needed
+        params.y = 0 // Adjust Y position as needed
+
+
+        keyboardHolder.layoutParams = params*/
+
+        return keyboardHolder!!
+    }
+
+/*    override fun onCreateInputView(): View {
         // Set fixed position at the top of the screen
         val params = WindowManager.LayoutParams(
             WindowManager.LayoutParams.WRAP_CONTENT,
@@ -97,7 +113,7 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
 
 
         return keyboardHolder
-    }
+    }*/
 
     private fun View?.removeSelf() {
         this ?: return
