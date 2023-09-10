@@ -356,8 +356,8 @@
 
         <Key
             app:keyLabel="edit"
-            app:keyLabelSmall="⚙"
-            app:popupCharacters="spec[☻; -6], spec[🔍; -16], spec[🔧; -15] "
+            app:keyLabelSmall="☻"
+            app:popupCharacters="spec[☻; -6]"
             app:keyWidth="12%p"
             app:popupKeyboard="@xml/keyboard_popup_template"
             app:code="-17"
@@ -373,6 +373,9 @@
         <Key
             app:keyLabel="Ent"
             app:code="-4"
+            app:keyLabelSmall="⚙"
+            app:popupCharacters="spec[⚙; -15] "
+            app:popupKeyboard="@xml/keyboard_popup_template"
             app:keyWidth="12%p"
             app:specKey="true"
             app:keyEdgeFlags="right"
@@ -399,6 +402,9 @@
         <Key
             app:keyLabel="Uk"
             app:keyWidth="12%p"
+            app:keyLabelSmall="x"
+            app:popupCharacters="spec[x; -27] "
+            app:popupKeyboard="@xml/keyboard_popup_template"
             app:code="-2"
             app:specKey="true"
             />

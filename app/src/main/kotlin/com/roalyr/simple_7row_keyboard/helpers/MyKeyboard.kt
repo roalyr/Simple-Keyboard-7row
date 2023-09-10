@@ -100,6 +100,8 @@ class MyKeyboard {
         const val KEYCODE_HOME = -25
         const val KEYCODE_END = -26
 
+        const val KEYCODE_WINDOWMANAGERCLOSE = -27
+
         fun getDimensionOrFraction(a: TypedArray, index: Int, base: Int, defValue: Int): Int {
             val value = a.peekValue(index) ?: return defValue
             return when (value.type) {
@@ -338,10 +340,10 @@ class MyKeyboard {
      */
     @JvmOverloads
     constructor(context: Context, @XmlRes xmlLayoutResId: Int, enterKeyType: Int) {
-        mDisplayWidth = context.resources.displayMetrics.widthPixels
+        mDisplayWidth = 500
         mDefaultHorizontalGap = 0
         mDefaultWidth = mDisplayWidth / MAX_KEYS_PER_MINI_ROW
-        mDefaultHeight = mDefaultWidth
+        mDefaultHeight = 500
         mKeyboardHeightMultiplier =
             getKeyboardHeightMultiplier(context.config.keyboardHeightMultiplier)
         mKeys = ArrayList()

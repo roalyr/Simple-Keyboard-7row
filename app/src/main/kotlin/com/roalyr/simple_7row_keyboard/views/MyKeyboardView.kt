@@ -164,6 +164,7 @@ class MyKeyboardView @JvmOverloads constructor(
     private var mKeyBackground: Drawable? = null
 
     private var mClipboardManagerHolder: View? = null
+    public var mWindowManager: WindowManager? = null
     private var mEmojiPaletteHolder: View? = null
     private var emojiCompatMetadataVersion = 0
 
@@ -1153,7 +1154,12 @@ class MyKeyboardView @JvmOverloads constructor(
             when (action) {
                 MotionEvent.ACTION_MOVE -> {
                     if (mMiniKeyboard != null) {
-                        val coords = intArrayOf(0, 0)
+
+                        // Just take one single key.
+                        mMiniKeyboardSelectedKeyIndex = 0
+                        mMiniKeyboard!!.invalidateAllKeys()
+
+/*                        val coords = intArrayOf(0, 0)
                         mMiniKeyboard!!.getLocationOnScreen(coords)
                         val keysCnt = mMiniKeyboard!!.mKeys.size
                         val lastRowKeyCount = if (keysCnt > MAX_KEYS_PER_MINI_ROW) {
@@ -1182,15 +1188,15 @@ class MyKeyboardView @JvmOverloads constructor(
                             }
                             mMiniKeyboardSelectedKeyIndex = selectedKeyIndex
                             mMiniKeyboard!!.invalidateAllKeys()
-                        }
+                        }*/
 
-                        if (coords[0] > 0 || coords[1] > 0) {
+                      /*  if (coords[0] > 0 || coords[1] > 0) {
                             if (coords[0] - me.x > mPopupMaxMoveDistance ||                                         // left
                                 me.x - (coords[0] + mMiniKeyboard!!.measuredWidth) > mPopupMaxMoveDistance          // right
                             ) {
                                 dismissPopupKeyboard()
                             }
-                        }
+                        }*/
                     }
                 }
                 MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
@@ -1417,6 +1423,10 @@ class MyKeyboardView @JvmOverloads constructor(
 
     fun closeClipboardManager() {
         mClipboardManagerHolder?.clipboard_manager_holder?.beGone()
+    }
+
+    fun closeWindowManager() {
+        mWindowManager?.removeView(keyboard_holder)
     }
 
     fun openClipboardManager() {

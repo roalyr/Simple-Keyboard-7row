@@ -4,7 +4,7 @@
         <item name="colorPrimary">@color/color_primary</item>
         <item name="colorPrimaryDark">@color/color_primary_dark</item>
         <item name="colorAccent">@color/color_accent</item>
-        <item name="android:spinnerItemStyle">@style/SpinnerItem</item>
+        <item name="android:spinnerItemStyle">@style/SpinnerItem</item>IsFloat
         <item name="spinnerDropDownItemStyle">@style/SpinnerItem.DropDownItem</item>
         <item name="android:spinnerDropDownItemStyle">@style/SpinnerItem.DropDownItem</item>
         <item name="buttonStyle">@style/MyTransparentButton</item>

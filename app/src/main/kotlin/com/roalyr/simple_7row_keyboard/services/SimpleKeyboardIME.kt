@@ -1,5 +1,6 @@
 package com.roalyr.simple_7row_keyboard.services
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.PixelFormat
@@ -18,6 +19,7 @@ import android.view.inputmethod.EditorInfo.IME_MASK_ACTION
 import android.view.inputmethod.ExtractedTextRequest
 import android.view.inputmethod.InputConnection
 import com.roalyr.simple_7row_keyboard.R
+import com.roalyr.simple_7row_keyboard.activities.MainActivity
 import com.roalyr.simple_7row_keyboard.activities.SettingsActivity
 import com.roalyr.simple_7row_keyboard.extensions.config
 import com.roalyr.simple_7row_keyboard.helpers.*
@@ -49,32 +51,21 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
 
     override fun onCreateInputView(): View {
         val keyboardHolder = layoutInflater.inflate(R.layout.keyboard_view_keyboard, null)
+        val keyboardHolder_sub = View(this)
+
+        // Set layout parameters for the empty view to have zero height
+        val layoutParams = ViewGroup.LayoutParams(
+            0,
+            0
+        )
+        keyboardHolder_sub.layoutParams = layoutParams
+
         keyboardView = keyboardHolder.keyboard_view as MyKeyboardView
         keyboardView!!.setKeyboard(keyboard!!)
         keyboardView!!.setKeyboardHolder(keyboardHolder.keyboard_holder)
         keyboardView!!.setEditorInfo(currentInputEditorInfo)
         keyboardView!!.mOnKeyboardActionListener = this
 
-/*        val params = WindowManager.LayoutParams(
-            WindowManager.LayoutParams.WRAP_CONTENT,
-            WindowManager.LayoutParams.WRAP_CONTENT,
-            WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY, // This ensures it's above other apps
-            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,    // It should not receive touch events
-            PixelFormat.TRANSLUCENT
-        )
-
-        params.gravity = Gravity.TOP // This sets the view at the top of the screen
-        params.x = 0 // Adjust X position as needed
-        params.y = 0 // Adjust Y position as needed
-
-
-        keyboardHolder.layoutParams = params*/
-
-        return keyboardHolder!!
-    }
-
-/*    override fun onCreateInputView(): View {
-        // Set fixed position at the top of the screen
         val params = WindowManager.LayoutParams(
             WindowManager.LayoutParams.WRAP_CONTENT,
             WindowManager.LayoutParams.WRAP_CONTENT,
@@ -83,37 +74,20 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
             PixelFormat.TRANSLUCENT
         )
 
-        params.gravity = Gravity.TOP // This sets the view at the top of the screen
+        params.gravity = Gravity.RIGHT // This sets the view at the top of the screen
         params.x = 0 // Adjust X position as needed
         params.y = 0 // Adjust Y position as needed
 
-
         val windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
-
-
-
-        val keyboardHolder = layoutInflater.inflate(R.layout.keyboard_view_keyboard, null, false)
-        keyboardView = keyboardHolder.keyboard_view as MyKeyboardView
-        keyboardView!!.setKeyboard(keyboard!!)
-        keyboardView!!.setKeyboardHolder(keyboardHolder.keyboard_holder)
-        keyboardView!!.setEditorInfo(currentInputEditorInfo)
-        keyboardView!!.mOnKeyboardActionListener = this
-
-        if (keyboardHolder.parent != null) {
-            // Remove it from the previous parent
-            val previousParent = keyboardHolder.parent as ViewGroup
-            previousParent.removeView(keyboardHolder)
-        }
-        keyboardHolder.removeSelf()
-
         windowManager.addView(keyboardHolder, params)
+        keyboardView!!.mWindowManager = windowManager
 
-        // ... other initialization code for your keyboard view
+        // Hide the keyboardHolder_sub by setting its visibility to GONE
+        keyboardHolder_sub.visibility = View.GONE
 
+        return keyboardHolder_sub!!
+    }
 
-
-        return keyboardHolder
-    }*/
 
     private fun View?.removeSelf() {
         this ?: return
@@ -489,6 +463,9 @@ class SimpleKeyboardIME : InputMethodService(), MyKeyboardView.OnKeyboardActionL
             }
             MyKeyboard.KEYCODE_CLIPBOARD -> {
                 keyboardView?.openClipboardManager()
+            }
+            MyKeyboard.KEYCODE_WINDOWMANAGERCLOSE -> {
+                System.exit(0)
             }
             MyKeyboard.KEYCODE_SETTINGS -> {
 

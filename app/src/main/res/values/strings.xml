@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Simple 7row Keyboard</string>
-    <string name="app_launcher_name">S7row Keyboard</string>
+    <string name="app_name">Simple 7row Keyboard TABLET</string>
+    <string name="app_launcher_name">S7row Keyboard TABLET</string>
     <!-- Clipboard -->
     <string name="manage_clipboard_items">Manage clipboard items</string>
     <string name="manage_clipboard_empty">Your clipboard is empty.</string>
